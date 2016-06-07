@@ -18,18 +18,18 @@ import java.util.StringTokenizer;
 public class Simulator {
   private String testFile;
   private File directory;
-  
+
   public Simulator(String testFile) {
     this.testFile = testFile;
   }
-  
+
   public Simulator(File simuDir, String testFile) {
     this.directory = simuDir;
     this.testFile = testFile;
   }
-  
+
   public void simulate(Map<FileName, FileRecord> logs) {
-    for(Map.Entry<FileName, FileRecord> entry : logs.entrySet()) {
+    for (Map.Entry<FileName, FileRecord> entry : logs.entrySet()) {
       try (RandomAccessFile file = new RandomAccessFile(testFile, "rw")) {
         Operation op;
         for (Record record : entry.getValue().getRecords()) {
@@ -43,16 +43,18 @@ public class Simulator {
       }
     }
   }
-  
+
   public void simulate() {
     File[] files = directory.listFiles();
     Arrays.sort(files, (a, b) -> a.toString().compareTo(b.toString()));
-    try (RandomAccessFile rfile = new RandomAccessFile(testFile, "rw")) {
+    long start;
+    long sumTime = 0;
+    for (File file : files) {
       Operation op;
       String line;
       OperationInfo info = new OperationInfo();
       StringTokenizer token;
-      for (File file : files) {
+      try (RandomAccessFile rfile = new RandomAccessFile(testFile, "rw")) {
         System.out.println(file.toString());
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
           while ((line = reader.readLine()) != null) {
@@ -61,14 +63,17 @@ public class Simulator {
             info.setLength(token.nextToken());
             info.setOffset(token.nextToken());
             op = OperationFactory.getOperation(info);
+            start = System.currentTimeMillis();
             op.operate(rfile);
+            sumTime += (System.currentTimeMillis() - start);
           }
         } catch (IOException e) {
           e.printStackTrace();
         }
+      } catch (IOException ie) {
+        ie.printStackTrace();
       }
-    } catch (IOException ie) {
-      ie.printStackTrace();
     }
+    System.out.println("Simulation time is : " + sumTime);
   }
 }

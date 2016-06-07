@@ -50,7 +50,6 @@ public class FileDirectoryFactory {
   /**
    * 
    */
-  
   public static String generateOutputFileName(String fileName) {
     int sepIndex = StringUtils.lastIndexOf(fileName, File.separator);
     return StringUtils.substring(fileName, sepIndex + 1);

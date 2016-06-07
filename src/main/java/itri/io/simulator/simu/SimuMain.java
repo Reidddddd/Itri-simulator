@@ -16,8 +16,6 @@ public class SimuMain {
     System.out.println("Start to simulate!");
     Simulator simulator = new Simulator(new File(params.getOutDir()),
                                         params.getFileTest());
-    long start = System.currentTimeMillis();
     simulator.simulate();
-    System.out.println(System.currentTimeMillis() - start);
   }
 }

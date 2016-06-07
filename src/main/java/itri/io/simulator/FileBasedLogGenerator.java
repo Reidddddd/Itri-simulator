@@ -84,6 +84,11 @@ public class FileBasedLogGenerator extends LogGenerator<FileName, FileRecord> {
     }
   }
 
+  /**
+   * Have danger of out of memory.
+   * It should be deprecated.
+   */
+  @Deprecated
   @Override
   public void flush(String outDir) {
     FileDirectoryFactory.makeDir(outDir);
