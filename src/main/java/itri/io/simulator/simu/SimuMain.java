@@ -16,6 +16,6 @@ public class SimuMain {
     System.out.println("Start to simulate!");
     Simulator simulator = new Simulator(new File(params.getOutDir()),
                                         params.getFileTest());
-    simulator.simulate();
+    simulator.simulate(params.getModDir());
   }
 }

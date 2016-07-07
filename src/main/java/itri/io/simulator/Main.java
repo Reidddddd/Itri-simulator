@@ -26,14 +26,19 @@ public class Main {
                             .setLengthIndex().setOffsetIndex()
                             .setNameIndex()
                             .build();
+    
     GroupByOption groupBy = new GroupByOption(params.getGroupBy());
     LogGenerator generator = LogGenerator.createGenerator(groupBy.getGroupByType(),
                                                           params.getLogPath(),
                                                           info);
+    
     BufferedAppender appender = new BufferedAppender(params.getOutDir(), params.getRecordSize());
-    generator.addObserver(appender);
-    generator.generate();
-    appender.flush();
+    try {
+      generator.addObserver(appender);
+      generator.generate(params);
+    } finally {
+      appender.flush();
+    }
     
     if (!params.getAfterLog()) System.exit(0);
     

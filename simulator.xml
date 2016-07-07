@@ -20,25 +20,25 @@
 
 <property>
 <name>simulator.logpath</name>
-<value>/home/reidchan/Public/ANSYS1.txt</value>
+<value>/home/reidchan/Desktop/FilterResult.txt</value>
 <description>the log's absolute path in the file system</description>
 </property>
 
 <property>
 <name>simulator.groupby</name>
 <value>filename</value>
-<description>the record log's groupby: "filename" or "thread" or "majorop".</description>
+<description>the record log's groupby: "filename" or "thread" or "majorop". only "filename" is supported in this version</description>
 </property>
 
 <property>
 <name>simulator.generatelog.mode</name>
 <value>standalone</value>
-<description>standalone will run on local machine, "distributed" mode will run on spark</description>
+<description>standalone will run on local machine, "distributed" mode will run on spark. only standalone is supported in this version</description>
 </property>
 
 <property>
 <name>simulator.log.output.dir</name>
-<value>/home/reidchan/Public/Simulog_1</value>
+<value>/home/reidchan/Desktop/Simulog_1</value>
 <description>the log output directory for this simulation</description>
 </property>
 
@@ -56,8 +56,20 @@
 
 <property>
 <name>simulator.record.size</name>
-<value>50000</value>
+<value>10000</value>
 <description>the number of record in buffer before flush</description>
+</property>
+
+<property>
+<name>simulator.name.keyword</name>
+<value>\Device\HarddiskVolume2\Users\test\AppData\Local\Temp\WB_TEST-PC1_test_3160_2\_ProjectScratch\</value>
+<description>name that has one of the keyword will be kept. Separate the keyword with ","</description>
+</property>
+
+<property>
+<name>simulator.modfile.dir</name>
+<value>/home/reidchan/Desktop/ModFile</value>
+<description>the mod file for simulator</description>
 </property>
 
 </configuration>

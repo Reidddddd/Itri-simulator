@@ -37,6 +37,7 @@ public class FileBasedLogGenerator extends LogGenerator<FileName, FileRecord> {
     FileName fileName = null;
     FileRecord fileRecord = null;
     int targetPassed = manager.getFiltersNumber();
+    System.out.println(targetPassed);
     ConditionIterator iter = (ConditionIterator) manager.iterator();
     
     LOOP:
@@ -135,5 +136,12 @@ public class FileBasedLogGenerator extends LogGenerator<FileName, FileRecord> {
   public void filterStatus(ConditionManager manager) {
     FilterOption.StatusOption[] statusOptions = { FilterOption.StatusOption.SUCCESS };
     manager.addFilterStatusCondition(statusOptions);
+  }
+
+  @Override
+  public void filterName(ConditionManager manager, String[] filterNames) {
+    if (filterNames != null && filterNames.length != 0) {
+      manager.addFilterNameCondition(filterNames);
+    }
   }
 }

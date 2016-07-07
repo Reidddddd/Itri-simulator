@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.Formatter;
 import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
-
 public class FileDirectoryFactory {
   private static HashMap<String, String> fileNameMap = new HashMap<>();
   private static HashMap<String, String> fileNumMap = new HashMap<>();
@@ -35,7 +33,7 @@ public class FileDirectoryFactory {
     if (alpFileName == null) {
       StringBuilder builder = new StringBuilder();
       for (int i = 0; i < fileName.length(); i++) {
-        if (Character.isLetter(fileName.charAt(i))) {
+        if (Character.isLetter(fileName.charAt(i)) || Character.isDigit(fileName.charAt(i))) {
           builder.append(fileName.charAt(i));
         }
       }
@@ -47,25 +45,11 @@ public class FileDirectoryFactory {
     return fileNumMap.get(alpFileName) + alpFileName;
   }
   
-  /**
-   * 
-   */
-  public static String generateOutputFileName(String fileName) {
-    int sepIndex = StringUtils.lastIndexOf(fileName, File.separator);
-    return StringUtils.substring(fileName, sepIndex + 1);
-  }
-  
-  public static String generateNameFromWindows(String fileName) {
-    int sepIndex = StringUtils.lastIndexOf(fileName, "\\");
-    return StringUtils.substring(fileName, sepIndex + 1);
-  }
-  
-  public static String generateNameFromUnix(String fileName) {
-    int sepIndex = StringUtils.lastIndexOf(fileName, "/");
-    return StringUtils.substring(fileName, sepIndex + 1);
-  }
-  
-  public static String getWorkingDirectory() {
-    return System.getProperty("user.dir") + File.separator + System.currentTimeMillis();
+  public static int search(File[] lists, String name) {
+    String removeNumPrefix = name.substring(5);
+    for (int i = 0; i < lists.length; i++) {
+      if (lists[i].getName().contains(removeNumPrefix)) return i;
+    }
+    return -1;
   }
 }

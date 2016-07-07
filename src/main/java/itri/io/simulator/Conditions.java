@@ -22,6 +22,8 @@ public abstract class Conditions {
       return new MajorOpFilterConditions((FilterOption.MajorOpOption[]) obj);
     } else if (clazz.isAssignableFrom(FilterOption.StatusOption.class)) {
       return new StatusFilterConditions((FilterOption.StatusOption[]) obj);
+    } else if (clazz.isAssignableFrom(String.class)) { 
+      return new TextFilterConditions((String[]) obj);
     } else {
       throw new RuntimeException("Your condition is not supported");
     }
@@ -130,6 +132,22 @@ class StatusFilterConditions extends Conditions {
         case WARNING: { if (Status.isWarning(splited[info.getStatusIndex()])) return true; break; }
         case   ERROR: { if (Status.isError(splited[info.getStatusIndex()]))   return true; break; }
       }
+    }
+    return false;
+  }
+}
+
+class TextFilterConditions extends Conditions {
+  private String[] nameOptions;
+  
+  public TextFilterConditions(String[] nameOptions) {
+    this.nameOptions = nameOptions;
+  }
+  
+  @Override
+  public boolean filter(String[] splited, IndexInfo info) {
+    for (String name : nameOptions) {
+      if (splited[info.getNameIndex()].contains(name)) return true;
     }
     return false;
   }

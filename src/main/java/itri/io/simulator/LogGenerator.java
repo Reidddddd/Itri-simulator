@@ -37,8 +37,8 @@ public abstract class LogGenerator<K, V> extends Observable {
     this.info = info;
     this.manager = new ConditionManager();
   }
-
-  public void generate() {
+  
+  public void generate(Parameters params) {
     try {
       if (open()) {
         groupBy(manager);
@@ -46,6 +46,7 @@ public abstract class LogGenerator<K, V> extends Observable {
         filterIrp(manager);
         filterMajorOp(manager);
         filterStatus(manager);
+        filterName(manager, params.getFilterNames());
         generate(manager, reader, info);
       }
     } catch (FileNotFoundException e) {
@@ -54,6 +55,10 @@ public abstract class LogGenerator<K, V> extends Observable {
     } finally {
       close();
     }
+  }
+
+  public void generate() {
+    generate(null);
   }
   
   /**
@@ -77,6 +82,8 @@ public abstract class LogGenerator<K, V> extends Observable {
   public abstract void filterMajorOp(ConditionManager manager);
 
   public abstract void filterStatus(ConditionManager manager);
+  
+  public abstract void filterName(ConditionManager manager, String[] filterNames);
   
   protected String[] trimedArrays(String line) {
     String[] trimed = StringUtils.split(line, "\t");

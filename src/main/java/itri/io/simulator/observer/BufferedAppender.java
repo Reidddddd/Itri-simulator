@@ -22,6 +22,7 @@ public class BufferedAppender implements Observer {
   
   public BufferedAppender(String outDir, int bufferSize) {
     this.outDir = outDir;
+    FileDirectoryFactory.makeDir(outDir);
     this.bufferSize = bufferSize;
     buffer = new HashMap<>();
     currentSize = 0;
