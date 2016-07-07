@@ -7,6 +7,7 @@ public class GroupByOption {
   private final static String FILE_NAME = "filename";
   private final static String THREAD = "thread";
   private final static String MAJOR_OP = "majorop";
+  private final static String TIME_SEQ = "timesequence";
 
   private GroupByOption.Option groupByType;
   
@@ -15,6 +16,7 @@ public class GroupByOption {
       case FILE_NAME: groupByType = Option.FILE_NAME; break;
       case THREAD:    groupByType = Option.THREAD;    break;
       case MAJOR_OP:  groupByType = Option.MAJOR_OP;  break;
+      case TIME_SEQ:  groupByType = Option.TIME_SEQ;  break;
       default:        groupByType = Option.FILE_NAME; break;
     }
   }
@@ -25,6 +27,7 @@ public class GroupByOption {
       case FILE_NAME: groupByType = Option.FILE_NAME; break;
       case THREAD:    groupByType = Option.THREAD;    break;
       case MAJOR_OP:  groupByType = Option.MAJOR_OP;  break;
+      case TIME_SEQ:  groupByType = Option.TIME_SEQ;  break;
       default:        groupByType = Option.FILE_NAME; break;
     }
   }
@@ -38,6 +41,8 @@ public class GroupByOption {
 
     THREAD,
 
-    MAJOR_OP;
+    MAJOR_OP,
+    
+    TIME_SEQ;
   }
 }

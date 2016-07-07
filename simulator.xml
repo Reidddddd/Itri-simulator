@@ -43,20 +43,8 @@
 </property>
 
 <property>
-<name>simulator.simulate.afterlog</name>
-<value>false</value>
-<description>if continue simulation after generating log</description>
-</property>
-
-<property>
-<name>simulator.test.file</name>
-<value>/home/reidchan/Desktop/FilterResult.txt</value>
-<description>file for test</description>
-</property>
-
-<property>
 <name>simulator.record.size</name>
-<value>10000</value>
+<value>50000</value>
 <description>the number of record in buffer before flush</description>
 </property>
 

@@ -1,17 +1,15 @@
 package itri.io.simulator;
 
 import itri.io.simulator.observer.BufferedAppender;
-import itri.io.simulator.simu.Simulator;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 
 public class Main {
-  @SuppressWarnings({ "rawtypes", "unchecked" })
+  @SuppressWarnings({ "rawtypes" })
   public static void main(String[] args) throws IOException {
     Configuration conf = new Configuration();
     conf.addResource(new Path(args[0]));
@@ -39,15 +37,6 @@ public class Main {
     } finally {
       appender.flush();
     }
-    
-    if (!params.getAfterLog()) System.exit(0);
-    
-    Map log = generator.getLog();
-    
-    System.out.println("Start to simulate!");
-    Simulator simulator = new Simulator(params.getFileTest());
-    long start = System.currentTimeMillis();
-    simulator.simulate(log);
-    System.out.println(System.currentTimeMillis() - start);
+    System.exit(0);
   }
 }

@@ -1,8 +1,7 @@
 package itri.io.simulator.simu;
 
+import itri.io.simulator.GroupByOption;
 import itri.io.simulator.Parameters;
-
-import java.io.File;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
@@ -12,10 +11,10 @@ public class SimuMain {
     Configuration conf = new Configuration();
     conf.addResource(new Path(args[0]));
     Parameters params = new Parameters(conf);
+    GroupByOption groupBy = new GroupByOption(params.getGroupBy());
+    LogSimulator simulator = LogSimulator.createSimulator(groupBy.getGroupByType(), params);
     
     System.out.println("Start to simulate!");
-    Simulator simulator = new Simulator(new File(params.getOutDir()),
-                                        params.getFileTest());
     simulator.simulate(params.getModDir());
   }
 }
