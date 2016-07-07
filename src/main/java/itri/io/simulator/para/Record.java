@@ -1,5 +1,6 @@
 package itri.io.simulator.para;
 
+import itri.io.simulator.IndexInfo;
 import itri.io.simulator.para.MajorOp.OpType;
 
 public class Record {
@@ -27,6 +28,15 @@ public class Record {
     } else if (MajorOp.isWriteOp(majorOp)) {
       this.operationInfo = new OperationInfo(OpType.WRITE, offset, length);
     }
+  }
+
+  public Record(String[] splited, IndexInfo info) {
+    this(splited[info.getOprIndex()], splited[info.getSeqNumIndex()],
+         splited[info.getPreOpTimeIndex()], splited[info.getPostOpTimeIndex()],
+         splited[info.getProcessThrdIndex()], splited[info.getIrpFlagIndex()],
+         splited[info.getStatusIndex()], splited[info.getMajorOpIndex()],
+         splited[info.getLengthIndex()], splited[info.getOffsetIndex()],
+         splited[info.getNameIndex()]);
   }
 
   public OperationInfo getOperationInfo() {

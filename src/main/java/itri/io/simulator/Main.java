@@ -1,6 +1,7 @@
 package itri.io.simulator;
 
-import itri.io.simulator.observer.BufferedAppender;
+import itri.io.simulator.observer.Appender;
+import itri.io.simulator.observer.CreateAppendObserver;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -30,7 +31,7 @@ public class Main {
                                                           params.getLogPath(),
                                                           info);
     
-    BufferedAppender appender = new BufferedAppender(params.getOutDir(), params.getRecordSize());
+    Appender appender = CreateAppendObserver.createObserver(groupBy.getGroupByType(), params);
     try {
       generator.addObserver(appender);
       generator.generate(params);

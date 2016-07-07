@@ -12,18 +12,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Observer;
 
-public class BufferedAppender implements Observer {
-  private String outDir;
-  private int bufferSize;
-  private int currentSize;
+public class FileBasedAppender extends Appender {
   private Map<FileName, List<Record>> buffer;
   
-  public BufferedAppender(String outDir, int bufferSize) {
-    this.outDir = outDir;
+  public FileBasedAppender(String outDir, int bufferSize) {
+    super(outDir, bufferSize);
     FileDirectoryFactory.makeDir(outDir);
-    this.bufferSize = bufferSize;
     buffer = new HashMap<>();
     currentSize = 0;
   }
@@ -45,6 +40,7 @@ public class BufferedAppender implements Observer {
     }
   }
 
+  @Override
   public void flush() {
     String absPath;
     for (Map.Entry<FileName, List<Record>> entry : buffer.entrySet()) {

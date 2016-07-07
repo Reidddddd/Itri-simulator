@@ -1,5 +1,10 @@
 package itri.io.simulator;
 
+import itri.io.simulator.para.IrpFlag;
+import itri.io.simulator.para.MajorOp;
+import itri.io.simulator.para.OprFlag;
+import itri.io.simulator.para.Status;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -13,7 +18,7 @@ import org.apache.commons.logging.LogFactory;
 
 public abstract class LogGenerator<K, V> extends Observable {
   private static Log LOG = LogFactory.getLog(LogGenerator.class);
-  
+
   protected static int INITIAL_CAPACITY = 100;
   protected static float LOAD_FACTOR = 0.75F;
 
@@ -21,15 +26,18 @@ public abstract class LogGenerator<K, V> extends Observable {
   protected String filePath;
   protected BufferedReader reader;
   protected ConditionManager manager;
-  
+
   @SuppressWarnings("rawtypes")
   public static LogGenerator createGenerator(GroupByOption.Option option,
                                              String filePath,
                                              IndexInfo info) {
+    LogGenerator log = null;
     switch (option) {
-      case FILE_NAME: return new FileBasedLogGenerator(filePath, info);
-      default: return new FileBasedLogGenerator(filePath, info);
+      case FILE_NAME: log = new FileBasedLogGenerator(filePath, info); break;
+      case TIME_SEQ: log = new TimeBasedLogGenerator(filePath, info); break;
+      default:  log = new FileBasedLogGenerator(filePath, info); break;
     }
+    return log;
   }
 
   public LogGenerator(String filePath, IndexInfo info) {
@@ -37,15 +45,15 @@ public abstract class LogGenerator<K, V> extends Observable {
     this.info = info;
     this.manager = new ConditionManager();
   }
-  
+
   public void generate(Parameters params) {
     try {
       if (open()) {
         groupBy(manager);
-        filterOpr(manager);
-        filterIrp(manager);
-        filterMajorOp(manager);
-        filterStatus(manager);
+        filterOpr(manager, params.getOprNames());
+        filterIrp(manager, params.getIrpNames());
+        filterMajorOp(manager, params.getMajorNames());
+        filterStatus(manager, params.getStatusNames());
         filterName(manager, params.getFilterNames());
         generate(manager, reader, info);
       }
@@ -60,31 +68,77 @@ public abstract class LogGenerator<K, V> extends Observable {
   public void generate() {
     generate(null);
   }
-  
+
   /**
-   * Users should call generate() before getLog(), otherwise you will get nothing.
-   * Logs contain those records that passed through user specified conditions.
-   * 
-   * @return logs 
+   * Users should call generate() before getLog(), otherwise you will get nothing. Logs contain
+   * those records that passed through user specified conditions.
+   * @return logs
    */
   public abstract Map<K, V> getLog();
-  
-  public abstract void flush(String outDir);
 
   public abstract void generate(ConditionManager manager, BufferedReader reader, IndexInfo info);
 
   public abstract void groupBy(ConditionManager manager);
 
-  public abstract void filterOpr(ConditionManager manager);
-  
-  public abstract void filterIrp(ConditionManager manager);
+  public void filterOpr(ConditionManager manager, String[] oprs) {
+    if (oprs != null && oprs.length != 0) {
+      FilterOption.OprOption[] oprOptions = new FilterOption.OprOption[oprs.length];
+      for (int i = 0; i < oprs.length; i++) {
+        oprOptions[i] = OprFlag.getOprOption(oprs[i]);
+      }
+      manager.addFilterOprCondition(oprOptions);
+    } else {
+      FilterOption.OprOption[] oprOptions = { FilterOption.OprOption.IRP };
+      manager.addFilterOprCondition(oprOptions);
+    }
+  }
 
-  public abstract void filterMajorOp(ConditionManager manager);
+  public void filterIrp(ConditionManager manager, String[] irps) {
+    if (irps != null && irps.length != 0) {
+      FilterOption.IrpOption[] irpOptions = new FilterOption.IrpOption[irps.length];
+      for (int i = 0; i < irps.length; i++) {
+        irpOptions[i] = IrpFlag.getIrpOption(irps[i]);
+      }
+      manager.addFilterIrpCondition(irpOptions);
+    } else {
+      FilterOption.IrpOption[] irpOptions = { FilterOption.IrpOption.ALL };
+      manager.addFilterIrpCondition(irpOptions);
+    }
+  }
 
-  public abstract void filterStatus(ConditionManager manager);
-  
-  public abstract void filterName(ConditionManager manager, String[] filterNames);
-  
+  public void filterMajorOp(ConditionManager manager, String[] majorOps) {
+    if (majorOps != null && majorOps.length != 0) {
+      FilterOption.MajorOpOption[] majorOpOptions = new FilterOption.MajorOpOption[majorOps.length];
+      for (int i = 0; i < majorOps.length; i++) {
+        majorOpOptions[i] = MajorOp.getMajorOpOption(majorOps[i]);
+      }
+      manager.addFilterMajorOpCondition(majorOpOptions);
+    } else {
+      FilterOption.MajorOpOption[] majorOpOptions =
+          { FilterOption.MajorOpOption.IRP_READ, FilterOption.MajorOpOption.IRP_WRITE };
+      manager.addFilterMajorOpCondition(majorOpOptions);
+    }
+  }
+
+  public void filterStatus(ConditionManager manager, String[] status) {
+    if (status != null && status.length != 0) {
+      FilterOption.StatusOption[] statusOptions = new FilterOption.StatusOption[status.length];
+      for (int i = 0; i < status.length; i++) {
+        statusOptions[i] = Status.getStatusOption(status[i]);
+      }
+      manager.addFilterStatusCondition(statusOptions);
+    } else {
+      FilterOption.StatusOption[] statusOptions = { FilterOption.StatusOption.SUCCESS };
+      manager.addFilterStatusCondition(statusOptions);
+    }
+  }
+
+  public void filterName(ConditionManager manager, String[] filterNames) {
+    if (filterNames != null && filterNames.length != 0) {
+      manager.addFilterNameCondition(filterNames);
+    }
+  }
+
   protected String[] trimedArrays(String line) {
     String[] trimed = StringUtils.split(line, "\t");
     for (int i = 0; i < trimed.length; i++) {

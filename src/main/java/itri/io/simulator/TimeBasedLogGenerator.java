@@ -1,35 +1,32 @@
 package itri.io.simulator;
 
 import itri.io.simulator.ConditionManager.ConditionIterator;
-import itri.io.simulator.para.FileName;
 import itri.io.simulator.para.FileRecord;
+import itri.io.simulator.para.Record;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class FileBasedLogGenerator extends LogGenerator<FileName, FileRecord> {
+public class TimeBasedLogGenerator extends LogGenerator<Integer, FileRecord> {
 
-  private HashMap<FileName, FileRecord> logs;
-
-  public FileBasedLogGenerator(String filePath, IndexInfo info) {
+  public TimeBasedLogGenerator(String filePath, IndexInfo info) {
     super(filePath, info);
-    logs = new LinkedHashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
+  }
+
+  @Override
+  public Map<Integer, FileRecord> getLog() {
+    return null;
   }
 
   @Override
   public void generate(ConditionManager manager, BufferedReader reader, IndexInfo info) {
     String line = null;
-    String groupByName = null;
     String splited[] = null;
     int failCount = 0;
     int failMax = 3;
     int passedCount = 0;
     Conditions cond = null;
-    FileName fileName = null;
-    FileRecord fileRecord = null;
     int targetPassed = manager.getFiltersNumber();
     System.out.println(targetPassed);
     ConditionIterator iter = (ConditionIterator) manager.iterator();
@@ -48,29 +45,17 @@ public class FileBasedLogGenerator extends LogGenerator<FileName, FileRecord> {
             if (cond.filter(splited, info)) passedCount++;
             else break;
           } catch (UnsupportedOperationException uoe) {
-            // It means that condition is an extraction operation.
-            // It is normal and we do it on purpose
-            groupByName = ((ExtractConditions) cond).extractGroup(splited, info);
+            // do nothing in this time based log generator
           }
         }
         iter.reset();
         if (passedCount != targetPassed) continue;
         
         /**
-         * 2. Put passed record into logs
+         * 2. Put passed record into appender for flush
          */
-        fileName = new FileName(groupByName);
         setChanged();
-        if (logs.containsKey(fileName)) {
-          fileRecord = logs.get(fileName);
-          fileRecord.addRecord(splited, info);
-          notifyObservers(fileRecord.getRecentlyAddedRecord());
-        } else {
-          FileRecord newFileRecord = new FileRecord(groupByName);
-          newFileRecord.addRecord(splited, info);
-          notifyObservers(newFileRecord.getRecentlyAddedRecord());
-          logs.put(fileName, newFileRecord);
-        }
+        notifyObservers(new Record(splited, info));
       }
     } catch (IOException e) {
       System.err.println(e.getMessage());
@@ -80,13 +65,8 @@ public class FileBasedLogGenerator extends LogGenerator<FileName, FileRecord> {
   }
 
   @Override
-  public Map<FileName, FileRecord> getLog() {
-    return logs;
-  }
-
-  @Override
   public void groupBy(ConditionManager manager) {
-    GroupByOption.Option[] groupByOption = { GroupByOption.Option.FILE_NAME };
+    GroupByOption.Option[] groupByOption = { GroupByOption.Option.TIME_SEQ };
     manager.addGroupByCondition(groupByOption);
   }
 }

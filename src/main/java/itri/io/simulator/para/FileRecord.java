@@ -7,7 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -17,24 +17,28 @@ public class FileRecord {
   private final static Log LOG = LogFactory.getLog(FileRecord.class);
   
   private String groupName;
-  private List<Record> records;
+  private LinkedList<Record> records;
 
   public FileRecord(String groupName) {
     this.groupName = groupName;
-    records = new ArrayList<>();
+    records = new LinkedList<>();
   }
 
   public void addRecord(String[] splited, IndexInfo info) {
-    records.add(new Record(splited[info.getOprIndex()], splited[info.getSeqNumIndex()],
-                           splited[info.getPreOpTimeIndex()], splited[info.getPostOpTimeIndex()],
-                           splited[info.getProcessThrdIndex()], splited[info.getIrpFlagIndex()],
-                           splited[info.getStatusIndex()], splited[info.getMajorOpIndex()],
-                           splited[info.getLengthIndex()], splited[info.getOffsetIndex()],
-                           splited[info.getNameIndex()]));
+    records.addLast(new Record(splited[info.getOprIndex()], splited[info.getSeqNumIndex()],
+                               splited[info.getPreOpTimeIndex()], splited[info.getPostOpTimeIndex()],
+                               splited[info.getProcessThrdIndex()], splited[info.getIrpFlagIndex()],
+                               splited[info.getStatusIndex()], splited[info.getMajorOpIndex()],
+                               splited[info.getLengthIndex()], splited[info.getOffsetIndex()],
+                               splited[info.getNameIndex()]));
   }
-  
+
+  public void addRecord(Record record) {
+    records.addLast(record);
+  }
+
   public Record getRecentlyAddedRecord() {
-    return records.get(records.size() - 1);
+    return records.getLast();
   }
   
   public String getGroupName() {
@@ -44,17 +48,11 @@ public class FileRecord {
   public List<Record> getRecords() {
     return records;
   }
-  
-  @Deprecated
-  public void writeToFile(String outPath) {
-    try (PrintWriter writer = new PrintWriter(FileDirectoryFactory.createNewFile(outPath))) {
-      writer.write(this.toString());
-    } catch (IOException e) {
-      e.printStackTrace();
-      LOG.error(e.getMessage());
-    }
+
+  public void clear() {
+    records.clear();
   }
-  
+
   public void bufferedWriteToFile(String outPath) {
     try (BufferedWriter writer =
          new BufferedWriter(new FileWriter(FileDirectoryFactory.createNewFile(outPath)))) {

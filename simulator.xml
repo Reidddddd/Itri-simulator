@@ -27,7 +27,37 @@
 <property>
 <name>simulator.groupby</name>
 <value>filename</value>
-<description>the record log's groupby: "filename" or "thread" or "majorop". only "filename" is supported in this version</description>
+<description>the record log's groupby: "filename" or "timesequence"</description>
+</property>
+
+<property>
+<name>simulator.opr.filter</name>
+<value>irp</value>
+<description>opr filter</description>
+</property>
+
+<property>
+<name>simulator.irp.filter</name>
+<value>all</value>
+<description>irp filter</description>
+</property>
+
+<property>
+<name>simulator.majorop.filter</name>
+<value>read,write</value>
+<description>major operation filter</description>
+</property>
+
+<property>
+<name>simulator.status.filter</name>
+<value>success</value>
+<description>operation status filter</description>
+</property>
+
+<property>
+<name>simulator.keyword.filter</name>
+<value>\Device\HarddiskVolume2\Users\test\AppData\Local\Temp\WB_TEST-PC1_test_3160_2\_ProjectScratch\</value>
+<description>name that has one of the keyword will be kept. Separate the keyword with ","</description>
 </property>
 
 <property>
@@ -46,12 +76,6 @@
 <name>simulator.record.size</name>
 <value>50000</value>
 <description>the number of record in buffer before flush</description>
-</property>
-
-<property>
-<name>simulator.name.keyword</name>
-<value>\Device\HarddiskVolume2\Users\test\AppData\Local\Temp\WB_TEST-PC1_test_3160_2\_ProjectScratch\</value>
-<description>name that has one of the keyword will be kept. Separate the keyword with ","</description>
 </property>
 
 <property>
