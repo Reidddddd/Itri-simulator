@@ -13,7 +13,7 @@ public class SimuMain {
     Parameters params = new Parameters(conf);
     GroupByOption groupBy = new GroupByOption(params.getGroupBy());
     LogSimulator simulator = LogSimulator.createSimulator(groupBy.getGroupByType(), params);
-    
+
     System.out.println("Start to simulate!");
     simulator.simulate(params.getModDir());
   }

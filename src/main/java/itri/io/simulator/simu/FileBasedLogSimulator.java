@@ -19,25 +19,25 @@ public class FileBasedLogSimulator extends LogSimulator {
   @Override
   public void simulate(String modFileDir) {
     File modDir = new File(modFileDir);
-    File[] lists = modDir.listFiles();
+    File[] modFiles = modDir.listFiles();
     
-    File[] files = simuDir.listFiles();
-    Arrays.sort(files, (a, b) -> a.toString().compareTo(b.toString()));
+    File[] simuFiles = simuDir.listFiles();
+    Arrays.sort(simuFiles, (a, b) -> a.toString().compareTo(b.toString()));
     long start;
     long sumTime = 0;
     int fileIndex;
-    for (File file : files) {
+    for (File file : simuFiles) {
       Operation op;
       String line;
       OperationInfo info = new OperationInfo();
       StringTokenizer token;
       
-      fileIndex = FileDirectoryFactory.search(lists, file.getName());
+      fileIndex = FileDirectoryFactory.search(modFiles, file.getName());
       if (fileIndex == -1) {
-        System.out.println("skip one: " + lists[fileIndex].getName());
+        System.out.println("skip one: " + modFiles[fileIndex].getName());
         continue;
       }
-      try (RandomAccessFile rfile = new RandomAccessFile(lists[fileIndex], "rw")) {
+      try (RandomAccessFile rfile = new RandomAccessFile(modFiles[fileIndex], "rw")) {
         System.out.println(file.getName());
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
           while ((line = reader.readLine()) != null) {
