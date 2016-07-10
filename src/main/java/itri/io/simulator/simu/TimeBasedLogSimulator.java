@@ -41,9 +41,9 @@ public class TimeBasedLogSimulator extends LogSimulator {
         info.setOffset(lines[2]);
         op = OperationFactory.getOperation(info);
 
-        fileIndex = FileDirectoryFactory.search(modFiles, lines[lines.length - 1]);
+        fileIndex = FileDirectoryFactory.search(modFiles, FileDirectoryFactory.extractAlpName(lines[lines.length - 1]));
         if (fileIndex == -1) {
-          System.out.println("skip one: " + modFiles[fileIndex].getName());
+          System.out.println("skip one: " + lines[lines.length - 1]);
           continue;
         }
         start = System.currentTimeMillis();
