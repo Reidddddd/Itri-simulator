@@ -17,7 +17,13 @@ public class WriteOperation extends Operation {
     byte[] ranBytes = RandomTools.generateByte(length);
     try {
       file.seek(offset);
-      file.write(ranBytes);
+      if (!isSync) {
+        file.write(ranBytes);
+      } else {
+        synchronized (file) {
+          file.write(ranBytes);
+        }
+      }
     } catch (IOException e) {
       System.out.println("Write error happens at " + offset + ", should write　" + length + " bytes.");
     }

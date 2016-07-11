@@ -13,6 +13,18 @@ public class Record {
   private OperationInfo operationInfo;
   private FileName fileName;
 
+  public static final int OPINFO_TYPE = 0;
+  public static final int OPINFO_LENGTH = 1;
+  public static final int OPINFO_OFFSET = 2;
+  public static final int OP_TIME = 3;
+  public static final int OP_PROC = 4;
+  public static final int OP_THRD = 5;
+  public static final int OP_STATUS = 6;
+  public static final int OP_IRPFLAG = 7;
+  public static final int OP_SEQUENCE = 8;
+  public static final int OP_OPRFLAG = 9;
+  public static final int OP_FILENAME = 10;
+
   public Record(String oprFlag,  String opSequence, String preOpTime, String pstOpTime,
                 String procThrd, String irpFlag,    String status,
                 String majorOp,  String length,     String offset,    String fileName) {
@@ -24,9 +36,9 @@ public class Record {
     this.status = new Status(status);
     this.fileName = new FileName(fileName);
     if (MajorOp.isReadOp(majorOp)) {
-      this.operationInfo = new OperationInfo(OpType.READ, offset, length);
+      this.operationInfo = new OperationInfo(OpType.READ, offset, length, irpFlag);
     } else if (MajorOp.isWriteOp(majorOp)) {
-      this.operationInfo = new OperationInfo(OpType.WRITE, offset, length);
+      this.operationInfo = new OperationInfo(OpType.WRITE, offset, length, irpFlag);
     }
   }
 

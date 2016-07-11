@@ -1,6 +1,7 @@
 package itri.io.simulator.simu;
 
 import itri.io.simulator.para.OperationInfo;
+import itri.io.simulator.para.Record;
 import itri.io.simulator.util.FileDirectoryFactory;
 
 import java.io.BufferedReader;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
 import java.util.StringTokenizer;
+
+import org.apache.commons.lang.StringUtils;
 
 public class FileBasedLogSimulator extends LogSimulator {
   public FileBasedLogSimulator(String simuDir) {
@@ -30,7 +33,7 @@ public class FileBasedLogSimulator extends LogSimulator {
       Operation op;
       String line;
       OperationInfo info = new OperationInfo();
-      StringTokenizer token;
+      String[] token;
       
       fileIndex = FileDirectoryFactory.search(modFiles, file.getName());
       if (fileIndex == -1) {
@@ -41,14 +44,16 @@ public class FileBasedLogSimulator extends LogSimulator {
         System.out.println(file.getName());
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
           while ((line = reader.readLine()) != null) {
-            token = new StringTokenizer(line, ":");
-            info.setOpType(token.nextToken());
-            info.setLength(token.nextToken());
-            info.setOffset(token.nextToken());
+            token = StringUtils.split(line, ":");
+            info.setOpType(token[Record.OPINFO_TYPE]);
+            info.setLength(token[Record.OPINFO_LENGTH]);
+            info.setOffset(token[Record.OPINFO_OFFSET]);
+            info.setIrpFlag(token[Record.OP_IRPFLAG]);
             op = OperationFactory.getOperation(info);
             start = System.currentTimeMillis();
             op.operate(rfile);
             sumTime += (System.currentTimeMillis() - start);
+            token = null;
           }
         } catch (IOException e) {
           e.printStackTrace();

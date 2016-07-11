@@ -8,8 +8,9 @@ public class OperationInfo {
   private OpType opType;
   private long offset;
   private int length;
+  private String irpFlag;
 
-  public OperationInfo(OpType opType, String offset, String length) {
+  public OperationInfo(OpType opType, String offset, String length, String irpFlag) {
     this.opType = opType;
     if (opType == OpType.READ || opType == OpType.WRITE) {
       this.offset = Long.decode(offset);
@@ -18,6 +19,7 @@ public class OperationInfo {
       this.offset = 0;
       this.length = 0;
     }
+    this.irpFlag = irpFlag;
   }
   
   public OperationInfo() {
@@ -35,6 +37,10 @@ public class OperationInfo {
   public void setLength(String length) {
     this.length = Integer.valueOf(length);
   }
+  
+  public void setIrpFlag(String irpFlag) {
+    this.irpFlag = irpFlag;
+  }
 
   public OperationInfo(String readLine) {
     String[] records = StringUtils.split(readLine, ":");
@@ -45,6 +51,8 @@ public class OperationInfo {
     }
     this.length = Integer.parseInt(records[1]);
     this.offset = Long.parseLong(records[2]);
+    this.irpFlag = records[7];
+    records = null;
   }
 
   public OpType getOpType() {
@@ -57,6 +65,10 @@ public class OperationInfo {
 
   public long getOffset() {
     return offset;
+  }
+
+  public boolean isSync() {
+    return irpFlag.contains("S") || irpFlag.contains("Y");
   }
 
   @Override

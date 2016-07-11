@@ -17,7 +17,13 @@ public class ReadOperation extends Operation {
   public void operate(RandomAccessFile file) {
     try {
       file.seek(offset);
-      file.read(bytes2Read);
+      if (!isSync) {
+        file.read(bytes2Read);
+      } else {
+        synchronized (file) {
+          file.read(bytes2Read);
+        }
+      }
     } catch (IOException e) {
       System.out.println("Read error happens at " + offset + ", should read　" + length + " bytes.");
     }

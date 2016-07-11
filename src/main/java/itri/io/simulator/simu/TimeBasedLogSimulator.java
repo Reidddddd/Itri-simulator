@@ -1,6 +1,7 @@
 package itri.io.simulator.simu;
 
 import itri.io.simulator.para.OperationInfo;
+import itri.io.simulator.para.Record;
 import itri.io.simulator.util.FileDirectoryFactory;
 
 import java.io.BufferedReader;
@@ -36,9 +37,10 @@ public class TimeBasedLogSimulator extends LogSimulator {
     try (BufferedReader reader = new BufferedReader(new FileReader(simuFiles[0]))) {
       while ((line = reader.readLine()) != null) {
         String[] lines = StringUtils.split(line, ":");
-        info.setOpType(lines[0]);
-        info.setLength(lines[1]);
-        info.setOffset(lines[2]);
+        info.setOpType(lines[Record.OPINFO_TYPE]);
+        info.setLength(lines[Record.OPINFO_LENGTH]);
+        info.setOffset(lines[Record.OPINFO_OFFSET]);
+        info.setIrpFlag(lines[Record.OP_IRPFLAG]);
         op = OperationFactory.getOperation(info);
 
         fileIndex = FileDirectoryFactory.search(modFiles, FileDirectoryFactory.extractAlpName(lines[lines.length - 1]));
