@@ -39,7 +39,7 @@
           </descriptorRefs> 
           <archive>
             <manifest>
-              <mainClass>itri.io.simulator.Main</mainClass>
+              <mainClass>itri.io.emulator.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
