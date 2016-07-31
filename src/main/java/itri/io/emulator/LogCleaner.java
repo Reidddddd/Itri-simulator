@@ -54,7 +54,7 @@ public abstract class LogCleaner<K, V> extends Observable {
         filterIrp(manager, params.getIrpNames());
         filterMajorOp(manager, params.getMajorNames());
         filterStatus(manager, params.getStatusNames());
-        filterName(manager, params.getFilterNames());
+        filterName(manager, params.getKeyWordNames());
         generate(manager, reader, info);
       }
     } catch (FileNotFoundException e) {

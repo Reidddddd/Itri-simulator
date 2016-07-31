@@ -15,32 +15,32 @@ public class ConditionManager implements Iterable<Conditions> {
     size = 0;
   }
 
-  public void addGroupByCondition(GroupByOption.Option... groupBy) {
+  public void addGroupByCondition(GroupByOption.Option[] groupBy) {
     conditions[index++] = Conditions.createConditions(groupBy);
     size = index;
   }
 
-  public void addFilterOprCondition(FilterOption.OprOption... oprOptions) {
+  public void addFilterOprCondition(FilterOption.OprOption[] oprOptions) {
     conditions[index++] = Conditions.createConditions(oprOptions);
     size = index;
   }
   
-  public void addFilterIrpCondition(FilterOption.IrpOption... irpOptions) {
+  public void addFilterIrpCondition(FilterOption.IrpOption[] irpOptions) {
     conditions[index++] = Conditions.createConditions(irpOptions);
     size = index;
   }
 
-  public void addFilterMajorOpCondition(FilterOption.MajorOpOption... majorOpOptions) {
+  public void addFilterMajorOpCondition(FilterOption.MajorOpOption[] majorOpOptions) {
     conditions[index++] = Conditions.createConditions(majorOpOptions);
     size = index;
   }
 
-  public void addFilterStatusCondition(FilterOption.StatusOption... statusOptions) {
+  public void addFilterStatusCondition(FilterOption.StatusOption[] statusOptions) {
     conditions[index++] = Conditions.createConditions(statusOptions);
     size = index;
   }
   
-  public void addFilterNameCondition(String... nameOptions) {
+  public void addFilterNameCondition(String[] nameOptions) {
     conditions[index++] = Conditions.createConditions(nameOptions);
     size = index;
   }

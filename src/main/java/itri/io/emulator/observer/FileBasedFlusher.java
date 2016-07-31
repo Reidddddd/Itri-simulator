@@ -25,6 +25,7 @@ public class FileBasedFlusher extends Flusher {
 
   @Override
   public void update(Observable o, Object arg) {
+    if (arg.getClass() != Record.class) return;
     Record record = (Record) arg;
     if (buffer.containsKey(record.getFName())) {
       buffer.get(record.getFName()).add(record);

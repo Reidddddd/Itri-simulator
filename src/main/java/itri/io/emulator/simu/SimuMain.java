@@ -11,10 +11,10 @@ public class SimuMain {
     Configuration conf = new Configuration();
     conf.addResource(new Path(args[0]));
     Parameters params = new Parameters(conf);
-    GroupByOption groupBy = new GroupByOption(params.getGroupBy());
+    GroupByOption groupBy = new GroupByOption(params.getMergeKeyWord());
     LogSimulator simulator = LogSimulator.createSimulator(groupBy.getGroupByType(), params);
 
     System.out.println("Start to simulate!");
-    simulator.simulate(params.getModDir());
+    simulator.simulate(params.getFakeFilesLocation());
   }
 }

@@ -4,19 +4,19 @@ import org.apache.hadoop.conf.Configuration;
 
 public class Parameters {
   // Log generator input
-  private final static String LOG_PATH = "simulator.logpath";
+  private final static String LOG_PATH = "emulator.io.log.location";
   private String logPath;
   // Log generator output
-  private final static String OUTPUT_DIR = "simulator.log.output.dir";
+  private final static String OUTPUT_DIR = "emulator.replay.log.location";
   private String outDir;
 
   // Filter
-  private final static String GROUP_BY = "simulator.groupby";
-  private final static String FILTER_NAME = "simulator.keyword.filter";
-  private final static String FILTER_IRP = "simulator.irp.filter";
-  private final static String FILTER_OPR = "simulator.opr.filter";
-  private final static String FILTER_MAJOR_OP = "simulator.majorop.filter";
-  private final static String FILTER_STATUS = "simulator.status.filter";
+  private final static String GROUP_BY = "emulator.merge.keyword";
+  private final static String FILTER_NAME = "emulator.keyword.filter";
+  private final static String FILTER_IRP = "emulator.irp.filter";
+  private final static String FILTER_OPR = "emulator.opr.filter";
+  private final static String FILTER_MAJOR_OP = "emulator.majorop.filter";
+  private final static String FILTER_STATUS = "emulator.status.filter";
   private String groupBy;
   private String[] filterNames;
   private String[] irpNames;
@@ -25,11 +25,11 @@ public class Parameters {
   private String[] statusNames;
 
   // Log simulator input
-  private final static String MODFILE_DIR = "simulator.modfile.dir";
+  private final static String MODFILE_DIR = "emulator.fake.file.location";
   private String modDir;
 
   // Generator output buffer size
-  private final static String RECORD_SIZE = "simulator.record.size";
+  private final static String RECORD_SIZE = "emulator.buffer.size";
   private int recordSize;
 
   public Parameters(Configuration conf) {
@@ -48,19 +48,19 @@ public class Parameters {
     recordSize = conf.getInt(RECORD_SIZE, 50000);
   }
 
-  public String getLogPath() {
+  public String getIOLogInputLocation() {
     return logPath;
   }
   
-  public String getOutDir() {
+  public String getReplayLogOutputLocation() {
     return outDir;
   }
 
-  public String getGroupBy() {
+  public String getMergeKeyWord() {
     return groupBy;
   }
 
-  public String[] getFilterNames() {
+  public String[] getKeyWordNames() {
     return filterNames;
   }
 
@@ -80,11 +80,11 @@ public class Parameters {
     return statusNames;
   }
 
-  public String getModDir() {
+  public String getFakeFilesLocation() {
     return modDir;
   }
   
-  public int getRecordSize() {
+  public int getBufferSize() {
     return recordSize;
   }
 

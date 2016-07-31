@@ -9,7 +9,7 @@ import itri.io.emulator.para.Status;
 
 public abstract class Conditions {
   
-  @SuppressWarnings("rawtypes")
+  @SuppressWarnings({ "rawtypes", "unchecked" })
   public static Conditions createConditions(Object... obj) {
     Class clazz = obj[0].getClass();
     if (clazz.isAssignableFrom(GroupByOption.Option.class)) {

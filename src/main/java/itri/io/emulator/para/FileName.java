@@ -31,24 +31,6 @@ public class FileName {
     return hardDiskName;
   }
 
-  private static String getDeviceName(String[] names) {
-    return names[1];
-  }
-
-  private static String getHardDiskName(String[] names) {
-    return names[2];
-  }
-
-  private static String getRemainingName(String[] names) {
-    StringBuilder builder = new StringBuilder();
-    for (int i = 0; i < names.length; i++) {
-      if (i == 0 || i == 1 || i == 2) continue;
-      if (i == names.length - 1) builder.append(names[i]);
-      else builder.append(names[i] + "-");
-    }
-    return builder.toString();
-  }
-
   @Override
   public boolean equals(Object obj) {
     if (this == obj) {

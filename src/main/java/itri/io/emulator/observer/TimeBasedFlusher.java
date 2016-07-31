@@ -19,6 +19,7 @@ public class TimeBasedFlusher extends Flusher {
 
   @Override
   public void update(Observable o, Object arg) {
+    if (arg.getClass() != Record.class) return;
     Record record = (Record) arg;
     wholeRecord.addRecord(record);
     if (++currentSize > bufferSize) {
