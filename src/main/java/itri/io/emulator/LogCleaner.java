@@ -147,7 +147,7 @@ public abstract class LogCleaner<K, V> extends Observable {
     return trimed;
   }
 
-  private boolean open() throws FileNotFoundException {
+  protected boolean open() throws FileNotFoundException {
     boolean fileOpenSuccess = true;
     try {
       reader = new BufferedReader(new FileReader(filePath));
@@ -159,7 +159,7 @@ public abstract class LogCleaner<K, V> extends Observable {
     return fileOpenSuccess;
   }
 
-  private void close() {
+  protected void close() {
     try {
       if (reader != null) reader.close();
     } catch (IOException e) {

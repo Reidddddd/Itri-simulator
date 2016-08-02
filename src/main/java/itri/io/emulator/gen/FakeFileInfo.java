@@ -12,6 +12,11 @@ public class FakeFileInfo {
     this.maxSize = new FileSize(splited[info.getOffsetIndex()], splited[info.getLengthIndex()]);
   }
 
+  public FakeFileInfo(String fileName, long offset, int length) {
+    this.fileName = new FileName(fileName);
+    this.maxSize = new FileSize(offset, length);
+  }
+
   public FileName getFileName() {
     return fileName;
   }
@@ -20,18 +25,22 @@ public class FakeFileInfo {
     return maxSize;
   }
 
-  class FileSize {
-    long size;
+  public class FileSize {
+    private long size;
 
-    FileSize(String offset, String length) {
+    public FileSize(String offset, String length) {
       this.size = Long.decode(offset) + Integer.decode(length);
     }
 
-    void updateSize(FileSize size) {
+    public FileSize(long offset, int length) {
+      this.size = offset + length;
+    }
+
+    public void updateSize(FileSize size) {
       this.size = size.getSize() > this.size ? size.getSize() : this.size;
     }
 
-    long getSize() {
+    public long getSize() {
       return size;
     }
   }

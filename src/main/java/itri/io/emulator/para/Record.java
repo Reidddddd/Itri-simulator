@@ -58,7 +58,19 @@ public class Record {
   public FileName getFName() {
     return fileName;
   }
-  
+
+  public String getFileName() {
+    return fileName.getFileName();
+  }
+
+  public long getOffset() {
+    return this.operationInfo.getOffset();
+  }
+
+  public int getLength() {
+    return this.operationInfo.getLength();
+  }
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();

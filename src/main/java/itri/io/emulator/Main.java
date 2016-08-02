@@ -38,14 +38,14 @@ public class Main {
     try {
       cleaner.addObserver(appender);
       cleaner.addObserver(generator);
-      System.out.println("Replay Log is being created...");
+      System.out.println("Replay Logs are being created...");
       cleaner.generate(params);
     } finally {
       appender.flush();
-      System.out.println("Replay Log is done.\n");
-      System.out.println("Fake Files is being created...");
+      System.out.println("Replay Logs are done.\n");
+      System.out.println("Fake Files are being created...");
       generator.flush();
-      System.out.println("Fake Files is done.\n");
+      System.out.println("Fake Files are done.\n");
     }
     System.out.println("Start IO Simulation...");
     LogSimulator simulator = LogSimulator.createSimulator(groupBy.getGroupByType(), params);

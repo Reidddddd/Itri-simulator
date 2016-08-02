@@ -2,33 +2,13 @@ package itri.io.emulator.para;
 
 public class FileName {
   private String unformattedFileName;
-  private String deviceName;
-  private String hardDiskName;
 
   public FileName(String fileName) {
     unformattedFileName = fileName;
-    // try {
-    // String[] names = StringUtils.split(fileName, "\\");
-    // deviceName = getDeviceName(names);
-    // hardDiskName = getHardDiskName(names);
-    // formattedFileName = getRemainingName(names);
-    // } catch (IndexOutOfBoundsException idbe) {
-    // deviceName = "attach no device";
-    // hardDiskName = "attach no hard disk";
-    // formattedFileName = unformattedFileName;
-    // }
   }
 
   public String getFileName() {
     return unformattedFileName;
-  }
-
-  public String getDeviceName() {
-    return deviceName;
-  }
-
-  public String getHardDiskName() {
-    return hardDiskName;
   }
 
   @Override

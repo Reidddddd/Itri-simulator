@@ -54,7 +54,7 @@ public class ConditionManager implements Iterable<Conditions> {
     return new ConditionIterator();
   }
 
-  class ConditionIterator implements Iterator<Conditions> {
+  public class ConditionIterator implements Iterator<Conditions> {
     private int index;
     
     public ConditionIterator() {

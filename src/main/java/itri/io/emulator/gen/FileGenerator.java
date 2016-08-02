@@ -55,7 +55,7 @@ public class FileGenerator extends Flusher {
     }
   }
 
-  class FastGeneration implements Runnable {
+  private class FastGeneration implements Runnable {
     String absPath;
     long fileSize;
 
