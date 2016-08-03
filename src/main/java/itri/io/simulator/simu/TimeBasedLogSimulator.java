@@ -43,15 +43,15 @@ public class TimeBasedLogSimulator extends LogSimulator {
         info.setIrpFlag(lines[Record.OP_IRPFLAG]);
         op = OperationFactory.getOperation(info);
 
-        fileIndex = FileDirectoryFactory.search(modFiles, FileDirectoryFactory.extractAlpName(lines[lines.length - 1]));
+        fileIndex = FileDirectoryFactory.search(modFiles, FileDirectoryFactory.extractAlpName(lines[Record.OP_FILENAME]));
         if (fileIndex == -1) {
-          System.out.println("skip one: " + lines[lines.length - 1]);
+          System.out.println("skip one: " + lines[Record.OP_FILENAME]);
           continue;
         }
         start = System.currentTimeMillis();
-        if (!lines[lines.length - 1].equals(previousFileName)) {
+        if (!lines[Record.OP_FILENAME].equals(previousFileName)) {
           if (rfile != null) rfile.close();
-          previousFileName = lines[lines.length - 1];
+          previousFileName = lines[Record.OP_FILENAME];
           rfile = new RandomAccessFile(modFiles[fileIndex], "rw");
         }
         op.operate(rfile);
