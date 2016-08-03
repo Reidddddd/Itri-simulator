@@ -28,4 +28,12 @@ public class BlocksManager {
   public int getBlocksSize() {
     return blocks.length;
   }
+
+  public long getBlocksFrequency() {
+    long fre = 0;
+    for (Block blc : blocks) {
+      fre += blc.getFrequency();
+    }
+    return fre;
+  }
 }
