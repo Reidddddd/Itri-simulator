@@ -1,13 +1,15 @@
 package itri.io.emulator.experiment;
 
 import itri.io.emulator.IndexInfo;
+import itri.io.emulator.experiment.ExperimentsManager.ExperimentState;
+import itri.io.emulator.experiment.ExperimentsManager.Tuple;
 import itri.io.emulator.gen.FakeFileInfo;
 import itri.io.emulator.gen.FakeFileInfo.FileSize;
 import itri.io.emulator.para.FileName;
 import itri.io.emulator.para.Record;
 
-import java.awt.Dimension;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -34,6 +36,7 @@ public class BlockFrequencyExperiment extends Experiment {
     this.fileMaxSize = new HashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
     this.info = info;
     this.allSize = 0;
+    this.fileBlocksManager = null;
   }
 
   @Override
@@ -41,27 +44,22 @@ public class BlockFrequencyExperiment extends Experiment {
     String[] splited = (String[]) obj;
     FakeFileInfo fake = new FakeFileInfo(splited, info);
     if (fileMaxSize.containsKey(fake.getFileName())) {
-      fileMaxSize.get(fake).updateSize(fake.getSize());
+      fileMaxSize.get(fake.getFileName()).updateSize(fake.getFileSize());
     } else {
-      fileMaxSize.put(fake.getFileName(), fake.getSize());
+      fileMaxSize.put(fake.getFileName(), fake.getFileSize());
     }
   }
 
   @Override
   protected void process(Object obj) {
-    Record record = (Record) obj;
+    String[] splited = (String[]) obj;
+    Record record = new Record(splited, info);
     if (fileBlocksManager == null) {
       fileBlocksManager = new HashMap<>(fileMaxSize.size());
       initial();
     }
-    BlocksManager manager = fileBlocksManager.get(record.getFileName());
-    if (manager == null) {
-      System.err.print(record.getFileName()
-          + " doesn't have blocks? Please check after termination");
-      return;
-    }
+    BlocksManager manager = fileBlocksManager.get(record.getFName());
     manager.updateBlocksFrequency(record.getOffset(), record.getLength());
-    allSize += manager.getBlocksSize();
   }
 
   private void initial() {
@@ -73,34 +71,46 @@ public class BlockFrequencyExperiment extends Experiment {
 
   @Override
   protected void postProcess() {
+    for (Map.Entry<FileName, BlocksManager> entry : fileBlocksManager.entrySet()) {
+      allSize += entry.getValue().getBlocksSize();
+    }
     Block[] blocks = new Block[allSize];
     int copyIndex = 0;
     int copyLength = 0;
     long allFrequency = 0;
+    System.out.println(allSize);
     for (Map.Entry<FileName, BlocksManager> entry : fileBlocksManager.entrySet()) {
       copyLength = entry.getValue().getBlocksSize();
-      allFrequency = entry.getValue().getBlocksFrequency();
+      allFrequency += entry.getValue().getBlocksFrequency();
+      System.out.println("Copy from " + copyIndex + " to " + (copyIndex + copyLength));
       System.arraycopy(entry.getValue().getBlocks(), 0, blocks, copyIndex, copyLength);
       copyIndex += copyLength;
     }
-    if (copyLength != allSize) {
-      System.err.println("Something wrong within blockes copy process\n."
+    if (copyIndex != allSize) {
+      System.err.println("Something wrong within blockes copy process.\n"
           + "This is for debug usage. Please comment out when put into production");
+      System.out.println("Copy Index is " + copyIndex);
+      System.exit(0);
     }
-    Arrays.sort(blocks);
+    Arrays.sort(blocks, Collections.reverseOrder());
+    System.out.println("Blocks number: " + blocks.length);
+    System.out.println("Total Frequency: " + allFrequency);
     BlockFrequencyBarChat bfBarChat =
         new BlockFrequencyBarChat(EXPERIMENT_TITLE, blocks, allFrequency);
-    bfBarChat.show();
+    bfBarChat.showGraph();
   }
 
   @Override
   public void update(Observable o, Object arg) {
-    if (arg.getClass() == String[].class) {
-      preProcess(arg);
-    } else if (arg.getClass() == Record.class) {
-      process(arg);
-    } else {
+    if (arg == null) {
       postProcess();
+    } else if (arg.getClass() == Tuple.class) {
+      Tuple tuple = (Tuple) arg;
+      if (tuple.getState() == ExperimentState.PREPROCESS) {
+        preProcess(tuple.getSplited());
+      } else if (tuple.getState() == ExperimentState.PROCESS) {
+        process(tuple.getSplited());
+      }
     }
   }
 
@@ -115,8 +125,8 @@ public class BlockFrequencyExperiment extends Experiment {
       JFreeChart chart = createChart(dataset);
       ChartPanel chartPanel = new ChartPanel(chart);
       chartPanel.setFillZoomRectangle(true);
-      chartPanel.setMouseWheelEnabled(true);
-      chartPanel.setPreferredSize(new Dimension(500, 270));
+      chartPanel.setMouseWheelEnabled(false);
+      // chartPanel.setPreferredSize(new Dimension(500, 270));
       setContentPane(chartPanel);
     }
 
@@ -144,10 +154,16 @@ public class BlockFrequencyExperiment extends Experiment {
       int blockIndex = 0;
       for (int i = 0; i < 100; i++) {
         percentage += 0.01f;
+        if (percentage > 0.99f) percentage = 1.0f;
         while (percentageFreq < (int) (allFrequency * percentage)) {
-          percentageFreq += blocks[blockIndex++].getFrequency();
+          if (blockIndex < blocks.length) {
+            percentageFreq += blocks[blockIndex++].getFrequency();
+          } else {
+            break;
+          }
         }
-        nums[i] = blockIndex;
+        nums[i] = blockIndex + 1;
+        System.out.println("Block number: " + nums[i] + " percentage: " + percentage + " count: " + percentageFreq);
       }
       return nums;
     }
@@ -160,7 +176,7 @@ public class BlockFrequencyExperiment extends Experiment {
       return categories;
     }
 
-    public void show() {
+    public void showGraph() {
       this.pack();
       RefineryUtilities.centerFrameOnScreen(this);
       this.setVisible(true);

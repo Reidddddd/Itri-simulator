@@ -51,7 +51,7 @@
 
 	<property>
 		<name>emulator.majorop.filter</name>
-		<value>read,write</value>
+		<value>read</value>
 		<description>Major operation that can pass major operation filter.
 			Only read, write is available.
 		</description>

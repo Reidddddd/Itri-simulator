@@ -1,79 +1,66 @@
 package itri.io.emulator.gen;
 
+import itri.io.emulator.IndexInfo;
 import itri.io.emulator.gen.FakeFileInfo.FileSize;
 import itri.io.emulator.observer.Flusher;
 import itri.io.emulator.para.FileName;
+import itri.io.emulator.para.MajorOp;
 import itri.io.emulator.util.FileDirectoryFactory;
 import itri.io.emulator.util.RandomTools;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class FileGenerator extends Flusher {
-  private Map<FileName, FileSize> fileMaxSize;
   private static int INITIAL_CAPACITY = 200;
   private static float LOAD_FACTOR = 0.75f;
 
-  public FileGenerator(String outDir, int bufferSize) {
+  private Map<FileName, FileSize> fileMaxSize;
+  private IndexInfo info;
+
+  public FileGenerator(String outDir, IndexInfo info) {
+    this(outDir, 0, info);
+  }
+
+  public FileGenerator(String outDir, int bufferSize, IndexInfo info) {
     super(outDir, bufferSize);
     fileMaxSize = new HashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
+    this.info = info;
   }
 
   @Override
   public void update(Observable o, Object arg) {
-    if (arg.getClass() != FakeFileInfo.class) return;
-    FakeFileInfo fake = (FakeFileInfo) arg;
+    if (arg.getClass() != String[].class) return;
+    String[] splited = (String[]) arg;
+    if (MajorOp.isWrite(splited[info.getMajorOpIndex()])) return;
+    FakeFileInfo fake = new FakeFileInfo(splited, info);
     if (fileMaxSize.get(fake.getFileName()) == null) {
-      fileMaxSize.put(fake.getFileName(), fake.getSize());
+      fileMaxSize.put(fake.getFileName(), fake.getFileSize());
     } else {
-      fileMaxSize.get(fake.getFileName()).updateSize(fake.getSize());
+      fileMaxSize.get(fake.getFileName()).updateSize(fake.getFileSize());
     }
   }
 
   @Override
   public void flush() {
-    ExecutorService service = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     for (Map.Entry<FileName, FileSize> entry : fileMaxSize.entrySet()) {
-      service.execute(new FastGeneration(entry.getKey().getFileName(), entry.getValue().getSize()));
-    }
-    service.shutdown();
-    try {
-      while (true) {
-        if (service.isTerminated()) {
-          break;
-        }
-        Thread.sleep(1000 * 10);
-      }
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private class FastGeneration implements Runnable {
-    String absPath;
-    long fileSize;
-
-    public FastGeneration(String fileName, long fileSize) {
-      this.absPath = outDir + File.separator + FileDirectoryFactory.extractAlpName(fileName);
-      this.fileSize = fileSize; 
-    }
-
-    @Override
-    public void run() {
+      String absPath =
+          outDir + File.separator
+              + FileDirectoryFactory.extractAlpNameWithoutNumPrefix(entry.getKey().getFileName());
+      long fileSize = entry.getValue().getSize();
+      long UNIT = 1024 * 1024;
       try {
         FileDirectoryFactory.createNewFile(absPath);
-        try (FileWriter fw = new FileWriter(new File(absPath), true)) {
-          for (long writtenSize = 0; writtenSize <= fileSize; writtenSize += 65536) {
-            if ((writtenSize + 65536) <= fileSize) {
-              fw.write(new String(RandomTools.generateByte(65536)));
+        try (FileOutputStream fw = new FileOutputStream(new File(absPath), true)) {
+          for (long writtenSize = 0; writtenSize <= fileSize; writtenSize += UNIT) {
+            if ((writtenSize + UNIT) <= fileSize) {
+              fw.write(RandomTools.generateByte((int) UNIT));
             } else {
-              fw.write(new String(RandomTools.generateByte((int) (fileSize - writtenSize))));
+              fw.write(RandomTools.generateByte((int) (fileSize - writtenSize)));
             }
           }
           fw.flush();

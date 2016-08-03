@@ -34,7 +34,7 @@ public class Main {
                                                           info);
     
     Flusher appender = CreateFlusher.createObserver(groupBy.getGroupByType(), params);
-    FileGenerator generator = new FileGenerator(params.getFakeFilesLocation(), 0);
+    FileGenerator generator = new FileGenerator(params.getFakeFilesLocation(), info);
     try {
       cleaner.addObserver(appender);
       cleaner.addObserver(generator);

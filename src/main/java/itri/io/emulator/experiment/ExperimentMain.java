@@ -28,8 +28,10 @@ public class ExperimentMain {
 
     ExperimentsManager manager = new ExperimentsManager(params.getIOLogInputLocation(), info);
     manager.addExperiment(new BlockFrequencyExperiment(info));
-    manager.initialize();
-    manager.run(params);
+    manager.initialize(params);
+    System.out.println("Initialization is Done");
+    manager.run();
+    System.out.println("Run is Done");
     manager.draw();
   }
 }

@@ -9,7 +9,6 @@ import itri.io.emulator.LogCleaner;
 import itri.io.emulator.Parameters;
 import itri.io.emulator.gen.FakeFileInfo.FileSize;
 import itri.io.emulator.para.FileName;
-import itri.io.emulator.para.Record;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -17,6 +16,7 @@ import java.io.IOException;
 import java.util.Map;
 
 public class ExperimentsManager extends LogCleaner<FileName, FileSize> {
+  private Visitor visitor;
 
   public ExperimentsManager(String filePath, IndexInfo info) {
     super(filePath, info);
@@ -26,23 +26,32 @@ public class ExperimentsManager extends LogCleaner<FileName, FileSize> {
     addObserver(exp);
   }
 
-  public void initialize() throws FileNotFoundException {
-    if (reader == null) open();
-    String line;
-    try {
-      while ((line = reader.readLine()) != null) {
-        setChanged();
-        notifyObservers(trimedArrays(line));
+  public void initialize(Parameters params) throws FileNotFoundException {
+    visitor = new Visitor(ExperimentState.PREPROCESS) {
+      @Override
+      Tuple visit(String[] splited) {
+        return new Tuple(splited, this.state);
       }
-    } catch (IOException e) {
+    };
+    this.generate(params);
+  }
+
+  public void run() {
+    visitor = new Visitor(ExperimentState.PROCESS) {
+      @Override
+      Tuple visit(String[] splited) {
+        return new Tuple(splited, this.state);
+      }
+    };
+
+    try {
+      open();
+      this.generate(manager, reader, info);
+    } catch (FileNotFoundException e) {
       e.printStackTrace();
     } finally {
       close();
     }
-  }
-
-  public void run(Parameters params) {
-    this.generate(params);
   }
 
   public void draw() {
@@ -64,7 +73,6 @@ public class ExperimentsManager extends LogCleaner<FileName, FileSize> {
     int passedCount = 0;
     Conditions cond = null;
     int targetPassed = manager.getFiltersNumber();
-    System.out.println(targetPassed);
     ConditionIterator iter = (ConditionIterator) manager.iterator();
 
     LOOP: try {
@@ -90,7 +98,7 @@ public class ExperimentsManager extends LogCleaner<FileName, FileSize> {
          * 2. Put passed record into experiments for draw
          */
         setChanged();
-        notifyObservers(new Record(splited, info));
+        notifyObservers(visitor.visit(splited));
       }
     } catch (IOException e) {
       System.err.println(e.getMessage());
@@ -103,5 +111,37 @@ public class ExperimentsManager extends LogCleaner<FileName, FileSize> {
   public void groupBy(ConditionManager manager) {
     GroupByOption.Option[] groupByOption = { GroupByOption.Option.TIME_SEQ };
     manager.addGroupByCondition(groupByOption);
+  }
+
+  abstract class Visitor {
+    ExperimentState state;
+
+    public Visitor(ExperimentState state) {
+      this.state = state;
+    }
+
+    abstract Tuple visit(String[] splited);
+  }
+
+  class Tuple {
+    String[] splited;
+    ExperimentState state;
+
+    Tuple(String[] splited, ExperimentState state) {
+      this.splited = splited;
+      this.state = state;
+    }
+
+    String[] getSplited() {
+      return splited;
+    }
+
+    ExperimentState getState() {
+      return state;
+    }
+  }
+
+  enum ExperimentState {
+    PREPROCESS, PROCESS
   }
 }

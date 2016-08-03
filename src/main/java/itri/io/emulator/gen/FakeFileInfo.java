@@ -21,7 +21,7 @@ public class FakeFileInfo {
     return fileName;
   }
 
-  public FileSize getSize() {
+  public FileSize getFileSize() {
     return maxSize;
   }
 

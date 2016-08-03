@@ -1,7 +1,6 @@
 package itri.io.emulator;
 
 import itri.io.emulator.ConditionManager.ConditionIterator;
-import itri.io.emulator.gen.FakeFileInfo;
 import itri.io.emulator.para.FileRecord;
 import itri.io.emulator.para.Record;
 
@@ -40,8 +39,6 @@ public class TimeBasedLogCleaner extends LogCleaner<Integer, FileRecord> {
          */
         passedCount = 0;
         splited = trimedArrays(line);
-        setChanged();
-        notifyObservers(new FakeFileInfo(splited, info));
         while (iter.hasNext()) {
           cond = iter.next();
           try {
@@ -57,6 +54,8 @@ public class TimeBasedLogCleaner extends LogCleaner<Integer, FileRecord> {
         /**
          * 2. Put passed record into appender for flush
          */
+        setChanged();
+        notifyObservers(splited);
         setChanged();
         notifyObservers(new Record(splited, info));
       }

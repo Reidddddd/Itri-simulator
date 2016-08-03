@@ -10,24 +10,24 @@ public class FileDirectoryFactory {
   private static HashMap<String, String> fileNumMap = new HashMap<>();
   private static Formatter fmt;
   private static int fileNumber = 1;
-  
+
   public static void makeDir(String dirName) {
     File dir = new File(dirName);
     if (!dir.exists()) dir.mkdir();
   }
-  
+
   public static File createNewFile(String fileName) throws IOException {
     File file = new File(fileName);
     if (!file.exists()) file.createNewFile();
     return file;
   }
-  
+
   private static String getFileNumber() {
     fmt = new Formatter();
     fmt.format("%05d", fileNumber++);
     return fmt.toString();
   }
-  
+
   public static String extractAlpName(String fileName) {
     String alpFileName = fileNameMap.get(fileName);
     if (alpFileName == null) {
@@ -44,12 +44,16 @@ public class FileDirectoryFactory {
     }
     return fileNumMap.get(alpFileName) + alpFileName;
   }
-  
+
   public static int search(File[] lists, String name) {
     String removeNumPrefix = name.substring(5);
     for (int i = 0; i < lists.length; i++) {
       if (lists[i].getName().contains(removeNumPrefix)) return i;
     }
     return -1;
+  }
+
+  public static String extractAlpNameWithoutNumPrefix(String fileName) {
+    return extractAlpName(fileName).substring(5);
   }
 }

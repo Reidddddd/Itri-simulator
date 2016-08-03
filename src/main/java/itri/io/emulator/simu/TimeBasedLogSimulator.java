@@ -43,10 +43,13 @@ public class TimeBasedLogSimulator extends LogSimulator {
         info.setIrpFlag(lines[Record.OP_IRPFLAG]);
         op = OperationFactory.getOperation(info);
 
-        fileIndex = FileDirectoryFactory.search(modFiles, FileDirectoryFactory.extractAlpName(lines[Record.OP_FILENAME]));
+        fileIndex =
+            FileDirectoryFactory.search(modFiles,
+              FileDirectoryFactory.extractAlpName(lines[Record.OP_FILENAME]));
         if (fileIndex == -1) {
-          System.out.println("skip one: " + lines[Record.OP_FILENAME]);
-          continue;
+          System.out.println("It's write operation. Create a new file");
+          FileDirectoryFactory.createNewFile(FileDirectoryFactory
+              .extractAlpNameWithoutNumPrefix(lines[Record.OP_FILENAME]));
         }
         start = System.currentTimeMillis();
         if (!lines[Record.OP_FILENAME].equals(previousFileName)) {

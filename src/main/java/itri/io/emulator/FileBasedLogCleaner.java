@@ -1,7 +1,6 @@
 package itri.io.emulator;
 
 import itri.io.emulator.ConditionManager.ConditionIterator;
-import itri.io.emulator.gen.FakeFileInfo;
 import itri.io.emulator.para.FileName;
 import itri.io.emulator.para.FileRecord;
 
@@ -34,7 +33,7 @@ public class FileBasedLogCleaner extends LogCleaner<FileName, FileRecord> {
     int targetPassed = manager.getFiltersNumber();
     System.out.println(targetPassed);
     ConditionIterator iter = (ConditionIterator) manager.iterator();
-    
+
     LOOP:
     try {
       while ((line = reader.readLine()) != null) {
@@ -43,8 +42,6 @@ public class FileBasedLogCleaner extends LogCleaner<FileName, FileRecord> {
          */
         passedCount = 0;
         splited = trimedArrays(line);
-        setChanged();
-        notifyObservers(new FakeFileInfo(splited, info));
         while (iter.hasNext()) {
           cond = iter.next();
           try {
@@ -58,10 +55,12 @@ public class FileBasedLogCleaner extends LogCleaner<FileName, FileRecord> {
         }
         iter.reset();
         if (passedCount != targetPassed) continue;
-        
+
         /**
          * 2. Put passed record into logs
          */
+        setChanged();
+        notifyObservers(splited);
         fileName = new FileName(groupByName);
         setChanged();
         if (logs.containsKey(fileName)) {
