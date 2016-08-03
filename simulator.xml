@@ -26,7 +26,7 @@
 
 <property>
 <name>simulator.groupby</name>
-<value>filename</value>
+<value>timesequence</value>
 <description>the record log's groupby: "filename" or "timesequence"</description>
 </property>
 
