@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!-- Licensed under the Apache License, Version 2.0 (the "License"); you 
+	may not use this file except in compliance with the License. You may obtain 
+	a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 Unless 
+	required by applicable law or agreed to in writing, software distributed 
+	under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES 
+	OR CONDITIONS OF ANY KIND, either express or implied. See the License for 
+	the specific language governing permissions and limitations under the License. 
+	See accompanying LICENSE file. -->
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+	<property>
+		<name>emulator.io.log.location</name>
+		<value>/home/reidchan/Desktop/FilterResult.txt</value>
+		<description>The I/O Log location. It’s the output location for
+			extractor and input location for cleaner.
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.merge.keyword</name>
+		<value>filename</value>
+		<description>The keyword for date merge, it is used in cleaner and
+			flusher. Available options are ‘timesequence’ and ‘filename’
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.opr.filter</name>
+		<value>irp</value>
+		<description>Operation type(s) that can pass operation type filter.
+			If
+			more than two type, delimits them by ‘,’. Available options are IRP,
+			FSF, NIO.
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.irp.filter</name>
+		<value>all</value>
+		<description>
+			Irp flag that can pass irp flag filter. If more than two
+			type, delimits
+			them by ‘,’. Available options are all, c, p, s, y
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.majorop.filter</name>
+		<value>read,write</value>
+		<description>Major operation that can pass major operation filter.
+			Only read, write is available.
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.status.filter</name>
+		<value>success</value>
+		<description>Operation status that can pass status filter. Available
+			options are success, error and waring.
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.keyword.filter</name>
+		<value>\Device\HarddiskVolume2\Users\test\AppData\Local\Temp\WB_TEST-PC1_test_3160_2\_ProjectScratch\
+		</value>
+		<description>Operation contains the specified keyword can pass the
+			keyword filter.
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.replay.log.location</name>
+		<value>/home/reidchan/Desktop/Simulog_1</value>
+		<description>The output directory for flusher.
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.buffer.size</name>
+		<value>50000</value>
+		<description>The number of records will be stored in flusher before
+			being flushed.
+		</description>
+	</property>
+
+	<property>
+		<name>emulator.fake.file.location</name>
+		<value>/home/reidchan/Desktop/ModFile</value>
+		<description>The fake file location, it is the output location for
+			generator.
+		</description>
+	</property>
+
+</configuration>
