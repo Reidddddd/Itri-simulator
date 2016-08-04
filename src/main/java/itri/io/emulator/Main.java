@@ -4,18 +4,18 @@ import itri.io.emulator.gen.FileGenerator;
 import itri.io.emulator.observer.CreateFlusher;
 import itri.io.emulator.observer.Flusher;
 import itri.io.emulator.simu.LogSimulator;
+import itri.io.emulator.util.Configuration;
 
 import java.io.FileInputStream;
-import java.io.IOException;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.Path;
 
 public class Main {
   @SuppressWarnings({ "rawtypes" })
-  public static void main(String[] args) throws IOException {
-    Configuration conf = new Configuration();
-    conf.addResource(new Path(args[0]));
+  public static void main(String[] args) throws Exception {
+    if (args.length == 0) {
+      System.err.println("Please input the location of configuration file.");
+      System.exit(0);
+    }
+    Configuration conf = new Configuration(args[0]);
     Parameters params = new Parameters(conf);
     ColumnName colName = new ColumnName();
     colName.readFileAndSetColName(new FileInputStream(params.getIOLogInputLocation()));

@@ -36,7 +36,7 @@ public class TimeBasedLogSimulator extends LogSimulator {
 
     try (BufferedReader reader = new BufferedReader(new FileReader(simuFiles[0]))) {
       while ((line = reader.readLine()) != null) {
-        String[] lines = StringUtils.split(line, ":");
+        String[] lines = line.split(":");
         info.setOpType(lines[Record.OPINFO_TYPE]);
         info.setLength(lines[Record.OPINFO_LENGTH]);
         info.setOffset(lines[Record.OPINFO_OFFSET]);

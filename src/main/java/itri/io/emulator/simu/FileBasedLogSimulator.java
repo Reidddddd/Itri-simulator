@@ -11,8 +11,6 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.Arrays;
 
-import org.apache.commons.lang.StringUtils;
-
 public class FileBasedLogSimulator extends LogSimulator {
   public FileBasedLogSimulator(String simuDir) {
     super(simuDir);
@@ -43,7 +41,7 @@ public class FileBasedLogSimulator extends LogSimulator {
         System.out.println(file.getName());
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
           while ((line = reader.readLine()) != null) {
-            token = StringUtils.split(line, ":");
+            token = line.split(":");
             info.setOpType(token[Record.OPINFO_TYPE]);
             info.setLength(token[Record.OPINFO_LENGTH]);
             info.setOffset(token[Record.OPINFO_OFFSET]);

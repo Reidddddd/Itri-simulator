@@ -1,6 +1,8 @@
 package itri.io.emulator;
 
-import org.apache.hadoop.conf.Configuration;
+import javax.naming.InvalidNameException;
+
+import itri.io.emulator.util.Configuration;
 
 public class Parameters {
   // Log generator input
@@ -32,7 +34,7 @@ public class Parameters {
   private final static String RECORD_SIZE = "emulator.buffer.size";
   private int recordSize;
 
-  public Parameters(Configuration conf) {
+  public Parameters(Configuration conf) throws InvalidNameException {
     logPath = conf.get(LOG_PATH);
     outDir = conf.get(OUTPUT_DIR);
     

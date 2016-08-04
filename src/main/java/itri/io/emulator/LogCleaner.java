@@ -12,13 +12,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Observable;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public abstract class LogCleaner<K, V> extends Observable {
-  private static Log LOG = LogFactory.getLog(LogCleaner.class);
-
   protected static int INITIAL_CAPACITY = 100;
   protected static float LOAD_FACTOR = 0.75F;
 
@@ -58,8 +52,7 @@ public abstract class LogCleaner<K, V> extends Observable {
         generate(manager, reader, info);
       }
     } catch (FileNotFoundException e) {
-      LOG.error(e.getMessage());
-      LOG.error(filePath + " is not found.");
+      System.err.println(e.getMessage());
     } finally {
       close();
     }
@@ -140,9 +133,9 @@ public abstract class LogCleaner<K, V> extends Observable {
   }
 
   protected String[] trimedArrays(String line) {
-    String[] trimed = StringUtils.split(line, "\t");
+    String[] trimed = line.split("\t");
     for (int i = 0; i < trimed.length; i++) {
-      trimed[i] = StringUtils.trim(trimed[i]);
+      trimed[i] = trimed[i].trim();
     }
     return trimed;
   }
@@ -152,7 +145,7 @@ public abstract class LogCleaner<K, V> extends Observable {
     try {
       reader = new BufferedReader(new FileReader(filePath));
     } catch (FileNotFoundException e) {
-      LOG.error("Can not find the file in the path: " + filePath);
+      System.err.println("Can not find the file in the path: " + filePath);
       fileOpenSuccess = false;
       throw new FileNotFoundException(e.getMessage());
     }
@@ -163,7 +156,7 @@ public abstract class LogCleaner<K, V> extends Observable {
     try {
       if (reader != null) reader.close();
     } catch (IOException e) {
-      LOG.error("Error occurs when close the file in the path: " + filePath);
+      System.err.println("Error occurs when close the file in the path: " + filePath);
     }
   }
 }

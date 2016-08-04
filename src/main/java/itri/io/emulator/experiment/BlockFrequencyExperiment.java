@@ -78,19 +78,11 @@ public class BlockFrequencyExperiment extends Experiment {
     int copyIndex = 0;
     int copyLength = 0;
     long allFrequency = 0;
-    System.out.println(allSize);
     for (Map.Entry<FileName, BlocksManager> entry : fileBlocksManager.entrySet()) {
       copyLength = entry.getValue().getBlocksSize();
       allFrequency += entry.getValue().getBlocksFrequency();
-      System.out.println("Copy from " + copyIndex + " to " + (copyIndex + copyLength));
       System.arraycopy(entry.getValue().getBlocks(), 0, blocks, copyIndex, copyLength);
       copyIndex += copyLength;
-    }
-    if (copyIndex != allSize) {
-      System.err.println("Something wrong within blockes copy process.\n"
-          + "This is for debug usage. Please comment out when put into production");
-      System.out.println("Copy Index is " + copyIndex);
-      System.exit(0);
     }
     Arrays.sort(blocks, Collections.reverseOrder());
     System.out.println("Blocks number: " + blocks.length);
@@ -126,7 +118,6 @@ public class BlockFrequencyExperiment extends Experiment {
       ChartPanel chartPanel = new ChartPanel(chart);
       chartPanel.setFillZoomRectangle(true);
       chartPanel.setMouseWheelEnabled(false);
-      // chartPanel.setPreferredSize(new Dimension(500, 270));
       setContentPane(chartPanel);
     }
 
@@ -163,7 +154,6 @@ public class BlockFrequencyExperiment extends Experiment {
           }
         }
         nums[i] = blockIndex + 1;
-        System.out.println("Block number: " + nums[i] + " percentage: " + percentage + " count: " + percentageFreq);
       }
       return nums;
     }

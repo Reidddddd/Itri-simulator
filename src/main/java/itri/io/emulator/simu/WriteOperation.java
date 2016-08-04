@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 
 public class WriteOperation extends Operation {
-  
+
   public WriteOperation(OperationInfo info) {
     super(info);
   }
-  
+
   @Override
   public void operate(RandomAccessFile file) {
     byte[] ranBytes = RandomTools.generateByte(length);
@@ -25,7 +25,8 @@ public class WriteOperation extends Operation {
         }
       }
     } catch (IOException e) {
-      System.out.println("Write error happens at " + offset + ", should write　" + length + " bytes.");
+      System.out.println("Write error happens at " + offset + ", should write　" + length
+          + " bytes.");
     }
   }
 }
