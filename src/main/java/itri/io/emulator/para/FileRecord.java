@@ -9,12 +9,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class FileRecord {
-  private final static Log LOG = LogFactory.getLog(FileRecord.class);
-  
   private String groupName;
   private LinkedList<Record> records;
 
@@ -61,8 +56,7 @@ public class FileRecord {
       }
       writer.flush();
     } catch (IOException ie) {
-      ie.printStackTrace();
-      LOG.error(ie.getMessage());
+      System.err.println(ie.getMessage());
     }
   }
   

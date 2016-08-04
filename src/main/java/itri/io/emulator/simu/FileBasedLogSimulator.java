@@ -34,7 +34,7 @@ public class FileBasedLogSimulator extends LogSimulator {
       
       fileIndex = FileDirectoryFactory.search(modFiles, file.getName());
       if (fileIndex == -1) {
-        System.out.println("skip one: " + modFiles[fileIndex].getName());
+        System.out.println("skip one, can't find " + file.getName());
         continue;
       }
       try (RandomAccessFile rfile = new RandomAccessFile(modFiles[fileIndex], "rw")) {

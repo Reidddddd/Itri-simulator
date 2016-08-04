@@ -28,17 +28,34 @@ public class TimeBasedLogCleaner extends LogCleaner<Integer, FileRecord> {
     int passedCount = 0;
     Conditions cond = null;
     int targetPassed = manager.getFiltersNumber();
-    System.out.println(targetPassed);
     ConditionIterator iter = (ConditionIterator) manager.iterator();
-    
+    boolean firstLine = true, secondLine = true;
+
     LOOP:
     try {
       while ((line = reader.readLine()) != null) {
         /**
          * 1. Filter record
          */
+
+        /**
+         * This section should be removed, when the source file is .csv format. So far, the first
+         * line are columns name, second line is "-------"
+         **/
+        if (firstLine) {
+          firstLine = false;
+          continue;
+        }
+        if (secondLine) {
+          secondLine = false;
+          continue;
+        }
+        /*************************************************************************/
+
         passedCount = 0;
         splited = trimedArrays(line);
+        setChanged();
+        notifyObservers(splited);
         while (iter.hasNext()) {
           cond = iter.next();
           try {
@@ -54,8 +71,6 @@ public class TimeBasedLogCleaner extends LogCleaner<Integer, FileRecord> {
         /**
          * 2. Put passed record into appender for flush
          */
-        setChanged();
-        notifyObservers(splited);
         setChanged();
         notifyObservers(new Record(splited, info));
       }

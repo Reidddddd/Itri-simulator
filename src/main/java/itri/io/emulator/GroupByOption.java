@@ -1,6 +1,8 @@
 package itri.io.emulator;
 
-import org.apache.hadoop.conf.Configuration;
+import itri.io.emulator.util.Configuration;
+
+import javax.naming.InvalidNameException;
 
 public class GroupByOption {
   private final static String OPTION = "groupby.option";
@@ -21,7 +23,7 @@ public class GroupByOption {
     }
   }
 
-  public GroupByOption(Configuration conf) {
+  public GroupByOption(Configuration conf) throws InvalidNameException {
     String value = conf.get(OPTION);
     switch (value) {
       case FILE_NAME: groupByType = Option.FILE_NAME; break;

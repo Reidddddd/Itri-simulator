@@ -31,8 +31,8 @@ public class FileBasedLogCleaner extends LogCleaner<FileName, FileRecord> {
     FileName fileName = null;
     FileRecord fileRecord = null;
     int targetPassed = manager.getFiltersNumber();
-    System.out.println(targetPassed);
     ConditionIterator iter = (ConditionIterator) manager.iterator();
+    boolean firstLine = true, secondLine = true;
 
     LOOP:
     try {
@@ -40,8 +40,25 @@ public class FileBasedLogCleaner extends LogCleaner<FileName, FileRecord> {
         /**
          * 1. Filter record
          */
+
+        /**
+         * This section should be removed, when the source file is .csv format. So far, the first
+         * line are columns name, second line is "-------"
+         **/
+        if (firstLine) {
+          firstLine = false;
+          continue;
+        }
+        if (secondLine) {
+          secondLine = false;
+          continue;
+        }
+        /*************************************************************************/
+
         passedCount = 0;
         splited = trimedArrays(line);
+        setChanged();
+        notifyObservers(splited);
         while (iter.hasNext()) {
           cond = iter.next();
           try {
@@ -59,8 +76,6 @@ public class FileBasedLogCleaner extends LogCleaner<FileName, FileRecord> {
         /**
          * 2. Put passed record into logs
          */
-        setChanged();
-        notifyObservers(splited);
         fileName = new FileName(groupByName);
         setChanged();
         if (logs.containsKey(fileName)) {

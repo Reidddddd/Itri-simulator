@@ -10,8 +10,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import org.apache.commons.lang.StringUtils;
-
 public class TimeBasedLogSimulator extends LogSimulator {
 
   public TimeBasedLogSimulator(String simuDir) {
@@ -47,9 +45,8 @@ public class TimeBasedLogSimulator extends LogSimulator {
             FileDirectoryFactory.search(modFiles,
               FileDirectoryFactory.extractAlpName(lines[Record.OP_FILENAME]));
         if (fileIndex == -1) {
-          System.out.println("It's write operation. Create a new file");
-          FileDirectoryFactory.createNewFile(FileDirectoryFactory
-              .extractAlpNameWithoutNumPrefix(lines[Record.OP_FILENAME]));
+          System.out.println("skip one, can't find " + lines[Record.OP_FILENAME]);
+          continue;
         }
         start = System.currentTimeMillis();
         if (!lines[Record.OP_FILENAME].equals(previousFileName)) {
@@ -71,5 +68,10 @@ public class TimeBasedLogSimulator extends LogSimulator {
       }
     }
     System.out.println("Total time is: " + sumTime);
+  }
+  
+  public static void main(String[] args) {
+    File file = new File("/home/reidchan/Simulog_1");
+    System.out.println(file.getAbsolutePath());
   }
 }

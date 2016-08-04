@@ -1,7 +1,5 @@
 package itri.io.emulator.para;
 
-import org.apache.commons.lang.StringUtils;
-
 import itri.io.emulator.para.MajorOp.OpType;
 
 public class OperationInfo {
@@ -43,7 +41,7 @@ public class OperationInfo {
   }
 
   public OperationInfo(String readLine) {
-    String[] records = StringUtils.split(readLine, ":");
+    String[] records = readLine.split(":");
     if (MajorOp.isReadOp(records[0])) {
       this.opType = OpType.READ;
     } else {

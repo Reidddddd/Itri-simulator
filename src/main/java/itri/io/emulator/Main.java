@@ -30,8 +30,8 @@ public class Main {
     
     GroupByOption groupBy = new GroupByOption(params.getMergeKeyWord());
     LogCleaner cleaner = LogCleaner.createGenerator(groupBy.getGroupByType(),
-                                                          params.getIOLogInputLocation(),
-                                                          info);
+                                                    params.getIOLogInputLocation(),
+                                                    info);
     
     Flusher appender = CreateFlusher.createObserver(groupBy.getGroupByType(), params);
     FileGenerator generator = new FileGenerator(params.getFakeFilesLocation(), info);
@@ -46,6 +46,7 @@ public class Main {
       System.out.println("Fake Files are being created...");
       generator.flush();
       System.out.println("Fake Files are done.\n");
+      System.exit(0);
     }
     System.out.println("Start IO Simulation...");
     LogSimulator simulator = LogSimulator.createSimulator(groupBy.getGroupByType(), params);

@@ -36,7 +36,8 @@ public class FileGenerator extends Flusher {
   public void update(Observable o, Object arg) {
     if (arg.getClass() != String[].class) return;
     String[] splited = (String[]) arg;
-    if (MajorOp.isWrite(splited[info.getMajorOpIndex()])) return;
+    if (!MajorOp.isWrite(splited[info.getMajorOpIndex()])
+        && !MajorOp.isRead(splited[info.getMajorOpIndex()])) return;
     FakeFileInfo fake = new FakeFileInfo(splited, info);
     if (fileMaxSize.get(fake.getFileName()) == null) {
       fileMaxSize.put(fake.getFileName(), fake.getFileSize());
