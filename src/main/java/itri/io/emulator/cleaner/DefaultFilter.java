@@ -12,4 +12,8 @@ public class DefaultFilter extends Filter {
     return true;
   }
 
+  @Override
+  public void setFilterOptions(Object options) {
+  }
+
 }
