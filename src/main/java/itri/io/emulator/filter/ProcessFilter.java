@@ -5,76 +5,40 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
-import akka.event.Logging.Info;
-import akka.util.Index;
 import itri.io.emulator.IndexInfo;
-import itri.io.emulator.LogCleaner;
 
-public class ProcessFilter {
-	private static Log LOG = LogFactory.getLog(LogCleaner.class);
-	private static String DELIMETER =",";
-	public BufferedReader reader;
+public class ProcessFilter extends Decorator {
+	// private static String DELIMETER = ",";
+	// public String logPath;
+	// public BufferedReader reader;
 	public IndexInfo info;
-	public ProcessCondition condition;
-	public String srcLogPath;
-	public String dstLogPath;
-	
-	public ProcessFilter(String srcLogPath,String dstLogPath,String[] processNames,IndexInfo info){
-		this.srcLogPath = srcLogPath;
-		this.dstLogPath = dstLogPath;
+	public FilterCondition filter = null;
+	public String[] processNames;
+
+	public ProcessFilter(String[] processNames, IndexInfo info, FilterCondition filter) {
+		// this.logPath = logPath;
+		this.processNames = processNames;
 		this.info = info;
-		condition = new ProcessCondition(processNames);
+		this.filter = filter;
 	}
-	
-	
-	protected boolean open() throws FileNotFoundException {
-	    boolean fileOpenSuccess = true;
-	    try {
-	      reader = new BufferedReader(new FileReader(srcLogPath));
-	    } catch (FileNotFoundException e) {
-	      LOG.error("Can not find the file in the path: " + srcLogPath);
-	      fileOpenSuccess = false;
-	      throw new FileNotFoundException(e.getMessage());
-	    }
-	    return fileOpenSuccess;
-	  }
-	
-	public void filter(){
-		String line = null;
-		String splited[] = null;
-		 try {
-		      if (open()) {
-		    	  while ( (line = reader.readLine())!=null){
-		    		  splited = trimedArrays(line);
-		    		  if (condition.filter(splited, info))
-		    			  ;
-		    	  }
-		    	  
-		    	  
-		      }
-		    } catch (IOException e) {
-		      LOG.error(e.getMessage());
-		    } finally {
-		      close();
-		    }
+
+	public void setFilter(FilterCondition filter) {
+		this.filter = filter;
 	}
+
+	@Override
+	public boolean filter(String[] splited) {
+		// TODO Auto-generated method stub
+		boolean isLeave = false;
 	
-	  protected void close() {
-	    try {
-	      if (reader != null) reader.close();
-	    } catch (IOException e) {
-	      LOG.error("Error occurs when close the file in the path: " + srcLogPath);
-	    }
-	  }
-	  protected String[] trimedArrays(String line) {
-		    String[] trimed = StringUtils.split(line, DELIMETER);
-		    for (int i = 0; i < trimed.length; i++) {
-		      trimed[i] = StringUtils.trim(trimed[i]);
-		    }
-		    return trimed;
-		  }
+		
+		for (String pid : processNames) {
+			if (splited[info.getProcessThrdIndex()].contains(pid + "."))
+				isLeave = true;
+		}
+
+		return filter.filter(splited) && isLeave;
+
+	}
+
 }
