@@ -1,5 +1,8 @@
 package itri.io.emulator.para;
 
+import org.apache.commons.csv.CSVRecord;
+
+import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.IndexInfo;
 import itri.io.emulator.para.MajorOp.OpType;
 
@@ -25,9 +28,9 @@ public class Record {
   public static final int OP_OPRFLAG = 9;
   public static final int OP_FILENAME = 10;
 
-  public Record(String oprFlag,  String opSequence, String preOpTime, String pstOpTime,
-                String procThrd, String irpFlag,    String status,
-                String majorOp,  String length,     String offset,    String fileName) {
+  public Record(String oprFlag, String opSequence, String preOpTime, String pstOpTime,
+      String procThrd, String irpFlag, String status, String majorOp, String length, String offset,
+      String fileName) {
     this.oprFlag = new OprFlag(oprFlag);
     this.opSequence = new OpSequence(opSequence);
     this.ranger = new TimeRanger(preOpTime, pstOpTime);
@@ -44,17 +47,26 @@ public class Record {
 
   public Record(String[] splited, IndexInfo info) {
     this(splited[info.getOprIndex()], splited[info.getSeqNumIndex()],
-         splited[info.getPreOpTimeIndex()], splited[info.getPostOpTimeIndex()],
-         splited[info.getProcessThrdIndex()], splited[info.getIrpFlagIndex()],
-         splited[info.getStatusIndex()], splited[info.getMajorOpIndex()],
-         splited[info.getLengthIndex()], splited[info.getOffsetIndex()],
-         splited[info.getNameIndex()]);
+      splited[info.getPreOpTimeIndex()], splited[info.getPostOpTimeIndex()],
+      splited[info.getProcessThrdIndex()], splited[info.getIrpFlagIndex()],
+      splited[info.getStatusIndex()], splited[info.getMajorOpIndex()],
+      splited[info.getLengthIndex()], splited[info.getOffsetIndex()],
+      splited[info.getNameIndex()]);
+  }
+
+  public Record(CSVRecord csvRecord) {
+    this(csvRecord.get(ColumnConstants.OPR), csvRecord.get(ColumnConstants.SEQ_NUM),
+      csvRecord.get(ColumnConstants.PRE_OP_TIME), csvRecord.get(ColumnConstants.POST_OP_TIME),
+      csvRecord.get(ColumnConstants.PROCESS_THRD), csvRecord.get(ColumnConstants.IRP_FLAGS),
+      csvRecord.get(ColumnConstants.STATUS), csvRecord.get(ColumnConstants.MAJOR_OP),
+      csvRecord.get(ColumnConstants.LENGTH), csvRecord.get(ColumnConstants.OFFSET),
+      csvRecord.get(ColumnConstants.NAME));
   }
 
   public OperationInfo getOperationInfo() {
     return operationInfo;
   }
-  
+
   public FileName getFName() {
     return fileName;
   }
@@ -74,14 +86,10 @@ public class Record {
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder();
-    builder.append(operationInfo.toString() + ":")
-           .append(ranger.toString() + ":")
-           .append(procThrd.toString() + ":")
-           .append(status.toString() + ":")
-           .append(irpFlag.toString() + ":")
-           .append(opSequence.toString() + ":")
-           .append(oprFlag.toString() + ":")
-           .append(fileName.toString() + "\n");
+    builder.append(operationInfo.toString() + ":").append(ranger.toString() + ":")
+        .append(procThrd.toString() + ":").append(status.toString() + ":")
+        .append(irpFlag.toString() + ":").append(opSequence.toString() + ":")
+        .append(oprFlag.toString() + ":").append(fileName.toString() + "\n");
     return builder.toString();
   }
 }

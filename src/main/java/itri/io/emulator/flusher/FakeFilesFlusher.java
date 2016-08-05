@@ -1,7 +1,9 @@
-package itri.io.emulator.gen;
+package itri.io.emulator.flusher;
 
-import itri.io.emulator.IndexInfo;
-import itri.io.emulator.observer.Flusher;
+import itri.io.emulator.ColumnConstants;
+import itri.io.emulator.Parameters;
+import itri.io.emulator.cleaner.IOLogCleaner.Tuple;
+import itri.io.emulator.gen.FakeFileInfo;
 import itri.io.emulator.para.FileName;
 import itri.io.emulator.para.FileSize;
 import itri.io.emulator.para.MajorOp;
@@ -14,35 +16,38 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
+import java.util.Observer;
 
-public class FileGenerator extends Flusher {
+import org.apache.commons.csv.CSVRecord;
+
+public class FakeFilesFlusher extends Flusher implements Observer {
   private static int INITIAL_CAPACITY = 200;
   private static float LOAD_FACTOR = 0.75f;
 
   private Map<FileName, FileSize> fileMaxSize;
-  private IndexInfo info;
+  private String fakeFilesDir;
 
-  public FileGenerator(String outDir, IndexInfo info) {
-    this(outDir, 0, info);
-  }
-
-  public FileGenerator(String outDir, int bufferSize, IndexInfo info) {
-    super(outDir, bufferSize);
-    fileMaxSize = new HashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
-    this.info = info;
+  public FakeFilesFlusher(Parameters params) {
+    this.fakeFilesDir = params.getFakeFilesLocation();
+    this.fileMaxSize = new HashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
   }
 
   @Override
   public void update(Observable o, Object arg) {
-    if (arg.getClass() != String[].class) return;
-    String[] splited = (String[]) arg;
-    if (!MajorOp.isWrite(splited[info.getMajorOpIndex()])
-        && !MajorOp.isRead(splited[info.getMajorOpIndex()])) return;
-    FakeFileInfo fake = new FakeFileInfo(splited, info);
-    if (fileMaxSize.get(fake.getFileName()) == null) {
-      fileMaxSize.put(fake.getFileName(), fake.getFileSize());
-    } else {
-      fileMaxSize.get(fake.getFileName()).updateSize(fake.getFileSize());
+    if (arg.getClass() == null) flush();
+    else if (arg.getClass() == Tuple.class) {
+      Tuple tuple = (Tuple) arg;
+      if (tuple.getFlusherType() == FlusherType.FAKE_FILE) {
+        CSVRecord record = tuple.getRecord();
+        if (!MajorOp.isWrite(record.get(ColumnConstants.MAJOR_OP))
+            && !MajorOp.isRead(record.get(ColumnConstants.MAJOR_OP))) return;
+        FakeFileInfo fake = new FakeFileInfo(record);
+        if (fileMaxSize.get(fake.getFileName()) == null) {
+          fileMaxSize.put(fake.getFileName(), fake.getFileSize());
+        } else {
+          fileMaxSize.get(fake.getFileName()).updateSize(fake.getFileSize());
+        }
+      }
     }
   }
 
@@ -50,8 +55,8 @@ public class FileGenerator extends Flusher {
   public void flush() {
     for (Map.Entry<FileName, FileSize> entry : fileMaxSize.entrySet()) {
       String absPath =
-          outDir + File.separator
-              + FileDirectoryFactory.extractAlpNameWithoutNumPrefix(entry.getKey().getFileName());
+          fakeFilesDir + File.separator
+              + FileDirectoryFactory.extractNameOnlyLettersAndDigit(entry.getKey().getFileName());
       long fileSize = entry.getValue().getSize();
       long UNIT = 1024 * 1024;
       try {

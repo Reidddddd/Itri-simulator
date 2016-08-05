@@ -45,6 +45,16 @@ public class FileDirectoryFactory {
     return fileNumMap.get(alpFileName) + alpFileName;
   }
 
+  public static String extractNameOnlyLettersAndDigit(String origin) {
+    StringBuilder builder = new StringBuilder();
+    for (int i = 0; i < origin.length(); i++) {
+      if (Character.isLetter(origin.charAt(i)) || Character.isDigit(origin.charAt(i))) {
+        builder.append(origin.charAt(i));
+      }
+    }
+    return builder.toString();
+  }
+
   public static int search(File[] lists, String name) {
     String removeNumPrefix = name.substring(5);
     for (int i = 0; i < lists.length; i++) {

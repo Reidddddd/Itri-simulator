@@ -7,8 +7,8 @@ import itri.io.emulator.GroupByOption;
 import itri.io.emulator.IndexInfo;
 import itri.io.emulator.LogCleaner;
 import itri.io.emulator.Parameters;
-import itri.io.emulator.gen.FakeFileInfo.FileSize;
 import itri.io.emulator.para.FileName;
+import itri.io.emulator.para.FileSize;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

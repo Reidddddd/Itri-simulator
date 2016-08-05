@@ -37,7 +37,7 @@ public class Parameters {
   public Parameters(Configuration conf) throws InvalidNameException {
     logPath = conf.get(LOG_PATH);
     outDir = conf.get(OUTPUT_DIR);
-    
+
     groupBy = conf.get(GROUP_BY);
     filterNames = conf.getStrings(FILTER_NAME);
     irpNames = conf.getStrings(FILTER_IRP);
@@ -53,7 +53,7 @@ public class Parameters {
   public String getIOLogInputLocation() {
     return logPath;
   }
-  
+
   public String getReplayLogOutputLocation() {
     return outDir;
   }
@@ -85,7 +85,7 @@ public class Parameters {
   public String getFakeFilesLocation() {
     return modDir;
   }
-  
+
   public int getBufferSize() {
     return recordSize;
   }

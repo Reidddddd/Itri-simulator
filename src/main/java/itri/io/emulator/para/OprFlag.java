@@ -23,7 +23,7 @@ public class OprFlag {
       case IRP: orpOption = FilterOption.OprOption.IRP; break;
       case FIO: orpOption = FilterOption.OprOption.FIO; break;
       case FSF: orpOption = FilterOption.OprOption.FSF; break;
-      default: orpOption = FilterOption.OprOption.IRP; break;
+        default: orpOption = FilterOption.OprOption.IRP; break;
     }
     return orpOption;
   }

@@ -9,11 +9,11 @@ import java.util.StringTokenizer;
 
 public class ColumnName {
   private ArrayList<String> colNames;
-  
+
   public ColumnName() {
     colNames = new ArrayList<>();
   }
-  
+
   public void readFileAndSetColName(InputStream fsis) {
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(fsis))) {
       StringTokenizer token = new StringTokenizer(reader.readLine(), "\t");
@@ -24,18 +24,18 @@ public class ColumnName {
       System.err.println(e.getMessage());
     }
   }
-  
+
   public int indexOf(String column) {
     return colNames.indexOf(column);
   }
-  
+
   public String get(int index) {
     if (index < 0 || index > size()) {
       throw new IndexOutOfBoundsException();
     }
     return colNames.get(index);
   }
-  
+
   public int size() {
     return colNames.size();
   }

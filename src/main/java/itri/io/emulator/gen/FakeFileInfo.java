@@ -1,7 +1,11 @@
 package itri.io.emulator.gen;
 
+import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.IndexInfo;
 import itri.io.emulator.para.FileName;
+import itri.io.emulator.para.FileSize;
+
+import org.apache.commons.csv.CSVRecord;
 
 public class FakeFileInfo {
   private FileName fileName;
@@ -17,31 +21,17 @@ public class FakeFileInfo {
     this.maxSize = new FileSize(offset, length);
   }
 
+  public FakeFileInfo(CSVRecord record) {
+    this.fileName = new FileName(record.get(ColumnConstants.NAME));
+    this.maxSize =
+        new FileSize(record.get(ColumnConstants.OFFSET), record.get(ColumnConstants.LENGTH));
+  }
+
   public FileName getFileName() {
     return fileName;
   }
 
   public FileSize getFileSize() {
     return maxSize;
-  }
-
-  public class FileSize {
-    private long size;
-
-    public FileSize(String offset, String length) {
-      this.size = Long.decode(offset) + Integer.decode(length);
-    }
-
-    public FileSize(long offset, int length) {
-      this.size = offset + length;
-    }
-
-    public void updateSize(FileSize size) {
-      this.size = size.getSize() > this.size ? size.getSize() : this.size;
-    }
-
-    public long getSize() {
-      return size;
-    }
   }
 }

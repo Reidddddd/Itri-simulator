@@ -13,13 +13,13 @@ public class ProcThrd {
   }
 
   public static String getPid(String procThrd) {
-    String pStr = procThrd.split(".")[0];
+    String pStr = procThrd.split("\\.")[0];
     long processId = Long.parseLong(pStr, 16);
     return String.valueOf(processId);
   }
 
   public static String getTid(String procThrd) {
-    String tStr = procThrd.split(".")[1];
+    String tStr = procThrd.split("\\.")[1];
     long threadId = Long.parseLong(tStr, 16);
     return String.valueOf(threadId);
   }

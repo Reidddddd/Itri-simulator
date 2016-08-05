@@ -21,4 +21,12 @@ public class ColumnConstants {
   public final static String PRE_OP_SYSTIME = "PreOpSystemTime";
   public final static String POST_OP_SYSTIME = "PostOpSystemTime";
   public final static String NAME = "Name";
+
+  public static String[] getColumnsHeader() {
+    String[] header =
+        { OPR, SEQ_NUM, PRE_OP_TIME, POST_OP_TIME, PROCESS_THRD, MAJOR_OP, IRP_FLAGS, DEV_OBJ,
+            FILE_OBJ, STATUS, LENGTH, OFFSET, BUFFER, OTHER1, OTHER2, OTHER3, OTHER4,
+            PRE_OP_SYSTIME, POST_OP_SYSTIME, NAME };
+    return header;
+  }
 }
