@@ -2,8 +2,6 @@ package itri.io.emulator;
 
 import javax.naming.InvalidNameException;
 
-import itri.io.emulator.util.Configuration;
-
 public class Parameters {
   // Log generator input
   private final static String LOG_PATH = "emulator.io.log.location";

@@ -8,7 +8,7 @@ import javax.naming.InvalidNameException;
 
 import org.dom4j.DocumentException;
 
-import itri.io.emulator.util.Configuration;
+import itri.io.emulator.Configuration;
 import itri.io.emulator.Parameters;
 import itri.io.emulator.ColumnName;
 import itri.io.emulator.IndexInfo;

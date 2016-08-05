@@ -4,8 +4,8 @@ import itri.io.emulator.IndexInfo;
 import itri.io.emulator.experiment.ExperimentsManager.ExperimentState;
 import itri.io.emulator.experiment.ExperimentsManager.Tuple;
 import itri.io.emulator.gen.FakeFileInfo;
-import itri.io.emulator.gen.FakeFileInfo.FileSize;
 import itri.io.emulator.para.FileName;
+import itri.io.emulator.para.FileSize;
 import itri.io.emulator.para.Record;
 
 import java.util.Arrays;

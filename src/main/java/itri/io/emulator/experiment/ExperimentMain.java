@@ -1,9 +1,9 @@
 package itri.io.emulator.experiment;
 
 import itri.io.emulator.ColumnName;
+import itri.io.emulator.Configuration;
 import itri.io.emulator.IndexInfo;
 import itri.io.emulator.Parameters;
-import itri.io.emulator.util.Configuration;
 
 import java.io.FileInputStream;
 

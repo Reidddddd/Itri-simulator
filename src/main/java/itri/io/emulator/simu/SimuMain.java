@@ -1,8 +1,8 @@
 package itri.io.emulator.simu;
 
+import itri.io.emulator.Configuration;
 import itri.io.emulator.GroupByOption;
 import itri.io.emulator.Parameters;
-import itri.io.emulator.util.Configuration;
 
 public class SimuMain {
   public static void main(String[] args) throws Exception {

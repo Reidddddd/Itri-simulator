@@ -1,6 +1,6 @@
 package itri.io.emulator.experiment;
 
-import itri.io.emulator.gen.FakeFileInfo.FileSize;
+import itri.io.emulator.para.FileSize;
 
 public class BlocksManager {
   private Block[] blocks;

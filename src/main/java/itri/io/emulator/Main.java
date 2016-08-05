@@ -4,7 +4,6 @@ import itri.io.emulator.gen.FileGenerator;
 import itri.io.emulator.observer.CreateFlusher;
 import itri.io.emulator.observer.Flusher;
 import itri.io.emulator.simu.LogSimulator;
-import itri.io.emulator.util.Configuration;
 
 import java.io.FileInputStream;
 

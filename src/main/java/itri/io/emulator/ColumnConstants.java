@@ -3,8 +3,8 @@ package itri.io.emulator;
 public class ColumnConstants {
   public final static String OPR = "Opr";
   public final static String SEQ_NUM = "SeqNum";
-  public final static String PRE_OP_TIME = "PreOpTime";
-  public final static String POST_OP_TIME = "PostOpTime";
+  public final static String PRE_OP_TIME = "PreOp Time";
+  public final static String POST_OP_TIME = "PostOp Time";
   public final static String PROCESS_THRD = "Process.Thrd";
   public final static String MAJOR_OP = "MajorOperation";
   public final static String IRP_FLAGS = "IrpFlags";
@@ -18,8 +18,8 @@ public class ColumnConstants {
   public final static String OTHER2 = "Other2";
   public final static String OTHER3 = "Other3";
   public final static String OTHER4 = "Other4";
-  public final static String PRE_OP_SYSTIME = "PreOpSystemTime";
-  public final static String POST_OP_SYSTIME = "PostOpSystemTime";
+  public final static String PRE_OP_SYSTIME = "PreOp SystemTime";
+  public final static String POST_OP_SYSTIME = "PostOp SystemTime";
   public final static String NAME = "Name";
 
   public static String[] getColumnsHeader() {

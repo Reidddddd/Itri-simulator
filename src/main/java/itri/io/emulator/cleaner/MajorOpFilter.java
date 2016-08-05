@@ -1,7 +1,7 @@
 package itri.io.emulator.cleaner;
 
-import itri.io.emulator.FilterOption.MajorOpOption;
 import itri.io.emulator.ColumnConstants;
+import itri.io.emulator.FilterOption.MajorOpOption;
 import itri.io.emulator.Parameters;
 import itri.io.emulator.para.MajorOp;
 
@@ -42,5 +42,11 @@ public class MajorOpFilter extends Filter {
       }
     }
     return false;
+  }
+
+  @Override
+  public void setFilterOptions(Object options) {
+    if (options.getClass() != MajorOpOption[].class) return;
+    this.mjOption = (MajorOpOption[]) options;
   }
 }

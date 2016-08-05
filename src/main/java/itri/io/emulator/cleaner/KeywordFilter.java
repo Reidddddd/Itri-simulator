@@ -23,4 +23,10 @@ public class KeywordFilter extends Filter {
     }
     return false;
   }
+
+  @Override
+  public void setFilterOptions(Object options) {
+    if (options.getClass() != String[].class) return;
+    this.keywords = (String[]) options;
+  }
 }

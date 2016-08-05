@@ -1,10 +1,10 @@
 package itri.io.emulator.cleaner;
 
 import itri.io.emulator.ColumnConstants;
+import itri.io.emulator.Configuration;
 import itri.io.emulator.Parameters;
 import itri.io.emulator.flusher.FakeFilesFlusher;
 import itri.io.emulator.flusher.ReplayLogFlusher;
-import itri.io.emulator.util.Configuration;
 
 import java.io.IOException;
 

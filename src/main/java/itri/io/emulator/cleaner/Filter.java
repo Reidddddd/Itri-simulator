@@ -7,4 +7,6 @@ import org.apache.commons.csv.CSVRecord;
  */
 public abstract class Filter {
   public abstract boolean filter(CSVRecord record);
+
+  public abstract void setFilterOptions(Object options);
 }

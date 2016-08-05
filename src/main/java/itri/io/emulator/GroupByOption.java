@@ -1,7 +1,5 @@
 package itri.io.emulator;
 
-import itri.io.emulator.util.Configuration;
-
 import javax.naming.InvalidNameException;
 
 public class GroupByOption {

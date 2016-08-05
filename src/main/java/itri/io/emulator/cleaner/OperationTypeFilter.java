@@ -41,4 +41,10 @@ public class OperationTypeFilter extends Filter {
     }
     return false;
   }
+
+  @Override
+  public void setFilterOptions(Object options) {
+    if (options.getClass() != OprOption[].class) return;
+    this.oprOption = (OprOption[]) options;
+  }
 }

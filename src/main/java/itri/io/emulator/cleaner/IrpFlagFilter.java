@@ -47,4 +47,10 @@ public class IrpFlagFilter extends Filter {
     }
     return false;
   }
+
+  @Override
+  public void setFilterOptions(Object options) {
+    if (options.getClass() != IrpOption[].class) return;
+    this.irpOption = (IrpOption[]) options;
+  }
 }

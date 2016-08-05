@@ -41,4 +41,10 @@ public class StatusFilter extends Filter {
     }
     return false;
   }
+
+  @Override
+  public void setFilterOptions(Object options) {
+    if (options.getClass() != StatusOption[].class) return;
+    this.statusFilters = (StatusOption[]) options;
+  }
 }
