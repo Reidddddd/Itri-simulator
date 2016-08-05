@@ -6,6 +6,12 @@ import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.IndexInfo;
 import itri.io.emulator.para.MajorOp.OpType;
 
+/**
+ * Basic unit in replay log.
+ * It is composed of opr flag, operation sequence number, execution time, process id, thread id,
+ * irp flag, operation status, operation type(read or write) and its read/write length and operation start offset,
+ * and target file name.
+ */
 public class Record {
   private OprFlag oprFlag;
   private OpSequence opSequence;

@@ -7,6 +7,9 @@ import itri.io.emulator.para.Status;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * Status Filter
+ */
 public class StatusFilter extends Filter {
   private StatusOption[] statusFilters;
 

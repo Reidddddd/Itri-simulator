@@ -7,6 +7,9 @@ import itri.io.emulator.para.MajorOp;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * Major Operation Filter
+ */
 public class MajorOpFilter extends Filter {
   private MajorOpOption[] mjOption;
 

@@ -1,4 +1,4 @@
-package hello.java;
+package itri.io.emulator.cleaner;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

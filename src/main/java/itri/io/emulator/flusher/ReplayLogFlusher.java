@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * ReplayLogFlusher is used to generate replay log.
+ */
 public class ReplayLogFlusher extends Flusher implements Observer {
   private FileRecord wholeRecords;
   private String replayLogDir;

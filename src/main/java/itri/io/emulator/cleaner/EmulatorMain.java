@@ -8,6 +8,10 @@ import itri.io.emulator.util.Configuration;
 
 import java.io.IOException;
 
+/**
+ * EmulatorMain will run all processes, including i/o log clean, replay log flush, fake file
+ * generate and i/o simulate.
+ */
 public class EmulatorMain {
   public static void main(String[] args) throws Exception {
     if (args.length == 0) {

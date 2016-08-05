@@ -7,6 +7,9 @@ import itri.io.emulator.para.OprFlag;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * Operation Type Filter
+ */
 public class OperationTypeFilter extends Filter {
   private OprOption[] oprOption;
 

@@ -1,5 +1,8 @@
 package itri.io.emulator.para;
 
+/**
+ * Name of an operation's target file.
+ */
 public class FileName {
   private String unformattedFileName;
 

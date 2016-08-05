@@ -2,6 +2,10 @@ package itri.io.emulator.para;
 
 import itri.io.emulator.FilterOption;
 
+/**
+ * Major Operation Type.
+ * The most important are read operation and write operation.
+ */
 public class MajorOp {
   private final static String READ = "READ";
   private final static String WRITE = "WRITE";

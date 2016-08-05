@@ -1,5 +1,8 @@
 package itri.io.emulator.para;
 
+/**
+ * Operation Sequence Number
+ */
 public class OpSequence {
   private long opSequence;
   

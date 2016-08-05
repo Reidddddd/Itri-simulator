@@ -5,6 +5,10 @@ import itri.io.emulator.Parameters;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * Keyword Filter.
+ * Keyword is the name column in the original sheet.
+ */
 public class KeywordFilter extends Filter {
   private String[] keywords;
 

@@ -1,5 +1,8 @@
 package itri.io.emulator.para;
 
+/**
+ * Process Id and Thread Id
+ */
 public class ProcThrd {
   private String pid;
   private String tid;

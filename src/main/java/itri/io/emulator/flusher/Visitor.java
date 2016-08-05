@@ -4,6 +4,9 @@ import itri.io.emulator.cleaner.IOLogCleaner.Tuple;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * Visitor pattern
+ */
 public abstract class Visitor {
   protected FlusherType type;
 

@@ -2,6 +2,10 @@ package itri.io.emulator.para;
 
 import itri.io.emulator.FilterOption;
 
+/**
+ * Flags indicates the attributes of an operation.
+ * They are N (no cached), C(cached), P(paging), S (synchronous), Y (synchronous and paging).
+ */
 public class IrpFlag {
   private final static char NO_CACHED = 'N';
   private final static char CACHED = 'C';

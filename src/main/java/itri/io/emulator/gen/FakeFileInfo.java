@@ -7,6 +7,9 @@ import itri.io.emulator.para.FileSize;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * FakeFileInfo stores the file name and its max size in read or write.
+ */
 public class FakeFileInfo {
   private FileName fileName;
   private FileSize maxSize;

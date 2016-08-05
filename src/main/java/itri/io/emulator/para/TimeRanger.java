@@ -3,6 +3,9 @@ package itri.io.emulator.para;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/**
+ * The executiont time of an operation: post operation time - pre operation time.
+ */
 public class TimeRanger {
   private final static SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HH:mm:ss:SSS");
 

@@ -20,6 +20,9 @@ import java.util.Observer;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * FakeFilesFlusher is used to generate files for simulator read/write.
+ */
 public class FakeFilesFlusher extends Flusher implements Observer {
   private static int INITIAL_CAPACITY = 200;
   private static float LOAD_FACTOR = 0.75f;
@@ -39,6 +42,7 @@ public class FakeFilesFlusher extends Flusher implements Observer {
       Tuple tuple = (Tuple) arg;
       if (tuple.getFlusherType() == FlusherType.FAKE_FILE) {
         CSVRecord record = tuple.getRecord();
+        // We only care read and write.
         if (!MajorOp.isWrite(record.get(ColumnConstants.MAJOR_OP))
             && !MajorOp.isRead(record.get(ColumnConstants.MAJOR_OP))) return;
         FakeFileInfo fake = new FakeFileInfo(record);
@@ -56,9 +60,9 @@ public class FakeFilesFlusher extends Flusher implements Observer {
     for (Map.Entry<FileName, FileSize> entry : fileMaxSize.entrySet()) {
       String absPath =
           fakeFilesDir + File.separator
-              + FileDirectoryFactory.extractNameOnlyLettersAndDigit(entry.getKey().getFileName());
+              + FileDirectoryFactory.extractNameOnlyLettersAndDigits(entry.getKey().getFileName());
       long fileSize = entry.getValue().getSize();
-      long UNIT = 1024 * 1024;
+      long UNIT = 1024 * 1024; // 1M
       try {
         FileDirectoryFactory.createNewFile(absPath);
         try (FileOutputStream fw = new FileOutputStream(new File(absPath), true)) {

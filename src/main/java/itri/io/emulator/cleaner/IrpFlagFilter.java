@@ -7,6 +7,9 @@ import itri.io.emulator.para.IrpFlag;
 
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * Irp Flag filter.
+ */
 public class IrpFlagFilter extends Filter {
   private IrpOption[] irpOption;
 

@@ -15,6 +15,9 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
+/**
+ * For I/O Log clean.
+ */
 public class IOLogCleaner extends Observable implements AutoCloseable {
   private List<Filter> filters = new LinkedList<>();
   private CSVParser parser;
@@ -30,6 +33,9 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
     filters.add(filter);
   }
 
+  /**
+   * Scan csv file from top to bottom line by line.
+   */
   public void clean() {
     try {
       if (parser == null) {
@@ -41,10 +47,12 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
             CSVParser.parse(new File(ioCsvPath), Charset.defaultCharset(),
               CSVFormat.DEFAULT.withHeader(headers));
       }
+      if (filters.size() == 0) filters.add(new DefaultFilter());
 
       int required = filters.size();
       int count = 0;
       for (CSVRecord record : parser.getRecords()) {
+        // All records are passed to FakeFile Flusher where conditions are checked
         setChanged();
         notifyObservers(new Visitor(FlusherType.FAKE_FILE) {
           @Override
@@ -57,6 +65,8 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
         for (Filter filter : filters) {
           if (filter.filter(record)) count++;
         }
+
+        // All filter passed, it is the record we want.
         if (count == required) {
           setChanged();
           notifyObservers(new Visitor(FlusherType.REPLAY_LOG) {
@@ -79,6 +89,10 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
     parser.close();
   }
 
+  /**
+   * Tuple is used to wrap the FlushType and CsvRecord together.
+   * In the Flusher, the flushType can be used to distinguish between ReplayLog Flusher and FakeFile Flusher.
+   */
   public class Tuple {
     FlusherType type;
     CSVRecord record;

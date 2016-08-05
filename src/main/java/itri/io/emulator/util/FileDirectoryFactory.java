@@ -45,7 +45,7 @@ public class FileDirectoryFactory {
     return fileNumMap.get(alpFileName) + alpFileName;
   }
 
-  public static String extractNameOnlyLettersAndDigit(String origin) {
+  public static String extractNameOnlyLettersAndDigits(String origin) {
     StringBuilder builder = new StringBuilder();
     for (int i = 0; i < origin.length(); i++) {
       if (Character.isLetter(origin.charAt(i)) || Character.isDigit(origin.charAt(i))) {

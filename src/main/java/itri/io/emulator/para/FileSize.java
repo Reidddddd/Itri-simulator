@@ -1,5 +1,8 @@
 package itri.io.emulator.para;
 
+/**
+ * The size of a file. It is used to generate fake files.
+ */
 public class FileSize {
   private long size;
 

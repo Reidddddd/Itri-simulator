@@ -2,6 +2,10 @@ package itri.io.emulator.para;
 
 import itri.io.emulator.para.MajorOp.OpType;
 
+/**
+ * Operation info is composed of R/W(length, offset, isSync).
+ * isSync indicates whether this operation is synchronous.
+ */
 public class OperationInfo {
   private OpType opType;
   private long offset;

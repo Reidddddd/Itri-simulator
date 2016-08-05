@@ -2,6 +2,10 @@ package itri.io.emulator.para;
 
 import itri.io.emulator.FilterOption;
 
+/**
+ * Operation Type defined by Windows Operating System.
+ * Available options are IRP, FIO and FSF.
+ */
 public class OprFlag {
   private final static String IRP = "IRP";
   private final static String FIO = "FIO";

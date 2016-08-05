@@ -9,6 +9,10 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Those wanted records collected in the flusher for flush.
+ * This will be refactored in the coming future.
+ */
 public class FileRecord {
   private String groupName;
   private LinkedList<Record> records;

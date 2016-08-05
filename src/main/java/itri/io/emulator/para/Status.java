@@ -2,6 +2,9 @@ package itri.io.emulator.para;
 
 import itri.io.emulator.FilterOption;
 
+/**
+ * Status of an operation. Available status are success, warning, error.
+ */
 public class Status {
   private final static String SUCCESS = "SUCCESS";
   private final static String WARNING = "WARNING";
