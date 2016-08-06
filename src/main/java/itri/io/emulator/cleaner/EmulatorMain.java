@@ -5,6 +5,7 @@ import itri.io.emulator.Configuration;
 import itri.io.emulator.Parameters;
 import itri.io.emulator.flusher.FakeFilesFlusher;
 import itri.io.emulator.flusher.ReplayLogFlusher;
+import itri.io.emulator.simulator.LogSimulator;
 
 import java.io.IOException;
 
@@ -24,6 +25,8 @@ public class EmulatorMain {
       addFilters(cleaner, params);
       addFlushers(cleaner, params);
       cleaner.clean();
+      LogSimulator simulator = new LogSimulator(params);
+      simulator.simulate();
     } catch (IOException e) {
       System.err.println(e.getMessage());
     }
