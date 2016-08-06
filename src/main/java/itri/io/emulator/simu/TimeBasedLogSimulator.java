@@ -1,7 +1,7 @@
 package itri.io.emulator.simu;
 
-import itri.io.emulator.para.OperationInfo;
-import itri.io.emulator.para.Record;
+import itri.io.emulator.parameter.OperationInfo;
+import itri.io.emulator.parameter.Record;
 import itri.io.emulator.simulator.Operation;
 import itri.io.emulator.simulator.OperationFactory;
 import itri.io.emulator.util.FileDirectoryFactory;

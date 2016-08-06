@@ -1,9 +1,5 @@
 package itri.io.emulator;
 
-import itri.io.emulator.FilterOption.IrpOption;
-import itri.io.emulator.FilterOption.MajorOpOption;
-import itri.io.emulator.FilterOption.OprOption;
-import itri.io.emulator.FilterOption.StatusOption;
 import itri.io.emulator.cleaner.DefaultFilter;
 import itri.io.emulator.cleaner.Filter;
 import itri.io.emulator.cleaner.IrpFlagFilter;
@@ -11,6 +7,10 @@ import itri.io.emulator.cleaner.KeywordFilter;
 import itri.io.emulator.cleaner.MajorOpFilter;
 import itri.io.emulator.cleaner.OperationTypeFilter;
 import itri.io.emulator.cleaner.StatusFilter;
+import itri.io.emulator.cleaner.FilterOption.IrpOption;
+import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
+import itri.io.emulator.cleaner.FilterOption.OprOption;
+import itri.io.emulator.cleaner.FilterOption.StatusOption;
 
 import java.io.File;
 import java.io.IOException;

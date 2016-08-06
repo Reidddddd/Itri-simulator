@@ -1,9 +1,10 @@
 package itri.io.emulator.flusher;
 
 import itri.io.emulator.Parameters;
+import itri.io.emulator.cleaner.Filter;
 import itri.io.emulator.cleaner.IOLogCleaner.Tuple;
-import itri.io.emulator.para.FileRecord;
-import itri.io.emulator.para.Record;
+import itri.io.emulator.parameter.FileRecord;
+import itri.io.emulator.parameter.Record;
 import itri.io.emulator.util.FileDirectoryFactory;
 
 import java.io.File;
@@ -12,16 +13,19 @@ import java.io.IOException;
 import java.util.Observable;
 import java.util.Observer;
 
+import org.apache.commons.csv.CSVRecord;
+
 /**
  * ReplayLogFlusher is used to generate replay log.
  */
-public class ReplayLogFlusher extends Flusher implements Observer {
+public class ReplayLogFlusher extends Flusher {
   private FileRecord wholeRecords;
   private String replayLogDir;
   private int bufferSize;
   private int currentSize;
 
   public ReplayLogFlusher(Parameters params) {
+    super();
     this.wholeRecords = new FileRecord("WholeFile");
     this.replayLogDir = params.getReplayLogOutputLocation();
     this.bufferSize = params.getBufferSize();
@@ -30,18 +34,16 @@ public class ReplayLogFlusher extends Flusher implements Observer {
 
   @Override
   public void update(Observable o, Object arg) {
-    if (arg == null) flush();
-    else if (arg.getClass() == Tuple.class) {
-      Tuple tuple = (Tuple) arg;
-      if (tuple.getFlusherType() == FlusherType.REPLAY_LOG) {
-        Record record = new Record(tuple.getRecord());
-        wholeRecords.addRecord(record);
-        if (++currentSize > bufferSize) {
-          flush();
-          currentSize = 0;
-          wholeRecords.clear();
-        }
-      }
+    CSVRecord csvRecord = (CSVRecord) arg;
+    for (Filter filter : filters) {
+      if (!filter.filter(csvRecord)) return;
+    }
+    Record record = new Record(csvRecord);
+    wholeRecords.addRecord(record);
+    if (++currentSize > bufferSize) {
+      flush();
+      currentSize = 0;
+      wholeRecords.clear();
     }
   }
 

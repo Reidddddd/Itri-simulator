@@ -1,6 +1,6 @@
 package itri.io.emulator.simulator;
 
-import itri.io.emulator.para.OperationInfo;
+import itri.io.emulator.parameter.OperationInfo;
 
 import java.io.RandomAccessFile;
 

@@ -1,16 +1,16 @@
 package itri.io.emulator.experiment;
 
-import itri.io.emulator.para.FileSize;
+import itri.io.emulator.parameter.FileSize;
 
-public class BlocksManager {
-  private Block[] blocks;
+public class BlockFrequencyManager {
+  private BlockWithFrequency[] blocks;
 
-  public BlocksManager(FileSize size) {
+  public BlockFrequencyManager(FileSize size) {
     int len = (int) (size.getSize() / Block.UNIT_4K);
     len = (int) (size.getSize() % Block.UNIT_4K == 0 ? len : len + 1);
-    blocks = new Block[len];
+    blocks = new BlockWithFrequency[len];
     for (int i = 0; i < blocks.length; i++) {
-      blocks[i] = new Block(i);
+      blocks[i] = new BlockWithFrequency(i);
     }
   }
 
@@ -24,7 +24,7 @@ public class BlocksManager {
     }
   }
 
-  public Block[] getBlocks() {
+  public BlockWithFrequency[] getBlocks() {
     return blocks;
   }
 
@@ -34,7 +34,7 @@ public class BlocksManager {
 
   public long getBlocksFrequency() {
     long fre = 0;
-    for (Block blc : blocks) {
+    for (BlockWithFrequency blc : blocks) {
       fre += blc.getFrequency();
     }
     return fre;

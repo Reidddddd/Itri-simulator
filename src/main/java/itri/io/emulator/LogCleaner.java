@@ -1,9 +1,10 @@
 package itri.io.emulator;
 
-import itri.io.emulator.para.IrpFlag;
-import itri.io.emulator.para.MajorOp;
-import itri.io.emulator.para.OprFlag;
-import itri.io.emulator.para.Status;
+import itri.io.emulator.cleaner.FilterOption;
+import itri.io.emulator.parameter.IrpFlag;
+import itri.io.emulator.parameter.MajorOp;
+import itri.io.emulator.parameter.OprFlag;
+import itri.io.emulator.parameter.Status;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

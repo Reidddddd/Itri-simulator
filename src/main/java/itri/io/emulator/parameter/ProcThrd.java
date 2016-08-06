@@ -1,4 +1,4 @@
-package itri.io.emulator.para;
+package itri.io.emulator.parameter;
 
 /**
  * Process Id and Thread Id

@@ -1,12 +1,11 @@
 package itri.io.emulator.experiment;
 
-import itri.io.emulator.IndexInfo;
-import itri.io.emulator.experiment.ExperimentsManager.ExperimentState;
-import itri.io.emulator.experiment.ExperimentsManager.Tuple;
+import itri.io.emulator.cleaner.Filter;
+import itri.io.emulator.experiment.GraphExperimentsManager.Tuple;
 import itri.io.emulator.gen.FakeFileInfo;
-import itri.io.emulator.para.FileName;
-import itri.io.emulator.para.FileSize;
-import itri.io.emulator.para.Record;
+import itri.io.emulator.parameter.FileName;
+import itri.io.emulator.parameter.FileSize;
+import itri.io.emulator.parameter.Record;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 
+import org.apache.commons.csv.CSVRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -22,27 +22,28 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
-public class BlockFrequencyExperiment extends Experiment {
-  private final static String EXPERIMENT_TITLE = "Block Frequency";
+public class BlockFrequencyExperiment extends GraphExperiment {
+  private final static String EXPERIMENT_TITLE = "Blocks Read Frequency";
   private final static int INITIAL_CAPACITY = 200;
   private final static float LOAD_FACTOR = 0.75f;
 
   private int allSize;
   private Map<FileName, FileSize> fileMaxSize;
-  private Map<FileName, BlocksManager> fileBlocksManager;
-  private IndexInfo info;
+  private Map<FileName, BlockFrequencyManager> fileBlocksManager;
 
-  public BlockFrequencyExperiment(IndexInfo info) {
+  public BlockFrequencyExperiment() {
     this.fileMaxSize = new HashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
-    this.info = info;
     this.allSize = 0;
     this.fileBlocksManager = null;
   }
 
   @Override
   protected void preProcess(Object obj) {
-    String[] splited = (String[]) obj;
-    FakeFileInfo fake = new FakeFileInfo(splited, info);
+    CSVRecord record = (CSVRecord) obj;
+    for (Filter filter : preProcessFilters) {
+      if (!filter.filter(record)) return;
+    }
+    FakeFileInfo fake = new FakeFileInfo(record);
     if (fileMaxSize.containsKey(fake.getFileName())) {
       fileMaxSize.get(fake.getFileName()).updateSize(fake.getFileSize());
     } else {
@@ -52,39 +53,43 @@ public class BlockFrequencyExperiment extends Experiment {
 
   @Override
   protected void process(Object obj) {
-    String[] splited = (String[]) obj;
-    Record record = new Record(splited, info);
+    CSVRecord csvRecord = (CSVRecord) obj;
+    for (Filter filter : processFilters) {
+      if (!filter.filter(csvRecord)) return;
+    }
+    Record record = new Record(csvRecord);
     if (fileBlocksManager == null) {
       fileBlocksManager = new HashMap<>(fileMaxSize.size());
       initial();
     }
-    BlocksManager manager = fileBlocksManager.get(record.getFName());
+    BlockFrequencyManager manager = fileBlocksManager.get(record.getFName());
     manager.updateBlocksFrequency(record.getOffset(), record.getLength());
   }
 
   private void initial() {
     for (Map.Entry<FileName, FileSize> entry : fileMaxSize.entrySet()) {
-      BlocksManager manager = new BlocksManager(entry.getValue());
+      BlockFrequencyManager manager = new BlockFrequencyManager(entry.getValue());
       fileBlocksManager.put(entry.getKey(), manager);
     }
   }
 
   @Override
   protected void postProcess() {
-    for (Map.Entry<FileName, BlocksManager> entry : fileBlocksManager.entrySet()) {
+    for (Map.Entry<FileName, BlockFrequencyManager> entry : fileBlocksManager.entrySet()) {
       allSize += entry.getValue().getBlocksSize();
     }
-    Block[] blocks = new Block[allSize];
+    BlockWithFrequency[] blocks = new BlockWithFrequency[allSize];
     int copyIndex = 0;
     int copyLength = 0;
     long allFrequency = 0;
-    for (Map.Entry<FileName, BlocksManager> entry : fileBlocksManager.entrySet()) {
+    for (Map.Entry<FileName, BlockFrequencyManager> entry : fileBlocksManager.entrySet()) {
       copyLength = entry.getValue().getBlocksSize();
       allFrequency += entry.getValue().getBlocksFrequency();
       System.arraycopy(entry.getValue().getBlocks(), 0, blocks, copyIndex, copyLength);
       copyIndex += copyLength;
     }
     Arrays.sort(blocks, Collections.reverseOrder());
+    /** Two prints are for debug usage. Please comment them out when put into production **/
     System.out.println("Blocks number: " + blocks.length);
     System.out.println("Total Frequency: " + allFrequency);
     BlockFrequencyBarChat bfBarChat =
@@ -94,24 +99,22 @@ public class BlockFrequencyExperiment extends Experiment {
 
   @Override
   public void update(Observable o, Object arg) {
-    if (arg == null) {
+    Tuple tuple = (Tuple) arg;
+    if (tuple.getState() == ExperimentState.PRE_PROCESS) {
+      preProcess(tuple.getRecord());
+    } else if (tuple.getState() == ExperimentState.PROCESS) {
+      process(tuple.getRecord());
+    } else if (tuple.getState() == ExperimentState.POST_PROCESS) {
       postProcess();
-    } else if (arg.getClass() == Tuple.class) {
-      Tuple tuple = (Tuple) arg;
-      if (tuple.getState() == ExperimentState.PREPROCESS) {
-        preProcess(tuple.getSplited());
-      } else if (tuple.getState() == ExperimentState.PROCESS) {
-        process(tuple.getSplited());
-      }
     }
   }
 
   private class BlockFrequencyBarChat extends ApplicationFrame {
     private static final long serialVersionUID = 5751920011962952961L;
-    private static final String CATEGORY_LABEL = "Percentage of Block Frequency";
+    private static final String CATEGORY_LABEL = "Percentage of Blocks Read Frequency";
     private static final String VALUE_LABEL = "Block Number";
 
-    public BlockFrequencyBarChat(String title, Block[] blocks, long allFrequency) {
+    public BlockFrequencyBarChat(String title, BlockWithFrequency[] blocks, long allFrequency) {
       super(title);
       CategoryDataset dataset = createDataset(blocks, allFrequency);
       JFreeChart chart = createChart(dataset);
@@ -127,7 +130,7 @@ public class BlockFrequencyExperiment extends Experiment {
       return chart;
     }
 
-    private CategoryDataset createDataset(Block[] blocks, long allFrequency) {
+    private CategoryDataset createDataset(BlockWithFrequency[] blocks, long allFrequency) {
       int[] blockNums = createBlockNumbers(blocks, allFrequency);
       String[] categories = createCategories();
 
@@ -138,7 +141,7 @@ public class BlockFrequencyExperiment extends Experiment {
       return dataset;
     }
 
-    private int[] createBlockNumbers(Block[] blocks, long allFrequency) {
+    private int[] createBlockNumbers(BlockWithFrequency[] blocks, long allFrequency) {
       int[] nums = new int[100];
       long percentageFreq = 0;
       float percentage = 0.0f;

@@ -1,8 +1,8 @@
 package itri.io.emulator;
 
 import itri.io.emulator.ConditionManager.ConditionIterator;
-import itri.io.emulator.para.FileName;
-import itri.io.emulator.para.FileRecord;
+import itri.io.emulator.parameter.FileName;
+import itri.io.emulator.parameter.FileRecord;
 
 import java.io.BufferedReader;
 import java.io.IOException;

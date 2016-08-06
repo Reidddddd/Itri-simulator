@@ -2,11 +2,12 @@ package itri.io.emulator.flusher;
 
 import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.Parameters;
+import itri.io.emulator.cleaner.Filter;
 import itri.io.emulator.cleaner.IOLogCleaner.Tuple;
 import itri.io.emulator.gen.FakeFileInfo;
-import itri.io.emulator.para.FileName;
-import itri.io.emulator.para.FileSize;
-import itri.io.emulator.para.MajorOp;
+import itri.io.emulator.parameter.FileName;
+import itri.io.emulator.parameter.FileSize;
+import itri.io.emulator.parameter.MajorOp;
 import itri.io.emulator.util.FileDirectoryFactory;
 import itri.io.emulator.util.RandomTools;
 
@@ -23,7 +24,7 @@ import org.apache.commons.csv.CSVRecord;
 /**
  * FakeFilesFlusher is used to generate files for simulator read/write.
  */
-public class FakeFilesFlusher extends Flusher implements Observer {
+public class FakeFilesFlusher extends Flusher {
   private static int INITIAL_CAPACITY = 200;
   private static float LOAD_FACTOR = 0.75f;
 
@@ -31,27 +32,22 @@ public class FakeFilesFlusher extends Flusher implements Observer {
   private String fakeFilesDir;
 
   public FakeFilesFlusher(Parameters params) {
+    super();
     this.fakeFilesDir = params.getFakeFilesLocation();
     this.fileMaxSize = new HashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
   }
 
   @Override
   public void update(Observable o, Object arg) {
-    if (arg == null) flush();
-    else if (arg.getClass() == Tuple.class) {
-      Tuple tuple = (Tuple) arg;
-      if (tuple.getFlusherType() == FlusherType.FAKE_FILE) {
-        CSVRecord record = tuple.getRecord();
-        // We only care read and write.
-        if (!MajorOp.isWriteOp(record.get(ColumnConstants.MAJOR_OP))
-            && !MajorOp.isReadOp(record.get(ColumnConstants.MAJOR_OP))) return;
-        FakeFileInfo fake = new FakeFileInfo(record);
-        if (fileMaxSize.get(fake.getFileName()) == null) {
-          fileMaxSize.put(fake.getFileName(), fake.getFileSize());
-        } else {
-          fileMaxSize.get(fake.getFileName()).updateSize(fake.getFileSize());
-        }
-      }
+    CSVRecord record = (CSVRecord) arg;
+    for (Filter filter : filters) {
+      if (!filter.filter(record)) return;
+    }
+    FakeFileInfo fake = new FakeFileInfo(record);
+    if (fileMaxSize.get(fake.getFileName()) == null) {
+      fileMaxSize.put(fake.getFileName(), fake.getFileSize());
+    } else {
+      fileMaxSize.get(fake.getFileName()).updateSize(fake.getFileSize());
     }
   }
 

@@ -2,8 +2,8 @@ package itri.io.emulator.gen;
 
 import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.IndexInfo;
-import itri.io.emulator.para.FileName;
-import itri.io.emulator.para.FileSize;
+import itri.io.emulator.parameter.FileName;
+import itri.io.emulator.parameter.FileSize;
 
 import org.apache.commons.csv.CSVRecord;
 

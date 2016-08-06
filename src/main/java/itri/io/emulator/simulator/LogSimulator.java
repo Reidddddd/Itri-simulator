@@ -1,8 +1,8 @@
 package itri.io.emulator.simulator;
 
 import itri.io.emulator.Parameters;
-import itri.io.emulator.para.OperationInfo;
-import itri.io.emulator.para.Record;
+import itri.io.emulator.parameter.OperationInfo;
+import itri.io.emulator.parameter.Record;
 import itri.io.emulator.util.FileDirectoryFactory;
 
 import java.io.BufferedReader;

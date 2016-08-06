@@ -1,9 +1,9 @@
 package itri.io.emulator.cleaner;
 
 import itri.io.emulator.ColumnConstants;
-import itri.io.emulator.FilterOption.IrpOption;
 import itri.io.emulator.Parameters;
-import itri.io.emulator.para.IrpFlag;
+import itri.io.emulator.cleaner.FilterOption.IrpOption;
+import itri.io.emulator.parameter.IrpFlag;
 
 import org.apache.commons.csv.CSVRecord;
 

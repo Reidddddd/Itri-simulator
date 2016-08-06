@@ -1,10 +1,10 @@
-package itri.io.emulator.para;
+package itri.io.emulator.parameter;
 
 import org.apache.commons.csv.CSVRecord;
 
 import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.IndexInfo;
-import itri.io.emulator.para.MajorOp.OpType;
+import itri.io.emulator.parameter.MajorOp.OpType;
 
 /**
  * Basic unit in replay log.

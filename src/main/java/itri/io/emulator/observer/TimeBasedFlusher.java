@@ -1,7 +1,7 @@
 package itri.io.emulator.observer;
 
-import itri.io.emulator.para.FileRecord;
-import itri.io.emulator.para.Record;
+import itri.io.emulator.parameter.FileRecord;
+import itri.io.emulator.parameter.Record;
 import itri.io.emulator.util.FileDirectoryFactory;
 
 import java.io.File;

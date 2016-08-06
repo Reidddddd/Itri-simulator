@@ -1,4 +1,4 @@
-package itri.io.emulator.para;
+package itri.io.emulator.parameter;
 
 /**
  * The size of a file. It is used to generate fake files.

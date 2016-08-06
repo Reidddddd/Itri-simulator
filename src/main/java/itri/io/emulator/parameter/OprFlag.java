@@ -1,6 +1,6 @@
-package itri.io.emulator.para;
+package itri.io.emulator.parameter;
 
-import itri.io.emulator.FilterOption;
+import itri.io.emulator.cleaner.FilterOption;
 
 /**
  * Operation Type defined by Windows Operating System.

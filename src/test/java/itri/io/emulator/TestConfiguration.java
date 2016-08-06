@@ -46,12 +46,12 @@ public class TestConfiguration {
     Assert.assertArrayEquals(conf.getStrings(FILTER_STATUS), status);
     String[] names = { "d:\\download\\test" };
     Assert.assertArrayEquals(conf.getStrings(FILTER_NAME), names);
+    String[] pids = { "146", "258" };
+    Assert.assertArrayEquals(conf.getStrings(FILTER_PROCESS), pids);
   }
 
   @Test
   public void testOthers() throws Exception {
     Assert.assertEquals(conf.getInt(RECORD_SIZE, 50000), 10000);
-    String[] pids = { "146", "258" };
-    Assert.assertArrayEquals(conf.getStrings(FILTER_PROCESS), pids);
   }
 }

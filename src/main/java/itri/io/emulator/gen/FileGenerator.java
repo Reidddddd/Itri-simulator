@@ -2,9 +2,9 @@ package itri.io.emulator.gen;
 
 import itri.io.emulator.IndexInfo;
 import itri.io.emulator.observer.Flusher;
-import itri.io.emulator.para.FileName;
-import itri.io.emulator.para.FileSize;
-import itri.io.emulator.para.MajorOp;
+import itri.io.emulator.parameter.FileName;
+import itri.io.emulator.parameter.FileSize;
+import itri.io.emulator.parameter.MajorOp;
 import itri.io.emulator.util.FileDirectoryFactory;
 import itri.io.emulator.util.RandomTools;
 

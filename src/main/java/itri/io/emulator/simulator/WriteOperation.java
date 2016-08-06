@@ -1,6 +1,6 @@
 package itri.io.emulator.simulator;
 
-import itri.io.emulator.para.OperationInfo;
+import itri.io.emulator.parameter.OperationInfo;
 import itri.io.emulator.util.RandomTools;
 
 import java.io.IOException;

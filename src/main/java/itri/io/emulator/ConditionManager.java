@@ -1,5 +1,7 @@
 package itri.io.emulator;
 
+import itri.io.emulator.cleaner.FilterOption;
+
 import java.util.Iterator;
 
 public class ConditionManager implements Iterable<Conditions> {

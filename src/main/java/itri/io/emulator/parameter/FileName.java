@@ -1,4 +1,4 @@
-package itri.io.emulator.para;
+package itri.io.emulator.parameter;
 
 /**
  * Name of an operation's target file.

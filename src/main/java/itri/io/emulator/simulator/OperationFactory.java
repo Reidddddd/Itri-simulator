@@ -1,7 +1,7 @@
 package itri.io.emulator.simulator;
 
-import itri.io.emulator.para.OperationInfo;
-import itri.io.emulator.para.MajorOp.OpType;
+import itri.io.emulator.parameter.OperationInfo;
+import itri.io.emulator.parameter.MajorOp.OpType;
 
 public class OperationFactory {
   public static Operation getOperation(OperationInfo info) {

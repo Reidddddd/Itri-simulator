@@ -3,6 +3,7 @@ package itri.io.emulator.cleaner;
 import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.Configuration;
 import itri.io.emulator.Parameters;
+import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
 import itri.io.emulator.flusher.FakeFilesFlusher;
 import itri.io.emulator.flusher.ReplayLogFlusher;
 import itri.io.emulator.simulator.LogSimulator;
@@ -22,7 +23,6 @@ public class EmulatorMain {
     Configuration conf = new Configuration(args[0]);
     Parameters params = new Parameters(conf);
     try (IOLogCleaner cleaner = new IOLogCleaner(params, ColumnConstants.getColumnsHeader())) {
-      addFilters(cleaner, params);
       addFlushers(cleaner, params);
       cleaner.clean();
       System.exit(0);
@@ -33,16 +33,20 @@ public class EmulatorMain {
     }
   }
 
-  private static void addFilters(IOLogCleaner cleaner, Parameters params) {
-    cleaner.addFilter(new OperationTypeFilter(params));
-    cleaner.addFilter(new MajorOpFilter(params));
-    cleaner.addFilter(new StatusFilter(params));
-    cleaner.addFilter(new IrpFlagFilter(params));
-    cleaner.addFilter(new KeywordFilter(params));
-  }
-
   private static void addFlushers(IOLogCleaner cleaner, Parameters params) {
-    cleaner.addObserver(new ReplayLogFlusher(params));
-    cleaner.addObserver(new FakeFilesFlusher(params));
+    ReplayLogFlusher replayLogFlusher = new ReplayLogFlusher(params);
+    replayLogFlusher.addFilter(new OperationTypeFilter(params));
+    replayLogFlusher.addFilter(new MajorOpFilter(params));
+    replayLogFlusher.addFilter(new StatusFilter(params));
+    replayLogFlusher.addFilter(new IrpFlagFilter(params));
+    replayLogFlusher.addFilter(new KeywordFilter(params));
+    cleaner.addFlusher(replayLogFlusher);
+
+    MajorOpFilter majorOpFilter = new MajorOpFilter(params);
+    MajorOpOption[] options = { MajorOpOption.IRP_READ, MajorOpOption.IRP_WRITE };
+    majorOpFilter.setFilterOptions(options);
+    FakeFilesFlusher fakeFilesFlusher = new FakeFilesFlusher(params);
+    fakeFilesFlusher.addFilter(majorOpFilter);
+    cleaner.addFlusher(fakeFilesFlusher);
   }
 }

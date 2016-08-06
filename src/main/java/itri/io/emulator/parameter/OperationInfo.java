@@ -1,6 +1,6 @@
-package itri.io.emulator.para;
+package itri.io.emulator.parameter;
 
-import itri.io.emulator.para.MajorOp.OpType;
+import itri.io.emulator.parameter.MajorOp.OpType;
 
 /**
  * Operation info is composed of R/W(length, offset, isSync).

@@ -1,4 +1,4 @@
-package itri.io.emulator.para;
+package itri.io.emulator.parameter;
 
 import itri.io.emulator.IndexInfo;
 import itri.io.emulator.util.FileDirectoryFactory;
