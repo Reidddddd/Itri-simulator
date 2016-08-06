@@ -37,14 +37,14 @@ public class FakeFilesFlusher extends Flusher implements Observer {
 
   @Override
   public void update(Observable o, Object arg) {
-    if (arg.getClass() == null) flush();
+    if (arg == null) flush();
     else if (arg.getClass() == Tuple.class) {
       Tuple tuple = (Tuple) arg;
       if (tuple.getFlusherType() == FlusherType.FAKE_FILE) {
         CSVRecord record = tuple.getRecord();
         // We only care read and write.
-        if (!MajorOp.isWrite(record.get(ColumnConstants.MAJOR_OP))
-            && !MajorOp.isRead(record.get(ColumnConstants.MAJOR_OP))) return;
+        if (!MajorOp.isWriteOp(record.get(ColumnConstants.MAJOR_OP))
+            && !MajorOp.isReadOp(record.get(ColumnConstants.MAJOR_OP))) return;
         FakeFileInfo fake = new FakeFileInfo(record);
         if (fileMaxSize.get(fake.getFileName()) == null) {
           fileMaxSize.put(fake.getFileName(), fake.getFileSize());
@@ -57,6 +57,7 @@ public class FakeFilesFlusher extends Flusher implements Observer {
 
   @Override
   public void flush() {
+    System.out.println("Start generating fake files.");
     for (Map.Entry<FileName, FileSize> entry : fileMaxSize.entrySet()) {
       String absPath =
           fakeFilesDir + File.separator
@@ -81,5 +82,6 @@ public class FakeFilesFlusher extends Flusher implements Observer {
         ioe.printStackTrace();
       }
     }
+    System.out.println("Fake files are done");
   }
 }

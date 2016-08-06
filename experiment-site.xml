@@ -74,6 +74,12 @@
 	</property>
 
 	<property>
+		<name>emulator.process.filter</name>
+		<value>146,258</value>
+		<description>Process id of wanted exe.</description>
+	</property>
+
+	<property>
 		<name>emulator.replay.log.location</name>
 		<value>/home/reidchan/Desktop/Simulog_1</value>
 		<description>The output directory for flusher.

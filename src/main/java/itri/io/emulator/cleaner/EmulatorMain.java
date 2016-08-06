@@ -25,6 +25,7 @@ public class EmulatorMain {
       addFilters(cleaner, params);
       addFlushers(cleaner, params);
       cleaner.clean();
+      System.exit(0);
       LogSimulator simulator = new LogSimulator(params);
       simulator.simulate();
     } catch (IOException e) {

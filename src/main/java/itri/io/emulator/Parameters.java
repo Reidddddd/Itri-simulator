@@ -84,7 +84,7 @@ public class Parameters {
   }
 
   public String[] getProcessNames() {
-    return statusNames;
+    return processNames;
   }
 
   public String getFakeFilesLocation() {

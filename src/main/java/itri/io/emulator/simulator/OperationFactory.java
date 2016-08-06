@@ -1,4 +1,4 @@
-package itri.io.emulator.simu;
+package itri.io.emulator.simulator;
 
 import itri.io.emulator.para.OperationInfo;
 import itri.io.emulator.para.MajorOp.OpType;

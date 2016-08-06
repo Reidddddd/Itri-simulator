@@ -7,6 +7,7 @@ import itri.io.emulator.flusher.Visitor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
@@ -30,6 +31,7 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
   }
 
   public void addFilter(Filter filter) {
+    System.out.println(filter.getClass().getSimpleName() + " is added.");
     filters.add(filter);
   }
 
@@ -51,7 +53,10 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
 
       int required = filters.size();
       int count = 0;
-      for (CSVRecord record : parser.getRecords()) {
+      Iterator<CSVRecord> iter = parser.iterator();
+      CSVRecord record;
+      while (iter.hasNext()) {
+        record = iter.next();
         // All records are passed to FakeFile Flusher where conditions are checked
         setChanged();
         notifyObservers(new Visitor(FlusherType.FAKE_FILE) {
@@ -64,6 +69,7 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
         count = 0;
         for (Filter filter : filters) {
           if (filter.filter(record)) count++;
+          else break;
         }
 
         // All filter passed, it is the record we want.
@@ -84,9 +90,9 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
 
   @Override
   public void close() throws Exception {
+    parser.close();
     setChanged();
     notifyObservers();
-    parser.close();
   }
 
   /**

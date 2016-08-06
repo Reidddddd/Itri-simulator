@@ -32,6 +32,8 @@ public class TestParameters {
     Assert.assertArrayEquals(params.getStatusNames(), status);
     String[] names = { "d:\\download\\test" };
     Assert.assertArrayEquals(params.getKeyWordNames(), names);
+    String[] pids = { "146", "258" };
+    Assert.assertArrayEquals(params.getProcessNames(), pids);
   }
 
   @Test

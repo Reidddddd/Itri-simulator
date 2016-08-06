@@ -6,7 +6,7 @@ public class ColumnConstants {
   public final static String PRE_OP_TIME = "PreOp Time";
   public final static String POST_OP_TIME = "PostOp Time";
   public final static String PROCESS_THRD = "Process.Thrd";
-  public final static String MAJOR_OP = "MajorOperation";
+  public final static String MAJOR_OP = "Major Operation";
   public final static String IRP_FLAGS = "IrpFlags";
   public final static String DEV_OBJ = "DevObj";
   public final static String FILE_OBJ = "FileObj";

@@ -18,6 +18,7 @@ public class TestConfiguration {
   private final static String FILTER_OPR = "emulator.opr.filter";
   private final static String FILTER_MAJOR_OP = "emulator.majorop.filter";
   private final static String FILTER_STATUS = "emulator.status.filter";
+  private final static String FILTER_PROCESS = "emulator.process.filter";
 
   private final static String RECORD_SIZE = "emulator.buffer.size";
 
@@ -50,5 +51,7 @@ public class TestConfiguration {
   @Test
   public void testOthers() throws Exception {
     Assert.assertEquals(conf.getInt(RECORD_SIZE, 50000), 10000);
+    String[] pids = { "146", "258" };
+    Assert.assertArrayEquals(conf.getStrings(FILTER_PROCESS), pids);
   }
 }

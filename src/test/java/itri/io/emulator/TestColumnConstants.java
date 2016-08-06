@@ -11,7 +11,7 @@ public class TestColumnConstants {
     Assert.assertTrue(ColumnConstants.PRE_OP_TIME.equals("PreOp Time"));
     Assert.assertTrue(ColumnConstants.POST_OP_TIME.equals("PostOp Time"));
     Assert.assertTrue(ColumnConstants.PROCESS_THRD.equals("Process.Thrd"));
-    Assert.assertTrue(ColumnConstants.MAJOR_OP.equals("MajorOperation"));
+    Assert.assertTrue(ColumnConstants.MAJOR_OP.equals("Major Operation"));
     Assert.assertTrue(ColumnConstants.IRP_FLAGS.equals("IrpFlags"));
     Assert.assertTrue(ColumnConstants.DEV_OBJ.equals("DevObj"));
     Assert.assertTrue(ColumnConstants.FILE_OBJ.equals("FileObj"));
