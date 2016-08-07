@@ -25,8 +25,6 @@ public class MajorOpFilter extends Filter {
   public boolean filter(CSVRecord record) {
     for (MajorOpOption mjo : mjOption) {
       switch (mjo) {
-        case IRP_ALL:
-          return true;
         case IRP_READ: {
           if (MajorOp.isReadOp(record.get(ColumnConstants.MAJOR_OP))) return true;
           break;
@@ -37,6 +35,10 @@ public class MajorOpFilter extends Filter {
         }
         case IRP_OTHER: {
           if (MajorOp.isOtherOp(record.get(ColumnConstants.MAJOR_OP))) return true;
+          break;
+        }
+        case IRP_ALL: {
+          if(MajorOp.isIRP(record.get(ColumnConstants.MAJOR_OP))) return true;
           break;
         }
       }

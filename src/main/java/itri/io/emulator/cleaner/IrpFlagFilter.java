@@ -41,7 +41,11 @@ public class IrpFlagFilter extends Filter {
           if (IrpFlag.isSyncAndPaging(record.get(ColumnConstants.IRP_FLAGS))) return true;
           break;
         }
-        case ALL: return true;
+        case ALL: {
+          if (IrpFlag.isIrpFlag(record.get(ColumnConstants.IRP_FLAGS))) return true;
+          break;
+        }
+        default: return false;
       }
     }
     return false;

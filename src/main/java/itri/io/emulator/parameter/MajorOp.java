@@ -27,7 +27,8 @@ public class MajorOp {
   }
 
   public static boolean isReadOp(String majorOp) {
-    return majorOp.contains(IRP_MJ_READ);
+    if (!isIRP(majorOp)) return false;
+    return majorOp.equals(IRP_MJ_READ);
   }
 
   public static boolean isRead(String majorOp) {
@@ -35,7 +36,8 @@ public class MajorOp {
   }
 
   public static boolean isWriteOp(String majorOp) {
-    return majorOp.contains(IRP_MJ_WRITE);
+    if (!isIRP(majorOp)) return false;
+    return majorOp.equals(IRP_MJ_WRITE);
   }
 
   public static boolean isWrite(String majorOp) {
@@ -43,7 +45,12 @@ public class MajorOp {
   }
 
   public static boolean isOtherOp(String majorOp) {
-    return !majorOp.contains(IRP_MJ_READ) && !majorOp.contains(IRP_MJ_WRITE);
+    if (!isIRP(majorOp)) return false;
+    return !isRead(majorOp) && !isWriteOp(majorOp);
+  }
+
+  public static boolean isIRP(String majorOp) {
+    return majorOp.startsWith("IRP_MJ_");
   }
 
   public enum OpType {

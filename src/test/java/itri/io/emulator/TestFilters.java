@@ -69,6 +69,8 @@ public class TestFilters {
     Assert.assertTrue(passedRecords(filter) == 5);
     filter.setFilterOptions(new MajorOpOption[] { MajorOpOption.IRP_OTHER });
     Assert.assertTrue(passedRecords(filter) == 1);
+    filter.setFilterOptions(new MajorOpOption[] { MajorOpOption.IRP_ALL });
+    Assert.assertTrue(passedRecords(filter) == 10);
   }
 
   @Test
@@ -87,12 +89,12 @@ public class TestFilters {
   public void testKeywordFilter() throws IOException {
     filter = new KeywordFilter(params);
     Assert.assertTrue(passedRecords(filter) == 8);
-    filter.setFilterOptions(new String[] { "d:\\download\\test2" });
+    filter.setFilterOptions(new String[] { "d:\\download\\test2\\" });
     Assert.assertTrue(passedRecords(filter) == 2);
-    filter.setFilterOptions(new String[] { "d:\\download\\test", "d:\\download\\test2" });
+    filter.setFilterOptions(new String[] { "d:\\download\\test\\", "d:\\download\\test2\\" });
     Assert.assertTrue(passedRecords(filter) == 10);
   }
-  
+
   @Test
   public void testProcessFilter() throws IOException {
     filter = new ProcessFilter(params);
@@ -106,7 +108,7 @@ public class TestFilters {
   @Test
   public void testIrpFlagFilter() throws IOException {
     filter = new IrpFlagFilter(params);
-    Assert.assertTrue(passedRecords(filter) == 10);
+    Assert.assertTrue(passedRecords(filter) == 9);
     filter.setFilterOptions(new IrpOption[] { IrpOption.ALL });
     Assert.assertTrue(passedRecords(filter) == 10);
     filter.setFilterOptions(new IrpOption[] { IrpOption.CACHED });
@@ -128,11 +130,7 @@ public class TestFilters {
   private int passedRecords(Filter filter) throws IOException {
     int passed = 0;
     for (CSVRecord record : records) {
-      System.out.println(record.get(ColumnConstants.IRP_FLAGS));
-      if (filter.filter(record)) {
-        passed++;
-        System.out.println(passed + " " + record.get(ColumnConstants.IRP_FLAGS));
-      }
+      if (filter.filter(record)) passed++;
     }
     return passed;
   }
