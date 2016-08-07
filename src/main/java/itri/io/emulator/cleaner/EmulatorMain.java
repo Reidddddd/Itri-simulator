@@ -5,6 +5,7 @@ import itri.io.emulator.Configuration;
 import itri.io.emulator.Parameters;
 import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
 import itri.io.emulator.flusher.FakeFilesFlusher;
+import itri.io.emulator.flusher.FilterLogFlusher;
 import itri.io.emulator.flusher.ReplayLogFlusher;
 import itri.io.emulator.simulator.LogSimulator;
 
@@ -50,5 +51,9 @@ public class EmulatorMain {
     fakeFilesFlusher.addFilter(majorOpFilter);
     fakeFilesFlusher.addFilter(new KeywordFilter(params));
     cleaner.addFlusher(fakeFilesFlusher);
+    
+    FilterLogFlusher filterLogFlusher = new FilterLogFlusher(params);
+    filterLogFlusher.addFilter(new ProcessFilter(params));
+    cleaner.addFlusher(filterLogFlusher);
   }
 }

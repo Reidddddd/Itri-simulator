@@ -6,6 +6,7 @@ import itri.io.emulator.cleaner.IrpFlagFilter;
 import itri.io.emulator.cleaner.KeywordFilter;
 import itri.io.emulator.cleaner.MajorOpFilter;
 import itri.io.emulator.cleaner.OperationTypeFilter;
+import itri.io.emulator.cleaner.ProcessFilter;
 import itri.io.emulator.cleaner.StatusFilter;
 import itri.io.emulator.cleaner.FilterOption.IrpOption;
 import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
@@ -86,6 +87,16 @@ public class TestFilters {
     filter.setFilterOptions(new String[] { "d:\\download\\test", "d:\\download\\test2" });
     Assert.assertTrue(passedRecords(filter) == 10);
   }
+  
+  @Test
+  public void testProcessFilter() throws IOException {
+    filter = new ProcessFilter(params);
+    Assert.assertTrue(passedRecords(filter) == 9);
+    filter.setFilterOptions(new String[] { "111c" });
+    Assert.assertTrue(passedRecords(filter) == 9);
+    filter.setFilterOptions(new String[] { "4" });
+    Assert.assertTrue(passedRecords(filter) == 2);
+  }
 
   @Test
   public void testIrpFlagFilter() throws IOException {
@@ -106,7 +117,7 @@ public class TestFilters {
   @Test
   public void testDefaultFilter() throws IOException {
     filter = new DefaultFilter();
-    Assert.assertTrue(passedRecords(filter) == 10);
+    Assert.assertTrue(passedRecords(filter) == 11);
   }
 
   private int passedRecords(Filter filter) throws IOException {
