@@ -1,5 +1,7 @@
 package itri.io.emulator;
 
+import itri.io.emulator.common.Configuration;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;

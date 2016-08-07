@@ -1,10 +1,10 @@
 package itri.io.emulator.flusher;
 
-import itri.io.emulator.Parameters;
 import itri.io.emulator.cleaner.Filter;
+import itri.io.emulator.common.FileDirectoryFactory;
+import itri.io.emulator.common.Parameters;
 import itri.io.emulator.parameter.FileRecord;
 import itri.io.emulator.parameter.Record;
-import itri.io.emulator.util.FileDirectoryFactory;
 
 import java.io.File;
 import java.io.FileWriter;

@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import itri.io.emulator.IndexInfo;
+import itri.io.emulator.main.IndexInfo;
 
 public class ProcessFilter extends Decorator {
 	// private static String DELIMETER = ",";

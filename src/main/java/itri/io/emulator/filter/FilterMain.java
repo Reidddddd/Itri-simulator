@@ -8,11 +8,10 @@ import javax.naming.InvalidNameException;
 
 import org.dom4j.DocumentException;
 
-import itri.io.emulator.Configuration;
-import itri.io.emulator.Parameters;
-import itri.io.emulator.ColumnName;
-import itri.io.emulator.IndexInfo;
-import itri.io.emulator.Parameters;
+import itri.io.emulator.common.Configuration;
+import itri.io.emulator.common.Parameters;
+import itri.io.emulator.main.ColumnName;
+import itri.io.emulator.main.IndexInfo;
 
 
 public class FilterMain {

@@ -22,14 +22,6 @@
 	</property>
 
 	<property>
-		<name>emulator.merge.keyword</name>
-		<value>timesequence</value>
-		<description>The keyword for date merge, it is used in cleaner and
-			flusher. Available options are ‘timesequence’ and ‘filename’
-		</description>
-	</property>
-
-	<property>
 		<name>emulator.opr.filter</name>
 		<value>irp</value>
 		<description>Operation type(s) that can pass operation type filter.

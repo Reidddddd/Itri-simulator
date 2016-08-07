@@ -16,11 +16,11 @@ public abstract class GraphExperiment implements Observer {
     processFilters.add(new DefaultFilter());
   }
 
-  protected void addPreProcessFilter(Filter filter) {
+  public void addPreProcessFilter(Filter filter) {
     preProcessFilters.add(filter);
   }
 
-  protected void addProcessFilter(Filter filter) {
+  public void addProcessFilter(Filter filter) {
     processFilters.add(filter);
   }
 

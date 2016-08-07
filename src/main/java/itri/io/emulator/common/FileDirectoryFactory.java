@@ -1,4 +1,4 @@
-package itri.io.emulator.util;
+package itri.io.emulator.common;
 
 import java.io.File;
 import java.io.IOException;

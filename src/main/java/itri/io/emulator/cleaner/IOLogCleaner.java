@@ -1,6 +1,6 @@
 package itri.io.emulator.cleaner;
 
-import itri.io.emulator.Parameters;
+import itri.io.emulator.common.Parameters;
 import itri.io.emulator.flusher.Flusher;
 
 import java.io.File;

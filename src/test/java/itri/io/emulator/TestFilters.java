@@ -11,6 +11,9 @@ import itri.io.emulator.cleaner.FilterOption.IrpOption;
 import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
 import itri.io.emulator.cleaner.FilterOption.OprOption;
 import itri.io.emulator.cleaner.FilterOption.StatusOption;
+import itri.io.emulator.common.ColumnConstants;
+import itri.io.emulator.common.Configuration;
+import itri.io.emulator.common.Parameters;
 
 import java.io.File;
 import java.io.IOException;

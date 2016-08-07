@@ -1,6 +1,6 @@
 package itri.io.emulator.experiment;
 
-import itri.io.emulator.Parameters;
+import itri.io.emulator.common.Parameters;
 
 import java.io.File;
 import java.io.FileNotFoundException;
