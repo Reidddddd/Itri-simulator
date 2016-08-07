@@ -25,8 +25,6 @@ public class IrpFlagFilter extends Filter {
   public boolean filter(CSVRecord record) {
     for (IrpOption irp : irpOption) {
       switch (irp) {
-        case ALL:
-          return true;
         case CACHED: {
           if (IrpFlag.isCached(record.get(ColumnConstants.IRP_FLAGS))) return true;
           break;
@@ -43,6 +41,11 @@ public class IrpFlagFilter extends Filter {
           if (IrpFlag.isSyncAndPaging(record.get(ColumnConstants.IRP_FLAGS))) return true;
           break;
         }
+        case ALL: {
+          if (IrpFlag.isIrpFlag(record.get(ColumnConstants.IRP_FLAGS))) return true;
+          break;
+        }
+        default: return false;
       }
     }
     return false;

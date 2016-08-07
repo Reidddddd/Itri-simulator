@@ -36,6 +36,8 @@ public class FilterOption {
 
     WARNING,
 
-    ERROR;
+    ERROR,
+
+    NONE;
   }
 }

@@ -2,16 +2,16 @@ package itri.io.emulator;
 
 import itri.io.emulator.cleaner.DefaultFilter;
 import itri.io.emulator.cleaner.Filter;
+import itri.io.emulator.cleaner.FilterOption.IrpOption;
+import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
+import itri.io.emulator.cleaner.FilterOption.OprOption;
+import itri.io.emulator.cleaner.FilterOption.StatusOption;
 import itri.io.emulator.cleaner.IrpFlagFilter;
 import itri.io.emulator.cleaner.KeywordFilter;
 import itri.io.emulator.cleaner.MajorOpFilter;
 import itri.io.emulator.cleaner.OperationTypeFilter;
 import itri.io.emulator.cleaner.ProcessFilter;
 import itri.io.emulator.cleaner.StatusFilter;
-import itri.io.emulator.cleaner.FilterOption.IrpOption;
-import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
-import itri.io.emulator.cleaner.FilterOption.OprOption;
-import itri.io.emulator.cleaner.FilterOption.StatusOption;
 import itri.io.emulator.common.ColumnConstants;
 import itri.io.emulator.common.Configuration;
 import itri.io.emulator.common.Parameters;
@@ -33,6 +33,7 @@ public class TestFilters {
   private Filter filter;
   private static Parameters params;
   private static CSVParser parser;
+  private static List<CSVRecord> records;
 
   @BeforeClass
   public static void initialize() throws Exception {
@@ -40,7 +41,8 @@ public class TestFilters {
     params = new Parameters(conf);
     parser =
         CSVParser.parse(new File("test.csv"), Charset.defaultCharset(),
-          CSVFormat.DEFAULT.withHeader());
+          CSVFormat.DEFAULT.withHeader(ColumnConstants.getColumnsHeader()));
+    records = parser.getRecords();
   }
 
   @Test
@@ -67,6 +69,8 @@ public class TestFilters {
     Assert.assertTrue(passedRecords(filter) == 5);
     filter.setFilterOptions(new MajorOpOption[] { MajorOpOption.IRP_OTHER });
     Assert.assertTrue(passedRecords(filter) == 1);
+    filter.setFilterOptions(new MajorOpOption[] { MajorOpOption.IRP_ALL });
+    Assert.assertTrue(passedRecords(filter) == 10);
   }
 
   @Test
@@ -85,12 +89,12 @@ public class TestFilters {
   public void testKeywordFilter() throws IOException {
     filter = new KeywordFilter(params);
     Assert.assertTrue(passedRecords(filter) == 8);
-    filter.setFilterOptions(new String[] { "d:\\download\\test2" });
+    filter.setFilterOptions(new String[] { "d:\\download\\test2\\" });
     Assert.assertTrue(passedRecords(filter) == 2);
-    filter.setFilterOptions(new String[] { "d:\\download\\test", "d:\\download\\test2" });
+    filter.setFilterOptions(new String[] { "d:\\download\\test\\", "d:\\download\\test2\\" });
     Assert.assertTrue(passedRecords(filter) == 10);
   }
-  
+
   @Test
   public void testProcessFilter() throws IOException {
     filter = new ProcessFilter(params);
@@ -104,7 +108,7 @@ public class TestFilters {
   @Test
   public void testIrpFlagFilter() throws IOException {
     filter = new IrpFlagFilter(params);
-    Assert.assertTrue(passedRecords(filter) == 10);
+    Assert.assertTrue(passedRecords(filter) == 9);
     filter.setFilterOptions(new IrpOption[] { IrpOption.ALL });
     Assert.assertTrue(passedRecords(filter) == 10);
     filter.setFilterOptions(new IrpOption[] { IrpOption.CACHED });
@@ -125,7 +129,6 @@ public class TestFilters {
 
   private int passedRecords(Filter filter) throws IOException {
     int passed = 0;
-    List<CSVRecord> records = parser.getRecords();
     for (CSVRecord record : records) {
       if (filter.filter(record)) passed++;
     }

@@ -3,8 +3,8 @@ package itri.io.emulator.parameter;
 import itri.io.emulator.cleaner.FilterOption;
 
 /**
- * Flags indicates the attributes of an operation.
- * They are N (no cached), C(cached), P(paging), S (synchronous), Y (synchronous and paging).
+ * Flags indicates the attributes of an operation. They are N (no cached), C(cached), P(paging), S
+ * (synchronous), Y (synchronous and paging).
  */
 public class IrpFlag {
   private final static char NO_CACHED = 'N';
@@ -28,29 +28,47 @@ public class IrpFlag {
   public static FilterOption.IrpOption getIrpOption(String irp) {
     FilterOption.IrpOption irpOption;
     switch (irp.toUpperCase().charAt(0)) {
-      case CACHED: irpOption = FilterOption.IrpOption.CACHED; break;
-      case PAGING_IO: irpOption = FilterOption.IrpOption.PAGING_IO; break;
-      case SYNC_API: irpOption = FilterOption.IrpOption.SYNC_API; break;
-      case SYNC_PAGING_IO: irpOption = FilterOption.IrpOption.SYNC_PAGING_IO; break;
-      default: irpOption = FilterOption.IrpOption.ALL; break;
+    case CACHED:
+      irpOption = FilterOption.IrpOption.CACHED;
+      break;
+    case PAGING_IO:
+      irpOption = FilterOption.IrpOption.PAGING_IO;
+      break;
+    case SYNC_API:
+      irpOption = FilterOption.IrpOption.SYNC_API;
+      break;
+    case SYNC_PAGING_IO:
+      irpOption = FilterOption.IrpOption.SYNC_PAGING_IO;
+      break;
+    default:
+      irpOption = FilterOption.IrpOption.ALL;
+      break;
     }
     return irpOption;
   }
 
   public static boolean isCached(String irpFlag) {
+    if (!isIrpFlag(irpFlag)) return false;
     return (irpFlag.charAt(0) != NO_CACHED);
   }
 
   public static boolean isPaging(String irpFlag) {
+    if (!isIrpFlag(irpFlag)) return false;
     return (irpFlag.charAt(1) == PAGING_IO);
   }
 
   public static boolean isSync(String irpFlag) {
+    if (!isIrpFlag(irpFlag)) return false;
     return (irpFlag.charAt(2) == SYNC_API);
   }
 
   public static boolean isSyncAndPaging(String irpFlag) {
+    if (!isIrpFlag(irpFlag)) return false;
     return (irpFlag.charAt(3) == SYNC_PAGING_IO);
+  }
+
+  public static boolean isIrpFlag(String irpFlag) {
+    return irpFlag.length() == 4;
   }
 
   public boolean isCachedIo() {

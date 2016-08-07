@@ -37,6 +37,7 @@ public class StatusFilter extends Filter {
           if (Status.isError(record.get(ColumnConstants.STATUS))) return true;
           break;
         }
+        default: return false;
       }
     }
     return false;
