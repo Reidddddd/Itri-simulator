@@ -40,7 +40,7 @@ public class TestFilters {
     params = new Parameters(conf);
     parser =
         CSVParser.parse(new File("test.csv"), Charset.defaultCharset(),
-          CSVFormat.DEFAULT.withHeader(ColumnConstants.getColumnsHeader()));
+          CSVFormat.DEFAULT.withHeader());
   }
 
   @Test
@@ -120,7 +120,7 @@ public class TestFilters {
   @Test
   public void testDefaultFilter() throws IOException {
     filter = new DefaultFilter();
-    Assert.assertTrue(passedRecords(filter) == 11);
+    Assert.assertTrue(passedRecords(filter) == 10);
   }
 
   private int passedRecords(Filter filter) throws IOException {
