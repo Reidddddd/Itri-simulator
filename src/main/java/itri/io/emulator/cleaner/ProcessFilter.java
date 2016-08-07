@@ -1,7 +1,7 @@
 package itri.io.emulator.cleaner;
 
-import itri.io.emulator.ColumnConstants;
-import itri.io.emulator.Parameters;
+import itri.io.emulator.common.ColumnConstants;
+import itri.io.emulator.common.Parameters;
 import org.apache.commons.csv.CSVRecord;
 
 public class ProcessFilter extends Filter {

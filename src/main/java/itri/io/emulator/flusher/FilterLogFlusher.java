@@ -12,8 +12,8 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import itri.io.emulator.ColumnConstants;
-import itri.io.emulator.Parameters;
+import itri.io.emulator.common.ColumnConstants;
+import itri.io.emulator.common.Parameters;
 import itri.io.emulator.cleaner.Filter;
 
 public class FilterLogFlusher extends Flusher {

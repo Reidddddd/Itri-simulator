@@ -6,6 +6,7 @@ import itri.io.emulator.cleaner.IrpFlagFilter;
 import itri.io.emulator.cleaner.KeywordFilter;
 import itri.io.emulator.cleaner.MajorOpFilter;
 import itri.io.emulator.cleaner.OperationTypeFilter;
+import itri.io.emulator.cleaner.ProcessFilter;
 import itri.io.emulator.cleaner.StatusFilter;
 import itri.io.emulator.common.ColumnConstants;
 import itri.io.emulator.common.Configuration;
