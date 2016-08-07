@@ -1,4 +1,4 @@
-package itri.io.emulator;
+package itri.io.emulator.common;
 
 import javax.naming.InvalidNameException;
 

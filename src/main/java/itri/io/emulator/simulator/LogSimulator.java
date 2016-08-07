@@ -1,9 +1,9 @@
 package itri.io.emulator.simulator;
 
-import itri.io.emulator.Parameters;
+import itri.io.emulator.common.FileDirectoryFactory;
+import itri.io.emulator.common.Parameters;
 import itri.io.emulator.parameter.OperationInfo;
 import itri.io.emulator.parameter.Record;
-import itri.io.emulator.util.FileDirectoryFactory;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,12 +1,11 @@
 package itri.io.emulator.flusher;
 
-import itri.io.emulator.Parameters;
 import itri.io.emulator.cleaner.Filter;
-import itri.io.emulator.gen.FakeFileInfo;
+import itri.io.emulator.common.FileDirectoryFactory;
+import itri.io.emulator.common.Parameters;
+import itri.io.emulator.common.RandomTools;
 import itri.io.emulator.parameter.FileName;
 import itri.io.emulator.parameter.FileSize;
-import itri.io.emulator.util.FileDirectoryFactory;
-import itri.io.emulator.util.RandomTools;
 
 import java.io.File;
 import java.io.FileOutputStream;

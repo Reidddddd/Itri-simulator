@@ -1,7 +1,8 @@
-package itri.io.emulator.simulator;
+package itri.io.emulator.main;
 
-import itri.io.emulator.Configuration;
-import itri.io.emulator.Parameters;
+import itri.io.emulator.common.Configuration;
+import itri.io.emulator.common.Parameters;
+import itri.io.emulator.simulator.LogSimulator;
 
 public class SimulatorMain {
   public static void main(String[] args) throws Exception {

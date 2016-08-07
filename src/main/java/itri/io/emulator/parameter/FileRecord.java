@@ -1,7 +1,6 @@
 package itri.io.emulator.parameter;
 
-import itri.io.emulator.IndexInfo;
-import itri.io.emulator.util.FileDirectoryFactory;
+import itri.io.emulator.common.FileDirectoryFactory;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -22,15 +21,6 @@ public class FileRecord {
     records = new LinkedList<>();
   }
 
-  public void addRecord(String[] splited, IndexInfo info) {
-    records.addLast(new Record(splited[info.getOprIndex()], splited[info.getSeqNumIndex()],
-                               splited[info.getPreOpTimeIndex()], splited[info.getPostOpTimeIndex()],
-                               splited[info.getProcessThrdIndex()], splited[info.getIrpFlagIndex()],
-                               splited[info.getStatusIndex()], splited[info.getMajorOpIndex()],
-                               splited[info.getLengthIndex()], splited[info.getOffsetIndex()],
-                               splited[info.getNameIndex()]));
-  }
-
   public void addRecord(Record record) {
     records.addLast(record);
   }
@@ -42,7 +32,7 @@ public class FileRecord {
   public String getGroupName() {
     return groupName;
   }
-  
+
   public List<Record> getRecords() {
     return records;
   }
@@ -63,7 +53,7 @@ public class FileRecord {
       System.err.println(ie.getMessage());
     }
   }
-  
+
   @Override
   public String toString() {
     StringBuilder builder = new StringBuilder(groupName);

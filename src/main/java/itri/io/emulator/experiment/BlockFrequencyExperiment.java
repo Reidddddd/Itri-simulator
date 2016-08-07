@@ -2,7 +2,7 @@ package itri.io.emulator.experiment;
 
 import itri.io.emulator.cleaner.Filter;
 import itri.io.emulator.experiment.GraphExperimentsManager.Tuple;
-import itri.io.emulator.gen.FakeFileInfo;
+import itri.io.emulator.flusher.FakeFileInfo;
 import itri.io.emulator.parameter.FileName;
 import itri.io.emulator.parameter.FileSize;
 import itri.io.emulator.parameter.Record;
@@ -91,7 +91,7 @@ public class BlockFrequencyExperiment extends GraphExperiment {
     Arrays.sort(blocks, Collections.reverseOrder());
     /** Two prints are for debug usage. Please comment them out when put into production **/
     System.out.println("Blocks number: " + blocks.length);
-    System.out.println("Total Frequency: " + allFrequency);
+    System.out.println("Total read frequency: " + allFrequency);
     BlockFrequencyBarChat bfBarChat =
         new BlockFrequencyBarChat(EXPERIMENT_TITLE, blocks, allFrequency);
     bfBarChat.showGraph();
