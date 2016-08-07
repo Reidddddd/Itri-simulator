@@ -2,7 +2,6 @@ package itri.io.emulator.flusher;
 
 import itri.io.emulator.Parameters;
 import itri.io.emulator.cleaner.Filter;
-import itri.io.emulator.cleaner.IOLogCleaner.Tuple;
 import itri.io.emulator.parameter.FileRecord;
 import itri.io.emulator.parameter.Record;
 import itri.io.emulator.util.FileDirectoryFactory;
@@ -11,7 +10,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.commons.csv.CSVRecord;
 
@@ -34,6 +32,7 @@ public class ReplayLogFlusher extends Flusher {
 
   @Override
   public void update(Observable o, Object arg) {
+    if (arg == null) return;
     CSVRecord csvRecord = (CSVRecord) arg;
     for (Filter filter : filters) {
       if (!filter.filter(csvRecord)) return;

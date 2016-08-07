@@ -31,10 +31,11 @@ public class ExperimentMain {
     manager.addExperiment(blockFrequencyExperiment);
 
     manager.initialize();
-    System.out.println("Initialization is Done");
+    System.out.println("Pre process is done.");
     manager.run();
-    System.out.println("Run is Done");
+    System.out.println("Process is done.");
     manager.draw();
+    System.out.println("Post process is done.");
   }
 
   private static void addBlockFrequencyFilters(GraphExperiment experiment, Parameters params) {

@@ -33,6 +33,7 @@ public class LogSimulator {
     String previousFileName = "";
     RandomAccessFile rfile = null;
 
+    System.out.print("Start replay i/o operations. ");
     try (BufferedReader reader = new BufferedReader(new FileReader(replayLogs[0]))) {
       while ((line = reader.readLine()) != null) {
         String[] lines = line.split(":");
@@ -68,6 +69,6 @@ public class LogSimulator {
         e.printStackTrace();
       }
     }
-    System.out.println("Total time is: " + sumTime);
+    System.out.println("Replay total time is: " + sumTime);
   }
 }

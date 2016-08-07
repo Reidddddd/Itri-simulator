@@ -24,13 +24,14 @@ public class EmulatorMain {
     Parameters params = new Parameters(conf);
     try (IOLogCleaner cleaner = new IOLogCleaner(params, ColumnConstants.getColumnsHeader())) {
       addFlushers(cleaner, params);
+      System.out.println("Start generate replay log.");
       cleaner.clean();
-      System.exit(0);
-      LogSimulator simulator = new LogSimulator(params);
-      simulator.simulate();
     } catch (IOException e) {
       System.err.println(e.getMessage());
     }
+    LogSimulator simulator = new LogSimulator(params);
+    simulator.simulate();
+    System.out.println("Emulator is done.");
   }
 
   private static void addFlushers(IOLogCleaner cleaner, Parameters params) {
@@ -47,6 +48,7 @@ public class EmulatorMain {
     majorOpFilter.setFilterOptions(options);
     FakeFilesFlusher fakeFilesFlusher = new FakeFilesFlusher(params);
     fakeFilesFlusher.addFilter(majorOpFilter);
+    fakeFilesFlusher.addFilter(new KeywordFilter(params));
     cleaner.addFlusher(fakeFilesFlusher);
   }
 }

@@ -1,13 +1,10 @@
 package itri.io.emulator.flusher;
 
-import itri.io.emulator.ColumnConstants;
 import itri.io.emulator.Parameters;
 import itri.io.emulator.cleaner.Filter;
-import itri.io.emulator.cleaner.IOLogCleaner.Tuple;
 import itri.io.emulator.gen.FakeFileInfo;
 import itri.io.emulator.parameter.FileName;
 import itri.io.emulator.parameter.FileSize;
-import itri.io.emulator.parameter.MajorOp;
 import itri.io.emulator.util.FileDirectoryFactory;
 import itri.io.emulator.util.RandomTools;
 
@@ -17,7 +14,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
-import java.util.Observer;
 
 import org.apache.commons.csv.CSVRecord;
 
@@ -39,6 +35,10 @@ public class FakeFilesFlusher extends Flusher {
 
   @Override
   public void update(Observable o, Object arg) {
+    if (arg == null) {
+      flush();
+      return;
+    }
     CSVRecord record = (CSVRecord) arg;
     for (Filter filter : filters) {
       if (!filter.filter(record)) return;
@@ -53,7 +53,7 @@ public class FakeFilesFlusher extends Flusher {
 
   @Override
   public void flush() {
-    System.out.println("Start generating fake files.");
+    System.out.println("Start generate fake files.");
     for (Map.Entry<FileName, FileSize> entry : fileMaxSize.entrySet()) {
       String absPath =
           fakeFilesDir + File.separator
@@ -78,6 +78,5 @@ public class FakeFilesFlusher extends Flusher {
         ioe.printStackTrace();
       }
     }
-    System.out.println("Fake files are done");
   }
 }

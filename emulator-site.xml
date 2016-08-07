@@ -15,7 +15,7 @@
 
 	<property>
 		<name>emulator.io.log.location</name>
-		<value>/home/reidchan/Desktop/FilterResult.csv</value>
+		<value>/home/reidchan/Desktop/log.csv</value>
 		<description>The I/O Log location. It’s the output location for
 			extractor and input location for cleaner.
 		</description>
@@ -67,7 +67,7 @@
 
 	<property>
 		<name>emulator.keyword.filter</name>
-		<value>\Device\HarddiskVolume2\Users\test\AppData\Local\Temp\WB_TEST-PC1_test_4636_2\_ProjectScratch\</value>
+		<value>\Device\HarddiskVolume2\Users\test\AppData\Local\Temp\WB_TEST-PC1_test_9036_2\_ProjectScratch\</value>
 		<description>Operation contains the specified keyword can pass the
 			keyword filter.
 		</description>
