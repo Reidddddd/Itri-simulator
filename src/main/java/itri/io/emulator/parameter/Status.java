@@ -22,37 +22,55 @@ public class Status {
   private boolean isError;
 
   public Status(String status) {
-    isSuccess     = (status.compareTo(NT_INFORMATION) <= 0 && 
-                     status.compareTo(NT_NULL) >= 0) ? true : false;
-    isInformation = (status.compareTo(NT_INFORMATION) <= 0 && 
-                     status.compareTo(NT_SUCCESS) > 0) ? true : false;
-    isWarning     = (status.compareTo(NT_WARNING) <= 0 && 
-                     status.compareTo(NT_INFORMATION) > 0) ? true : false;
-    isError       = (status.compareTo(NT_ERROR) <= 0 && 
-                     status.compareTo(NT_WARNING) > 0) ? true : false;
+    if (!isParsable(status)) return;
+    isSuccess =
+        compare(status, NT_INFORMATION) <= 0 && compare(status, NT_NULL) >= 0 ? true : false;
+    isInformation =
+        compare(status, NT_INFORMATION) <= 0 && compare(status, NT_SUCCESS) > 0 ? true : false;
+    isWarning =
+        compare(status, NT_WARNING) <= 0 && compare(status, NT_INFORMATION) > 0 ? true : false;
+    isError = compare(status, NT_ERROR) <= 0 && compare(status, NT_WARNING) > 0 ? true : false;
   }
 
   public static FilterOption.StatusOption getStatusOption(String statu) {
     FilterOption.StatusOption statuOption;
     switch (statu.toUpperCase()) {
-      case SUCCESS: statuOption = FilterOption.StatusOption.SUCCESS; break;
-      case WARNING: statuOption = FilterOption.StatusOption.WARNING; break;
-      case ERROR: statuOption = FilterOption.StatusOption.ERROR; break;
-      default: statuOption = FilterOption.StatusOption.SUCCESS; break;
+      case SUCCESS:
+        statuOption = FilterOption.StatusOption.SUCCESS;
+        break;
+      case WARNING:
+        statuOption = FilterOption.StatusOption.WARNING;
+        break;
+      case ERROR:
+        statuOption = FilterOption.StatusOption.ERROR;
+        break;
+      default:
+        statuOption = FilterOption.StatusOption.NONE;
+        break;
     }
     return statuOption;
   }
 
   public static boolean isSuccess(String status) {
-    return (status.compareTo(NT_INFORMATION) <= 0 && status.compareTo(NT_NULL) >= 0);
+    if (!isParsable(status)) return false;
+    return compare(status, NT_INFORMATION) <= 0 && compare(status, NT_NULL) >= 0;
   }
 
   public static boolean isWarning(String status) {
-    return (status.compareTo(NT_WARNING) <= 0 && status.compareTo(NT_INFORMATION) > 0);
+    if (!isParsable(status)) return false;
+    return compare(status, NT_WARNING) <= 0 && compare(status, NT_INFORMATION) > 0;
   }
 
   public static boolean isError(String status) {
-    return (status.compareTo(NT_ERROR) <= 0 && status.compareTo(NT_WARNING) > 0);
+    if (!isParsable(status)) return false;
+    return compare(status, NT_ERROR) <= 0 && compare(status, NT_WARNING) > 0;
+  }
+
+  private static boolean isParsable(String status) {
+    return status.startsWith("0x") || status.startsWith("0X");
+  }
+  private static int compare(String left, String right) {
+    return Long.compare(Long.decode(left), Long.decode(right));
   }
 
   public boolean isSuccess() {
@@ -75,6 +93,6 @@ public class Status {
   public String toString() {
     if (isWarning) return WARNING;
     if (isError) return ERROR;
-    return SUCCESS ;
+    return SUCCESS;
   }
 }

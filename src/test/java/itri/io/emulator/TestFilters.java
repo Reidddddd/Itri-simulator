@@ -2,15 +2,15 @@ package itri.io.emulator;
 
 import itri.io.emulator.cleaner.DefaultFilter;
 import itri.io.emulator.cleaner.Filter;
+import itri.io.emulator.cleaner.FilterOption.IrpOption;
+import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
+import itri.io.emulator.cleaner.FilterOption.OprOption;
+import itri.io.emulator.cleaner.FilterOption.StatusOption;
 import itri.io.emulator.cleaner.IrpFlagFilter;
 import itri.io.emulator.cleaner.KeywordFilter;
 import itri.io.emulator.cleaner.MajorOpFilter;
 import itri.io.emulator.cleaner.OperationTypeFilter;
 import itri.io.emulator.cleaner.StatusFilter;
-import itri.io.emulator.cleaner.FilterOption.IrpOption;
-import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
-import itri.io.emulator.cleaner.FilterOption.OprOption;
-import itri.io.emulator.cleaner.FilterOption.StatusOption;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +29,7 @@ public class TestFilters {
   private Filter filter;
   private static Parameters params;
   private static CSVParser parser;
+  private static List<CSVRecord> records;
 
   @BeforeClass
   public static void initialize() throws Exception {
@@ -37,6 +38,7 @@ public class TestFilters {
     parser =
         CSVParser.parse(new File("test.csv"), Charset.defaultCharset(),
           CSVFormat.DEFAULT.withHeader(ColumnConstants.getColumnsHeader()));
+    records = parser.getRecords();
   }
 
   @Test
@@ -106,14 +108,17 @@ public class TestFilters {
   @Test
   public void testDefaultFilter() throws IOException {
     filter = new DefaultFilter();
-    Assert.assertTrue(passedRecords(filter) == 10);
+    Assert.assertTrue(passedRecords(filter) == 11);
   }
 
   private int passedRecords(Filter filter) throws IOException {
     int passed = 0;
-    List<CSVRecord> records = parser.getRecords();
     for (CSVRecord record : records) {
-      if (filter.filter(record)) passed++;
+      System.out.println(record.get(ColumnConstants.IRP_FLAGS));
+      if (filter.filter(record)) {
+        passed++;
+        System.out.println(passed + " " + record.get(ColumnConstants.IRP_FLAGS));
+      }
     }
     return passed;
   }
