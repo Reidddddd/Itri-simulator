@@ -17,7 +17,7 @@ import itri.io.emulator.common.Parameters;
 import itri.io.emulator.cleaner.Filter;
 
 public class FilterLogFlusher extends Flusher {
-	private static CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator('\n');
+	private static CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator("\r\n").withHeader(ColumnConstants.getColumnsHeader());
 	private static FileWriter fileWriter = null;
 	private static CSVPrinter csvPrinter = null;
 
@@ -26,23 +26,23 @@ public class FilterLogFlusher extends Flusher {
 	private int currentSize;
 
 	public FilterLogFlusher(Parameters params) {
+		super();
 		this.logPath = params.getIOLogInputLocation();
 		this.bufferSize = params.getBufferSize();
 		this.currentSize = 0;
 		open();
 	}
 
-	public void open() {
+	private void open() {
 		try {
 			fileWriter = new FileWriter(logPath + "filter");
 			csvPrinter = new CSVPrinter(fileWriter, csvFormat);
-			csvPrinter.printRecords(ColumnConstants.getColumnsHeader());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void close() {
+	private void close() {
 		try {
 			fileWriter.close();
 			csvPrinter.close();
@@ -85,10 +85,11 @@ public class FilterLogFlusher extends Flusher {
 			e.printStackTrace();
 		}
 	}
-	public void deleteAndRename(){
+
+	private void deleteAndRename() {
 		File file = new File(logPath);
 		file.delete();
-		File toBeRenamedFile = new File(logPath+"filter");
+		File toBeRenamedFile = new File(logPath + "filter");
 		toBeRenamedFile.renameTo(file);
 	}
 
