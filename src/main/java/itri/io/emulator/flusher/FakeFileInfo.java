@@ -1,7 +1,6 @@
-package itri.io.emulator.gen;
+package itri.io.emulator.flusher;
 
-import itri.io.emulator.ColumnConstants;
-import itri.io.emulator.IndexInfo;
+import itri.io.emulator.common.ColumnConstants;
 import itri.io.emulator.parameter.FileName;
 import itri.io.emulator.parameter.FileSize;
 
@@ -13,11 +12,6 @@ import org.apache.commons.csv.CSVRecord;
 public class FakeFileInfo {
   private FileName fileName;
   private FileSize maxSize;
-
-  public FakeFileInfo(String[] splited, IndexInfo info) {
-    this.fileName = new FileName(splited[info.getNameIndex()]);
-    this.maxSize = new FileSize(splited[info.getOffsetIndex()], splited[info.getLengthIndex()]);
-  }
 
   public FakeFileInfo(String fileName, long offset, int length) {
     this.fileName = new FileName(fileName);

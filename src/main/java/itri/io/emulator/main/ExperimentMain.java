@@ -1,8 +1,5 @@
-package itri.io.emulator.experiment;
+package itri.io.emulator.main;
 
-import itri.io.emulator.ColumnConstants;
-import itri.io.emulator.Configuration;
-import itri.io.emulator.Parameters;
 import itri.io.emulator.cleaner.FilterOption.IrpOption;
 import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
 import itri.io.emulator.cleaner.FilterOption.OprOption;
@@ -12,6 +9,12 @@ import itri.io.emulator.cleaner.KeywordFilter;
 import itri.io.emulator.cleaner.MajorOpFilter;
 import itri.io.emulator.cleaner.OperationTypeFilter;
 import itri.io.emulator.cleaner.StatusFilter;
+import itri.io.emulator.common.ColumnConstants;
+import itri.io.emulator.common.Configuration;
+import itri.io.emulator.common.Parameters;
+import itri.io.emulator.experiment.BlockFrequencyExperiment;
+import itri.io.emulator.experiment.GraphExperiment;
+import itri.io.emulator.experiment.GraphExperimentsManager;
 
 public class ExperimentMain {
   public static void main(String[] args) throws Exception {
@@ -31,10 +34,11 @@ public class ExperimentMain {
     manager.addExperiment(blockFrequencyExperiment);
 
     manager.initialize();
-    System.out.println("Initialization is Done");
+    System.out.println("Pre process is done.");
     manager.run();
-    System.out.println("Run is Done");
+    System.out.println("Process is done.");
     manager.draw();
+    System.out.println("Post process is done.");
   }
 
   private static void addBlockFrequencyFilters(GraphExperiment experiment, Parameters params) {

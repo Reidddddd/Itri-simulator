@@ -1,5 +1,7 @@
 package itri.io.emulator;
 
+import itri.io.emulator.common.Configuration;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +48,7 @@ public class TestConfiguration {
     Assert.assertArrayEquals(conf.getStrings(FILTER_STATUS), status);
     String[] names = { "d:\\download\\test" };
     Assert.assertArrayEquals(conf.getStrings(FILTER_NAME), names);
-    String[] pids = { "146", "258" };
+    String[] pids = { "111c", "4" };
     Assert.assertArrayEquals(conf.getStrings(FILTER_PROCESS), pids);
   }
 

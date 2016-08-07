@@ -1,5 +1,7 @@
 package itri.io.emulator;
 
+import itri.io.emulator.common.ColumnConstants;
+
 import org.junit.Assert;
 import org.junit.Test;
 

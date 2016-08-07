@@ -1,4 +1,4 @@
-package itri.io.emulator;
+package itri.io.emulator.common;
 
 public class ColumnConstants {
   public final static String OPR = "Opr";

@@ -1,10 +1,9 @@
 package itri.io.emulator.parameter;
 
-import org.apache.commons.csv.CSVRecord;
-
-import itri.io.emulator.ColumnConstants;
-import itri.io.emulator.IndexInfo;
+import itri.io.emulator.common.ColumnConstants;
 import itri.io.emulator.parameter.MajorOp.OpType;
+
+import org.apache.commons.csv.CSVRecord;
 
 /**
  * Basic unit in replay log.
@@ -49,15 +48,6 @@ public class Record {
     } else if (MajorOp.isWriteOp(majorOp)) {
       this.operationInfo = new OperationInfo(OpType.WRITE, offset, length, irpFlag);
     }
-  }
-
-  public Record(String[] splited, IndexInfo info) {
-    this(splited[info.getOprIndex()], splited[info.getSeqNumIndex()],
-      splited[info.getPreOpTimeIndex()], splited[info.getPostOpTimeIndex()],
-      splited[info.getProcessThrdIndex()], splited[info.getIrpFlagIndex()],
-      splited[info.getStatusIndex()], splited[info.getMajorOpIndex()],
-      splited[info.getLengthIndex()], splited[info.getOffsetIndex()],
-      splited[info.getNameIndex()]);
   }
 
   public Record(CSVRecord csvRecord) {

@@ -1,5 +1,8 @@
 package itri.io.emulator;
 
+import itri.io.emulator.common.Configuration;
+import itri.io.emulator.common.Parameters;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -32,7 +35,7 @@ public class TestParameters {
     Assert.assertArrayEquals(params.getStatusNames(), status);
     String[] names = { "d:\\download\\test" };
     Assert.assertArrayEquals(params.getKeyWordNames(), names);
-    String[] pids = { "146", "258" };
+    String[] pids = { "111c", "4" };
     Assert.assertArrayEquals(params.getProcessNames(), pids);
   }
 

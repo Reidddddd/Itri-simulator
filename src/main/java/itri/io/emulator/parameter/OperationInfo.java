@@ -23,23 +23,23 @@ public class OperationInfo {
     }
     this.irpFlag = irpFlag;
   }
-  
+
   public OperationInfo() {
   }
-  
+
   public void setOpType(String opType) {
     if (MajorOp.isRead(opType)) this.opType = OpType.READ;
     else if (MajorOp.isWrite(opType)) this.opType = OpType.WRITE;
   }
-  
+
   public void setOffset(String offset) {
     this.offset = Long.valueOf(offset);
   }
-  
+
   public void setLength(String length) {
     this.length = Integer.valueOf(length);
   }
-  
+
   public void setIrpFlag(String irpFlag) {
     this.irpFlag = irpFlag;
   }

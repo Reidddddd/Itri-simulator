@@ -75,7 +75,7 @@
 
 	<property>
 		<name>emulator.process.filter</name>
-		<value>146,258</value>
+		<value>111c,4</value>
 		<description>Process id of wanted exe.</description>
 	</property>
 

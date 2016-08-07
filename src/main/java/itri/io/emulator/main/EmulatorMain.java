@@ -1,10 +1,18 @@
-package itri.io.emulator.cleaner;
+package itri.io.emulator.main;
 
-import itri.io.emulator.ColumnConstants;
-import itri.io.emulator.Configuration;
-import itri.io.emulator.Parameters;
 import itri.io.emulator.cleaner.FilterOption.MajorOpOption;
+import itri.io.emulator.cleaner.IOLogCleaner;
+import itri.io.emulator.cleaner.IrpFlagFilter;
+import itri.io.emulator.cleaner.KeywordFilter;
+import itri.io.emulator.cleaner.MajorOpFilter;
+import itri.io.emulator.cleaner.OperationTypeFilter;
+import itri.io.emulator.cleaner.ProcessFilter;
+import itri.io.emulator.cleaner.StatusFilter;
+import itri.io.emulator.common.ColumnConstants;
+import itri.io.emulator.common.Configuration;
+import itri.io.emulator.common.Parameters;
 import itri.io.emulator.flusher.FakeFilesFlusher;
+import itri.io.emulator.flusher.FilterLogFlusher;
 import itri.io.emulator.flusher.ReplayLogFlusher;
 import itri.io.emulator.simulator.LogSimulator;
 
@@ -24,13 +32,14 @@ public class EmulatorMain {
     Parameters params = new Parameters(conf);
     try (IOLogCleaner cleaner = new IOLogCleaner(params, ColumnConstants.getColumnsHeader())) {
       addFlushers(cleaner, params);
+      System.out.println("Start generate replay log.");
       cleaner.clean();
-      System.exit(0);
-      LogSimulator simulator = new LogSimulator(params);
-      simulator.simulate();
     } catch (IOException e) {
       System.err.println(e.getMessage());
     }
+    LogSimulator simulator = new LogSimulator(params);
+    simulator.simulate();
+    System.out.println("Emulator is done.");
   }
 
   private static void addFlushers(IOLogCleaner cleaner, Parameters params) {
@@ -47,6 +56,11 @@ public class EmulatorMain {
     majorOpFilter.setFilterOptions(options);
     FakeFilesFlusher fakeFilesFlusher = new FakeFilesFlusher(params);
     fakeFilesFlusher.addFilter(majorOpFilter);
+    fakeFilesFlusher.addFilter(new KeywordFilter(params));
     cleaner.addFlusher(fakeFilesFlusher);
+    
+    FilterLogFlusher filterLogFlusher = new FilterLogFlusher(params);
+    filterLogFlusher.addFilter(new ProcessFilter(params));
+    cleaner.addFlusher(filterLogFlusher);
   }
 }
