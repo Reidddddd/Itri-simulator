@@ -29,7 +29,6 @@ public class FilterLogFlusher extends Flusher {
 		this.logPath = params.getIOLogInputLocation();
 		this.bufferSize = params.getBufferSize();
 		this.currentSize = 0;
-
 		open();
 	}
 
@@ -39,7 +38,6 @@ public class FilterLogFlusher extends Flusher {
 			csvPrinter = new CSVPrinter(fileWriter, csvFormat);
 			csvPrinter.printRecords(ColumnConstants.getColumnsHeader());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -49,7 +47,6 @@ public class FilterLogFlusher extends Flusher {
 			fileWriter.close();
 			csvPrinter.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -70,7 +67,6 @@ public class FilterLogFlusher extends Flusher {
 		try {
 			csvPrinter.printRecord(record);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (++currentSize > bufferSize) {
@@ -85,7 +81,6 @@ public class FilterLogFlusher extends Flusher {
 		try {
 			csvPrinter.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
