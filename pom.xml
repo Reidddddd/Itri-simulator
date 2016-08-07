@@ -56,7 +56,7 @@
           </descriptorRefs> 
           <archive>
             <manifest>
-              <mainClass>itri.io.emulator.Main</mainClass>
+              <mainClass>itri.io.emulator.main.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
