@@ -14,7 +14,7 @@ public class ProcessFilter extends Filter {
 	@Override
 	public boolean filter(CSVRecord record) {
 		for (String name : processNames) {
-			if (record.get(ColumnConstants.PROCESS_THRD).contains(name))
+			if (record.get(ColumnConstants.PROCESS_THRD).contains(name+'.'))
 				return true;
 		}
 
