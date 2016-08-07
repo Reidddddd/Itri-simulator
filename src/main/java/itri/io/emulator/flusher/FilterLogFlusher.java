@@ -56,6 +56,7 @@ public class FilterLogFlusher extends Flusher {
 	public void update(Observable o, Object arg) {
 		if (arg == null) {
 			flush();
+			close();
 			deleteAndRename();
 			return;
 		}
