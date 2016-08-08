@@ -48,10 +48,13 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
       Iterator<CSVRecord> iter = parser.iterator();
       CSVRecord record;
       while (iter.hasNext()) {
-        record = iter.next();
-        // All records are passed to Flusher.
-        setChanged();
-        notifyObservers(record);
+    	  record = iter.next();
+    	  if (record.size() == 20){
+    	      // All records are passed to Flusher.
+    	      setChanged();
+    	      notifyObservers(record);
+    	  }
+       
       }
     } catch (IOException e) {
       System.err.println(e.getMessage());

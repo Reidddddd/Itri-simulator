@@ -17,9 +17,10 @@ import itri.io.emulator.common.Parameters;
 import itri.io.emulator.cleaner.Filter;
 
 public class FilterLogFlusher extends Flusher {
-	private static CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator("\r\n").withHeader(ColumnConstants.getColumnsHeader());
-	private static FileWriter fileWriter = null;
-	private static CSVPrinter csvPrinter = null;
+	private static CSVFormat csvFormat = CSVFormat.DEFAULT.withRecordSeparator("\r\n")
+			.withHeader(ColumnConstants.getColumnsHeader());
+	private FileWriter fileWriter = null;
+	private CSVPrinter csvPrinter = null;
 
 	private String logPath;
 	private int bufferSize;
@@ -34,22 +35,27 @@ public class FilterLogFlusher extends Flusher {
 	}
 
 	private void open() {
-		try {
-			fileWriter = new FileWriter(logPath + "filter");
-			csvPrinter = new CSVPrinter(fileWriter, csvFormat);
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (fileWriter == null && csvPrinter == null) {
+			try {
+				fileWriter = new FileWriter(logPath + "filter");
+				csvPrinter = new CSVPrinter(fileWriter, csvFormat);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+
 	}
 
 	private void close() {
-		try {
-			fileWriter.close();
-			csvPrinter.close();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (fileWriter != null && csvPrinter != null){
+			try {
+				fileWriter.close();
+				csvPrinter.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-
+		
 	}
 
 	@Override
@@ -74,15 +80,16 @@ public class FilterLogFlusher extends Flusher {
 			flush();
 			currentSize = 0;
 		}
-
 	}
 
 	@Override
 	public void flush() {
-		try {
-			csvPrinter.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (csvPrinter != null) {
+			try {
+				csvPrinter.flush();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

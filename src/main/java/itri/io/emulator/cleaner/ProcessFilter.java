@@ -4,11 +4,12 @@ import itri.io.emulator.common.ColumnConstants;
 import itri.io.emulator.common.Parameters;
 import org.apache.commons.csv.CSVRecord;
 
-public class ProcessFilter extends Filter {
-
 /**
  * Process Filter
  */
+public class ProcessFilter extends Filter {
+
+
 	private String[] processNames;
 
 	public ProcessFilter(Parameters params) {
