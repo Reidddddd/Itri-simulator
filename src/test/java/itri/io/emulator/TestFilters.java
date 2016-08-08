@@ -41,7 +41,8 @@ public class TestFilters {
     params = new Parameters(conf);
     parser =
         CSVParser.parse(new File("test.csv"), Charset.defaultCharset(),
-          CSVFormat.DEFAULT.withHeader(ColumnConstants.getColumnsHeader()));
+          CSVFormat.DEFAULT.withHeader());
+    //ColumnConstants.getColumnsHeader()
     records = parser.getRecords();
   }
 
@@ -88,21 +89,21 @@ public class TestFilters {
   @Test
   public void testKeywordFilter() throws IOException {
     filter = new KeywordFilter(params);
-    Assert.assertTrue(passedRecords(filter) == 8);
-    filter.setFilterOptions(new String[] { "d:\\download\\test2\\" });
+    Assert.assertTrue(passedRecords(filter) == 10);
+    filter.setFilterOptions(new String[] { "d:\\download\\test2" });
     Assert.assertTrue(passedRecords(filter) == 2);
-    filter.setFilterOptions(new String[] { "d:\\download\\test\\", "d:\\download\\test2\\" });
+    filter.setFilterOptions(new String[] { "d:\\download\\test", "d:\\download\\test2" });
     Assert.assertTrue(passedRecords(filter) == 10);
   }
 
   @Test
   public void testProcessFilter() throws IOException {
     filter = new ProcessFilter(params);
-    Assert.assertTrue(passedRecords(filter) == 9);
+    Assert.assertTrue(passedRecords(filter) == 10);
     filter.setFilterOptions(new String[] { "111c" });
     Assert.assertTrue(passedRecords(filter) == 9);
     filter.setFilterOptions(new String[] { "4" });
-    Assert.assertTrue(passedRecords(filter) == 2);
+    Assert.assertTrue(passedRecords(filter) == 1);
   }
 
   @Test
@@ -114,11 +115,11 @@ public class TestFilters {
     filter.setFilterOptions(new IrpOption[] { IrpOption.CACHED });
     Assert.assertTrue(passedRecords(filter) == 7);
     filter.setFilterOptions(new IrpOption[] { IrpOption.SYNC_API });
-    Assert.assertTrue(passedRecords(filter) == 6);
+    Assert.assertTrue(passedRecords(filter) == 7);
     filter.setFilterOptions(new IrpOption[] { IrpOption.PAGING_IO });
     Assert.assertTrue(passedRecords(filter) == 3);
     filter.setFilterOptions(new IrpOption[] { IrpOption.SYNC_PAGING_IO });
-    Assert.assertTrue(passedRecords(filter) == 2);
+    Assert.assertTrue(passedRecords(filter) == 1);
   }
 
   @Test

@@ -67,7 +67,7 @@
 
 	<property>
 		<name>emulator.keyword.filter</name>
-		<value>d:\download\test\</value>
+		<value>d:\download\test</value>
 		<description>Operation contains the specified keyword can pass the
 			keyword filter.
 		</description>
