@@ -79,6 +79,7 @@ public class BlockFrequencyExperiment extends GraphExperiment {
       allSize += entry.getValue().getBlocksSize();
     }
     BlockWithFrequency[] blocks = new BlockWithFrequency[allSize];
+    System.out.println("allSize: " + allSize);
     int copyIndex = 0;
     int copyLength = 0;
     long allFrequency = 0;

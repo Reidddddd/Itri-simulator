@@ -78,6 +78,9 @@ public class Record {
   public int getLength() {
     return this.operationInfo.getLength();
   }
+  public TimeRanger getRanger(){
+	return ranger;
+  }
 
   @Override
   public String toString() {
