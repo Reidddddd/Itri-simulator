@@ -13,6 +13,7 @@ import itri.io.emulator.common.ColumnConstants;
 import itri.io.emulator.common.Configuration;
 import itri.io.emulator.common.Parameters;
 import itri.io.emulator.experiment.BlockFrequencyExperiment;
+import itri.io.emulator.experiment.BlockTemporalLocalityExperiment;
 import itri.io.emulator.experiment.GraphExperiment;
 import itri.io.emulator.experiment.GraphExperimentsManager;
 
@@ -28,10 +29,14 @@ public class ExperimentMain {
 
     BlockFrequencyExperiment blockFrequencyExperiment = new BlockFrequencyExperiment();
     addBlockFrequencyFilters(blockFrequencyExperiment, params);
-
+    
+    //block temporal locality experiment
+    BlockTemporalLocalityExperiment blockTemporalLocalityExperiment = new BlockTemporalLocalityExperiment();
+    addBlockFrequencyFilters(blockTemporalLocalityExperiment, params);
+    
     GraphExperimentsManager manager =
         new GraphExperimentsManager(params, ColumnConstants.getColumnsHeader());
-    manager.addExperiment(blockFrequencyExperiment);
+    manager.addExperiment(blockTemporalLocalityExperiment);
 
     manager.initialize();
     System.out.println("Pre process is done.");

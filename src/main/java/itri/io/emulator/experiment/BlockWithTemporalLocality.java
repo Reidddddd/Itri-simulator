@@ -23,11 +23,15 @@ public class BlockWithTemporalLocality extends Block implements Comparable<Block
 		
 		if (accessCount > 0) {
 			long interval = nowTime - lastAccessTime;
+			
+			avgIntervalTime = avgIntervalTime + (nowTime - lastAccessTime - avgIntervalTime) / accessCount;
 			lastAccessTime = nowTime;
-			avgIntervalTime = avgIntervalTime + (nowTime - avgIntervalTime) / accessCount;
 		} else
 			lastAccessTime = nowTime;
 		accessCount++;
+	}
+	public String toString(){
+		return "accessCount: " + accessCount+" lastAccessTime: "+lastAccessTime +" avgIntervalTime: "+ avgIntervalTime;
 	}
 	@Override
 	 public int compareTo(BlockWithTemporalLocality o) {

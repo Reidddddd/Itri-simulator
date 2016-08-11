@@ -150,15 +150,19 @@ public class BlockFrequencyExperiment extends GraphExperiment {
       for (int i = 0; i < 100; i++) {
         percentage += 0.01f;
         if (percentage > 0.99f) percentage = 1.0f;
-        while (percentageFreq < (int) (allFrequency * percentage)) {
+//        System.out.println(percentage);
+//    	System.out.println(allFrequency * percentage);
+        while (percentageFreq <= (int) (allFrequency * percentage)) {
           if (blockIndex < blocks.length) {
             percentageFreq += blocks[blockIndex++].getFrequency();
           } else {
             break;
           }
         }
+        System.out.println(percentageFreq);
         nums[i] = blockIndex + 1;
       }
+      System.out.println(blockIndex);
       return nums;
     }
 
