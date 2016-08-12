@@ -9,6 +9,7 @@ import java.util.Observable;
 import org.apache.commons.csv.CSVRecord;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -117,6 +118,7 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 		    chartPanel.setFillZoomRectangle(true);
 		    chartPanel.setMouseWheelEnabled(false);
 		    setContentPane(chartPanel);
+//		    ChartUtilities.saveChartAsJPEG
 		}
 		private JFreeChart createChart(CategoryDataset dataset) {
 		      JFreeChart chart =
@@ -126,32 +128,40 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 		
 		private CategoryDataset createDataset(BlockWithTemporalLocality[] blocks) {
 		      int[] blockNums = createBlockNumbers(blocks);
-		      String[] categories = createCategories();
+		      String[] categories = createCategories(blocks);
 
 		      DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		      for (int i = 0; i < 20; i++) {
+		      for (int i = 0; i < 50; i++) {
 		        dataset.addValue(blockNums[i], "", categories[i]);
 		      }
 		      return dataset;
 		}
 		private int[] createBlockNumbers(BlockWithTemporalLocality[] blocks) {
 			  long maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
-			  int [] nums = new int[20];
+			  int [] nums = new int[50];
 			  System.out.println("maxAvgIntervalTime: "+maxAvgIntervalTime);
 			  System.out.println("allSize: "+blocks.length);
 		      long percentage = 0;
 		      int blockIndex = 0;
 		      int currentNum = 0;
 		      while (blocks[blockIndex].getAvgIntervalTime() == 0){
-		    	  if (blocks[blockIndex].getAccessCount() == 1)
-		    		  System.out.println("*****"+blocks[blockIndex]);
+//		    	  if (blocks[blockIndex].getAccessCount() == 1)
+//		    		  System.out.println("*****"+blocks[blockIndex]);
 		    	  blockIndex++;
 		      }
+		      
 		      System.out.println(blockIndex);
-		      for ( int i = 0; i < 20; i++){
-		    	  percentage += 5;
-		    	  System.out.println(maxAvgIntervalTime * percentage/100);
-		    	  while (blocks[blockIndex++].getAvgIntervalTime() <= (maxAvgIntervalTime * percentage/100)){
+		      System.out.println(blocks[4321026]);
+		      
+		      System.out.println(blocks[blockIndex]);
+		      System.out.println(blocks[blockIndex+1]);
+		      System.out.println(blocks[blockIndex+20000]);
+		      System.out.println(blocks[blockIndex+50000]);
+		      System.out.println(blocks[blockIndex+1000000]);
+		      for ( int i = 0; i < 50; i++){
+		    	  percentage += 2;
+//		    	  System.out.println(maxAvgIntervalTime * percentage/100);
+		    	  while (blocks[blockIndex++].getAvgIntervalTime() <= (maxAvgIntervalTime * percentage / 100 / (1000*60))){
 		    		  if (blockIndex < blocks.length)
 		    			  currentNum++;
 		    		  else
@@ -162,10 +172,15 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 		      return nums;
 		}
 		
-		private String[] createCategories() {
-		      String[] categories = new String[20];
-		      for (int i = 0; i < 20; i++) {
-		        categories[i] = (i + 1) + "%";
+		private String[] createCategories(BlockWithTemporalLocality[] blocks) {
+			  long maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
+		      String[] categories = new String[50];
+		      long percentage = 0;
+		      
+		      
+		      for (int i = 0; i < 50; i++) {
+		    	percentage += 2;
+		        categories[i] = ""+maxAvgIntervalTime * percentage / 100 / (1000 * 60);
 		      }
 		      return categories;
 		}

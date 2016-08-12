@@ -145,24 +145,24 @@ public class BlockFrequencyExperiment extends GraphExperiment {
     private int[] createBlockNumbers(BlockWithFrequency[] blocks, long allFrequency) {
       int[] nums = new int[100];
       long percentageFreq = 0;
-      float percentage = 0.0f;
+      long percentage = 0;
       int blockIndex = 0;
       for (int i = 0; i < 100; i++) {
-        percentage += 0.01f;
-        if (percentage > 0.99f) percentage = 1.0f;
-//        System.out.println(percentage);
+        percentage += 1;
+//      if (percentage > 0.99f) percentage = 1.0f;
+//      System.out.println(percentage);
 //    	System.out.println(allFrequency * percentage);
-        while (percentageFreq <= (int) (allFrequency * percentage)) {
+        while (percentageFreq <= (int) (allFrequency * percentage / 100)) {
           if (blockIndex < blocks.length) {
             percentageFreq += blocks[blockIndex++].getFrequency();
           } else {
             break;
           }
         }
-        System.out.println(percentageFreq);
+//        System.out.println(percentageFreq);
         nums[i] = blockIndex + 1;
       }
-      System.out.println(blockIndex);
+//      System.out.println(blockIndex);
       return nums;
     }
 
