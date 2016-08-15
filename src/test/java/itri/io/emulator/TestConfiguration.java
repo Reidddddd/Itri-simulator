@@ -13,7 +13,8 @@ public class TestConfiguration {
   private final static String LOG_PATH = "emulator.io.log.location";
   private final static String OUTPUT_DIR = "emulator.replay.log.location";
   private final static String MODFILE_DIR = "emulator.fake.file.location";
-
+  private final static String EXPERIMENT_OUTPUT_PATH = "emulator.experiment.output.location";
+  
   // Filter
   private final static String FILTER_NAME = "emulator.keyword.filter";
   private final static String FILTER_IRP = "emulator.irp.filter";
@@ -34,6 +35,7 @@ public class TestConfiguration {
     Assert.assertTrue(conf.get(LOG_PATH).equals("d:\\download"));
     Assert.assertTrue(conf.get(OUTPUT_DIR).equals("d:\\download\\replay"));
     Assert.assertTrue(conf.get(MODFILE_DIR).equals("/home/reidchan/desktop"));
+    Assert.assertTrue(conf.get(EXPERIMENT_OUTPUT_PATH).equals("G:"));
   }
 
   @Test

@@ -2,9 +2,10 @@ package itri.io.emulator.experiment;
 
 import itri.io.emulator.parameter.FileSize;
 
-public class BlockFrequencyManager {
+public class BlockFrequencyManager implements Comparable<BlockFrequencyManager>{
   private BlockWithFrequency[] blocks;
-
+  private long totalFrequency;
+  
   public BlockFrequencyManager(FileSize size) {
     int len = (int) (size.getSize() / Block.UNIT_4K);
     len = (int) (size.getSize() % Block.UNIT_4K == 0 ? len : len + 1);
@@ -12,6 +13,7 @@ public class BlockFrequencyManager {
     for (int i = 0; i < blocks.length; i++) {
       blocks[i] = new BlockWithFrequency(i);
     }
+    totalFrequency = 0;
   }
 
   public void updateBlocksFrequency(long offset, int length) {
@@ -21,6 +23,7 @@ public class BlockFrequencyManager {
     if (remainder == 0) endBlock--;
     for (int i = startBlock; i <= endBlock; i++) {
       blocks[i].updateFrequency();
+      totalFrequency++;
     }
   }
 
@@ -38,5 +41,13 @@ public class BlockFrequencyManager {
       fre += blc.getFrequency();
     }
     return fre;
+  }
+  public long getTotalFrequency(){
+	return totalFrequency;
+  }
+
+  @Override
+  public int compareTo(BlockFrequencyManager o) {
+    return Long.compare(this.getTotalFrequency(), o.getTotalFrequency());
   }
 }

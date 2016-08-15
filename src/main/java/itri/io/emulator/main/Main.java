@@ -16,7 +16,7 @@ public class Main {
     String function = args[0];
     String[] otherArgs = { args[1] };
     switch (function.toUpperCase()) {
-      case FILTER: break;
+      case FILTER: FilterMain.main(otherArgs);break;
       case EMULATOR: EmulatorMain.main(otherArgs); break;
       case SIMULATOR: SimulatorMain.main(otherArgs); break;
       case EXPERIMENT: ExperimentMain.main(otherArgs); break;

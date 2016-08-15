@@ -1,5 +1,7 @@
 package itri.io.emulator.experiment;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -11,8 +13,17 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.block.BlockBorder;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYBarPainter;
+import org.jfree.chart.renderer.xy.XYBarRenderer;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.xy.IntervalXYDataset;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
@@ -76,7 +87,7 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 	    initial();
 	  }
 	  BlockTemporalLocalityManager manager = fileBlocksManager.get(record.getFName());
-	  manager.updateBlocksTemporalLocality(record.getOffset(),record.getLength(),Long.valueOf(record.getRanger().getPreOpTime(false)));
+	  manager.updateBlocksTemporalLocality(record.getOffset(),record.getLength(),record.getRanger().getPreOpSysTime());
 	}
 
 	private void initial() {
@@ -107,80 +118,106 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 	}
 	
 	private class BlockTemporalLocalityBarChat extends ApplicationFrame {
-		private static final String CATEGORY_LABEL = "Avg access time";
+		private static final String CATEGORY_LABEL = "Avg access time(s)";
 	    private static final String VALUE_LABEL = "Block Number";
 	    
 		public BlockTemporalLocalityBarChat(String title,BlockWithTemporalLocality[] blocks) {
 			super(title);
-			CategoryDataset dataset = createDataset(blocks);
+			IntervalXYDataset dataset = createDataset(blocks);
 		    JFreeChart chart = createChart(dataset);
+		    chart.setTextAntiAlias(false);
+	  	    chart.setBorderVisible(false);
+	  	    chart.setBackgroundPaint(Color.white);
+	  	    chart.getTitle().setFont(new Font("Consolas",Font.PLAIN, 20));
+	  	    chart.getLegend().setFrame(new BlockBorder(Color.black));
+	  	  
+	  	    XYPlot plot = chart.getXYPlot();
+	  	    plot.setBackgroundPaint(Color.lightGray);
+	  	    plot.setOutlinePaint(Color.black);
+	  	    plot.setRangeGridlinesVisible(false);
+	  	    plot.setDomainGridlinesVisible(false);
+	  	  
+	  	    XYBarRenderer render = (XYBarRenderer) plot.getRenderer();
+	  	    render.setBarPainter(new StandardXYBarPainter());
+	  	    render.setDrawBarOutline(true);
+	  	  
+		    ValueAxis axis = plot.getRangeAxis();
+		    ValueAxis x = plot.getDomainAxis();
+		    axis.setLowerMargin(0.1);
+		    axis.setUpperMargin(0.1);
+		    
 		    ChartPanel chartPanel = new ChartPanel(chart);
 		    chartPanel.setFillZoomRectangle(true);
 		    chartPanel.setMouseWheelEnabled(false);
 		    setContentPane(chartPanel);
-//		    ChartUtilities.saveChartAsJPEG
 		}
-		private JFreeChart createChart(CategoryDataset dataset) {
-		      JFreeChart chart =
-		          ChartFactory.createBarChart(EXPERIMENT_TITLE, CATEGORY_LABEL, VALUE_LABEL, dataset);
-		      return chart;
+		private JFreeChart createChart(IntervalXYDataset dataset) {
+		    JFreeChart chart =
+		          ChartFactory.createXYBarChart(EXPERIMENT_TITLE, CATEGORY_LABEL,false, VALUE_LABEL, dataset);
+		    return chart;
 		}
 		
-		private CategoryDataset createDataset(BlockWithTemporalLocality[] blocks) {
-		      int[] blockNums = createBlockNumbers(blocks);
-		      String[] categories = createCategories(blocks);
+		private IntervalXYDataset createDataset(BlockWithTemporalLocality[] blocks) {
+		    int[] blockNums = createBlockNumbers(blocks);
+		    int[] categories = createCategories(blocks);
 
-		      DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		      for (int i = 0; i < 50; i++) {
-		        dataset.addValue(blockNums[i], "", categories[i]);
-		      }
-		      return dataset;
+//		      DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+		    XYSeries xyseries = new XYSeries("block number");
+		    for (int i = 0; i < blockNums.length; i++) {
+		    	xyseries.add(categories[i],blockNums[i]);
+		    }
+		    XYSeriesCollection xyseriescollection = new XYSeriesCollection();
+		    xyseriescollection.addSeries(xyseries);
+		    return xyseriescollection;
 		}
 		private int[] createBlockNumbers(BlockWithTemporalLocality[] blocks) {
-			  long maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
-			  int [] nums = new int[50];
-			  System.out.println("maxAvgIntervalTime: "+maxAvgIntervalTime);
-			  System.out.println("allSize: "+blocks.length);
-		      long percentage = 0;
-		      int blockIndex = 0;
-		      int currentNum = 0;
-		      while (blocks[blockIndex].getAvgIntervalTime() == 0){
+			long maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
+			  
+//			int [] nums = new int[ (int) Math.ceil(maxAvgIntervalTime / 10000.0)];
+			int [] nums = new int[ 100];
+			System.out.println("maxAvgIntervalTime: "+maxAvgIntervalTime);
+			System.out.println("allSize: "+blocks.length);
+			System.out.println(nums.length);
+		    long percentage = 0;
+		    int blockIndex = 0;
+		    int currentNum = 0;
+		    while (blocks[blockIndex].getAvgIntervalTime() == 0){
 //		    	  if (blocks[blockIndex].getAccessCount() == 1)
 //		    		  System.out.println("*****"+blocks[blockIndex]);
+		    	blockIndex++;
+		    }
+
+//		      for ( int i = 0; i < 50; i++){
+//		    	  percentage += 2;
+////		    	  System.out.println(maxAvgIntervalTime * percentage/100);
+//		    	  while (blocks[blockIndex++].getAvgIntervalTime() <= (maxAvgIntervalTime * percentage / 100 / (1000*60))){
+//		    		  if (blockIndex < blocks.length)
+//		    			  currentNum++;
+//		    		  else
+//		    			  break;
+//		    	  }
+//		    	  nums[i] = currentNum;
+//		      }
+		    for(int i = 0 ; i < nums.length ; i++){
+		    	percentage += (2000 * 10000);
+		    	  
+		    	while ( blockIndex < blocks.length && blocks[blockIndex].getAvgIntervalTime()<= percentage){
+		   		  currentNum++;
 		    	  blockIndex++;
-		      }
-		      
-		      System.out.println(blockIndex);
-		      System.out.println(blocks[4321026]);
-		      
-		      System.out.println(blocks[blockIndex]);
-		      System.out.println(blocks[blockIndex+1]);
-		      System.out.println(blocks[blockIndex+20000]);
-		      System.out.println(blocks[blockIndex+50000]);
-		      System.out.println(blocks[blockIndex+1000000]);
-		      for ( int i = 0; i < 50; i++){
-		    	  percentage += 2;
-//		    	  System.out.println(maxAvgIntervalTime * percentage/100);
-		    	  while (blocks[blockIndex++].getAvgIntervalTime() <= (maxAvgIntervalTime * percentage / 100 / (1000*60))){
-		    		  if (blockIndex < blocks.length)
-		    			  currentNum++;
-		    		  else
-		    			  break;
-		    	  }
+		    	}
 		    	  nums[i] = currentNum;
-		      }
-		      return nums;
+		    }
+		    return nums;
 		}
 		
-		private String[] createCategories(BlockWithTemporalLocality[] blocks) {
+		private int[] createCategories(BlockWithTemporalLocality[] blocks) {
 			  long maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
-		      String[] categories = new String[50];
-		      long percentage = 0;
+			  int [] categories = new int[ 100];
+		      int percentage = 0;
 		      
-		      
-		      for (int i = 0; i < 50; i++) {
+		      for (int i = 0; i < categories.length; i++) {
 		    	percentage += 2;
-		        categories[i] = ""+maxAvgIntervalTime * percentage / 100 / (1000 * 60);
+		        categories[i] = percentage;
 		      }
 		      return categories;
 		}
@@ -191,5 +228,4 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 		      this.setVisible(true);
 		}
 	}
-
 }

@@ -33,12 +33,12 @@ public class Record {
   public static final int OP_OPRFLAG = 9;
   public static final int OP_FILENAME = 10;
 
-  public Record(String oprFlag, String opSequence, String preOpTime, String pstOpTime,
+  public Record(String oprFlag, String opSequence, String preOpTime, String pstOpTime,String preOpSysTime,String pstOpSysTime,
       String procThrd, String irpFlag, String status, String majorOp, String length, String offset,
       String fileName) {
     this.oprFlag = new OprFlag(oprFlag);
     this.opSequence = new OpSequence(opSequence);
-    this.ranger = new TimeRanger(preOpTime, pstOpTime);
+    this.ranger = new TimeRanger(preOpTime, pstOpTime,preOpSysTime,pstOpSysTime);
     this.procThrd = new ProcThrd(procThrd);
     this.irpFlag = new IrpFlag(irpFlag);
     this.status = new Status(status);
@@ -53,6 +53,7 @@ public class Record {
   public Record(CSVRecord csvRecord) {
     this(csvRecord.get(ColumnConstants.OPR), csvRecord.get(ColumnConstants.SEQ_NUM),
       csvRecord.get(ColumnConstants.PRE_OP_TIME), csvRecord.get(ColumnConstants.POST_OP_TIME),
+      csvRecord.get(ColumnConstants.PRE_OP_SYSTIME),csvRecord.get(ColumnConstants.POST_OP_SYSTIME),
       csvRecord.get(ColumnConstants.PROCESS_THRD), csvRecord.get(ColumnConstants.IRP_FLAGS),
       csvRecord.get(ColumnConstants.STATUS), csvRecord.get(ColumnConstants.MAJOR_OP),
       csvRecord.get(ColumnConstants.LENGTH), csvRecord.get(ColumnConstants.OFFSET),

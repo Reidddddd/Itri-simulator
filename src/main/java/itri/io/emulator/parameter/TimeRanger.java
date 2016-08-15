@@ -14,8 +14,11 @@ public class TimeRanger {
 
   private long preOpTime;
   private long pstOpTime;
+  
+  private long preOpSysTime;
+  private long pstOpSysTime;
 
-  public TimeRanger(String preOp, String pstOp) {
+  public TimeRanger(String preOp, String pstOp,String preOpSysTime,String pstOpSysTime) {
     this.preOp = preOp;
     this.pstOp = pstOp;
     try {
@@ -26,6 +29,9 @@ public class TimeRanger {
       this.preOpTime = -1l;
       this.pstOpTime = -1l;
     }
+    this.preOpSysTime = Long.decode(preOpSysTime);
+    this.pstOpSysTime = Long.decode(pstOpSysTime);
+    
   }
 
   public String getPreOpTime(boolean humanReadable) {
@@ -41,7 +47,13 @@ public class TimeRanger {
   public long getExecutionTime() {
     return pstOpTime - preOpTime;
   }
-
+  
+  public long getPreOpSysTime(){
+	return preOpSysTime;
+  }
+  public long getPstOpSysTime(){
+	return pstOpSysTime;
+  }
   @Override
   public String toString() {
     return String.valueOf(pstOpTime - preOpTime);

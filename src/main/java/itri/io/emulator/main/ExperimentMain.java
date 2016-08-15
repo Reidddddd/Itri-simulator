@@ -14,6 +14,7 @@ import itri.io.emulator.common.Configuration;
 import itri.io.emulator.common.Parameters;
 import itri.io.emulator.experiment.BlockFrequencyExperiment;
 import itri.io.emulator.experiment.BlockTemporalLocalityExperiment;
+import itri.io.emulator.experiment.ExperimentSign;
 import itri.io.emulator.experiment.GraphExperiment;
 import itri.io.emulator.experiment.GraphExperimentsManager;
 
@@ -27,17 +28,40 @@ public class ExperimentMain {
     Configuration conf = new Configuration(args[0]);
     Parameters params = new Parameters(conf);
 
-    BlockFrequencyExperiment blockFrequencyExperiment = new BlockFrequencyExperiment();
-    addBlockFrequencyFilters(blockFrequencyExperiment, params);
+    BlockFrequencyExperiment blockReadFrequencyExperiment = new BlockFrequencyExperiment(ExperimentSign.READ,params.getExperimentOutputPath());
+    addBlockReadFrequencyFilters(blockReadFrequencyExperiment, params);
+    
+    BlockFrequencyExperiment blockWriteFrequencyExperiment = new BlockFrequencyExperiment(ExperimentSign.WRITE,params.getExperimentOutputPath());
+    addBlockWriteFrequencyFilters(blockWriteFrequencyExperiment, params);
     
     //block temporal locality experiment
     BlockTemporalLocalityExperiment blockTemporalLocalityExperiment = new BlockTemporalLocalityExperiment();
-    addBlockFrequencyFilters(blockTemporalLocalityExperiment, params);
+    addBlockTemporalLocalityFilters(blockTemporalLocalityExperiment, params);
     
     GraphExperimentsManager manager =
         new GraphExperimentsManager(params, ColumnConstants.getColumnsHeader());
-    manager.addExperiment(blockTemporalLocalityExperiment);
+    manager.addExperiment(blockReadFrequencyExperiment);
 
+    manager.initialize();
+    System.out.println("Pre process is done.");
+    manager.run();
+    System.out.println("Process is done.");
+    manager.draw();
+    System.out.println("Post process is done.");
+    
+    manager.deleteExperiment(blockReadFrequencyExperiment);
+    manager.addExperiment(blockWriteFrequencyExperiment);
+    
+    manager.initialize();
+    System.out.println("Pre process is done.");
+    manager.run();
+    System.out.println("Process is done.");
+    manager.draw();
+    System.out.println("Post process is done.");
+    
+    manager.deleteExperiment(blockWriteFrequencyExperiment);
+    manager.addExperiment(blockTemporalLocalityExperiment);
+    
     manager.initialize();
     System.out.println("Pre process is done.");
     manager.run();
@@ -46,7 +70,7 @@ public class ExperimentMain {
     System.out.println("Post process is done.");
   }
 
-  private static void addBlockFrequencyFilters(GraphExperiment experiment, Parameters params) {
+  private static void addBlockReadFrequencyFilters(GraphExperiment experiment, Parameters params) {
     OperationTypeFilter oprFilter = new OperationTypeFilter(params);
     OprOption[] oprOptions = { OprOption.IRP };
     oprFilter.setFilterOptions(oprOptions);
@@ -55,6 +79,70 @@ public class ExperimentMain {
 
     MajorOpFilter mjoFilter = new MajorOpFilter(params);
     MajorOpOption[] mjrOption = { MajorOpOption.IRP_READ };
+    mjoFilter.setFilterOptions(mjrOption);
+
+    StatusFilter statusFilter = new StatusFilter(params);
+    StatusOption[] statusOptions = { StatusOption.SUCCESS };
+    statusFilter.setFilterOptions(statusOptions);
+
+    IrpFlagFilter irpFilter = new IrpFlagFilter(params);
+    IrpOption[] irpOptions = { IrpOption.ALL };
+    irpFilter.setFilterOptions(irpOptions);
+
+    experiment.addPreProcessFilter(oprFilter);
+    experiment.addPreProcessFilter(keywordFilter);
+    experiment.addPreProcessFilter(mjoFilter);
+    experiment.addPreProcessFilter(statusFilter);
+    experiment.addPreProcessFilter(irpFilter);
+
+    experiment.addProcessFilter(oprFilter);
+    experiment.addProcessFilter(keywordFilter);
+    experiment.addProcessFilter(mjoFilter);
+    experiment.addProcessFilter(statusFilter);
+    experiment.addProcessFilter(irpFilter);
+  }
+  
+  private static void addBlockWriteFrequencyFilters(GraphExperiment experiment, Parameters params) {
+	OperationTypeFilter oprFilter = new OperationTypeFilter(params);
+	OprOption[] oprOptions = { OprOption.IRP };
+	oprFilter.setFilterOptions(oprOptions);
+
+	KeywordFilter keywordFilter = new KeywordFilter(params);
+
+	MajorOpFilter mjoFilter = new MajorOpFilter(params);
+	MajorOpOption[] mjrOption = { MajorOpOption.IRP_WRITE };
+	mjoFilter.setFilterOptions(mjrOption);
+
+	StatusFilter statusFilter = new StatusFilter(params);
+	StatusOption[] statusOptions = { StatusOption.SUCCESS };
+	statusFilter.setFilterOptions(statusOptions);
+
+	IrpFlagFilter irpFilter = new IrpFlagFilter(params);
+	IrpOption[] irpOptions = { IrpOption.ALL };
+	irpFilter.setFilterOptions(irpOptions);
+
+    experiment.addPreProcessFilter(oprFilter);
+    experiment.addPreProcessFilter(keywordFilter);
+    experiment.addPreProcessFilter(mjoFilter);
+    experiment.addPreProcessFilter(statusFilter);
+    experiment.addPreProcessFilter(irpFilter);
+
+    experiment.addProcessFilter(oprFilter);
+    experiment.addProcessFilter(keywordFilter);
+    experiment.addProcessFilter(mjoFilter);
+    experiment.addProcessFilter(statusFilter);
+    experiment.addProcessFilter(irpFilter);
+  }
+
+  private static void addBlockTemporalLocalityFilters(GraphExperiment experiment, Parameters params) {
+    OperationTypeFilter oprFilter = new OperationTypeFilter(params);
+    OprOption[] oprOptions = { OprOption.IRP };
+    oprFilter.setFilterOptions(oprOptions);
+
+    KeywordFilter keywordFilter = new KeywordFilter(params);
+
+    MajorOpFilter mjoFilter = new MajorOpFilter(params);
+    MajorOpOption[] mjrOption = { MajorOpOption.IRP_READ ,MajorOpOption.IRP_WRITE };
     mjoFilter.setFilterOptions(mjrOption);
 
     StatusFilter statusFilter = new StatusFilter(params);

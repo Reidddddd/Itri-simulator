@@ -26,6 +26,10 @@ public class Parameters {
   private String[] statusNames;
   private String[] processNames;
 
+  //Experiment graph output location
+  private final static String EXPERIMENT_OUTPUT_PATH = "emulator.experiment.output.location";
+  private String experimentOutputPath;
+  
   // Log simulator input
   private final static String MODFILE_DIR = "emulator.fake.file.location";
   private String modDir;
@@ -45,6 +49,8 @@ public class Parameters {
     majorNames = conf.getStrings(FILTER_MAJOR_OP);
     statusNames = conf.getStrings(FILTER_STATUS);
     processNames = conf.getStrings(FILTER_PROCESS);
+    
+    experimentOutputPath = conf.get(EXPERIMENT_OUTPUT_PATH);
 
     modDir = conf.get(MODFILE_DIR);
 
@@ -85,6 +91,10 @@ public class Parameters {
 
   public String[] getProcessNames() {
     return processNames;
+  }
+  
+  public String getExperimentOutputPath(){
+	return experimentOutputPath;
   }
 
   public String getFakeFilesLocation() {

@@ -28,6 +28,9 @@ public class GraphExperimentsManager extends Observable {
   public void addExperiment(GraphExperiment exp) {
     addObserver(exp);
   }
+  public void deleteExperiment(GraphExperiment exp){
+	deleteObserver(exp);
+  }
 
   public void initialize() throws FileNotFoundException {
     visitor = new StateVisitor(ExperimentState.PRE_PROCESS) {
