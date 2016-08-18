@@ -36,7 +36,7 @@ public class FilterMain {
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
-		System.out.println("Emulator is done.");
+		System.out.println("filter is done.");
 	}
 
 	private static void addFlushers(IOLogCleaner cleaner, Parameters params) {

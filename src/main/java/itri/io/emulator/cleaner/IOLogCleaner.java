@@ -54,7 +54,6 @@ public class IOLogCleaner extends Observable implements AutoCloseable {
     	      setChanged();
     	      notifyObservers(record);
     	  }
-       
       }
     } catch (IOException e) {
       System.err.println(e.getMessage());

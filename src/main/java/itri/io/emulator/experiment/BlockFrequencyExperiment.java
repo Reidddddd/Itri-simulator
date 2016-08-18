@@ -50,7 +50,7 @@ public class BlockFrequencyExperiment extends GraphExperiment {
   private final static float LOAD_FACTOR = 0.75f;
   
   private String frequency_experiment_title;
-  private String ratio_experiment_title;
+//  private String ratio_experiment_title;
   private String experimentOutputPath;
   
   private int allSize;
@@ -65,11 +65,11 @@ public class BlockFrequencyExperiment extends GraphExperiment {
     switch (sign){
     case READ:
     	frequency_experiment_title ="Blocks Read Frequency";
-    	ratio_experiment_title = "Read Ratio";
+//    	ratio_experiment_title = "Read Ratio";
     	break;
     case WRITE:
     	frequency_experiment_title ="Blocks Write Frequency";
-    	ratio_experiment_title = "Write Ratio";
+//    	ratio_experiment_title = "Write Ratio";
     	break;
     default:
     	break;
@@ -138,8 +138,8 @@ public class BlockFrequencyExperiment extends GraphExperiment {
         new BlockFrequencyBarChat(frequency_experiment_title, blocks, allFrequency);
     bfBarChat.showGraph();
     
-    FilePieChart filePieChart = new FilePieChart(ratio_experiment_title,fileBlocksManager,allFrequency);
-    filePieChart.showGraph();
+//    FilePieChart filePieChart = new FilePieChart(ratio_experiment_title,fileBlocksManager,allFrequency);
+//    filePieChart.showGraph();
   }
 
   @Override
@@ -154,74 +154,74 @@ public class BlockFrequencyExperiment extends GraphExperiment {
     }
   }
   
-  private class FilePieChart extends ApplicationFrame{
-	  private static final double THRESHOLD = 0.95;
-	  public FilePieChart(String title,Map<FileName, BlockFrequencyManager> fileBlocksManager,long allFrequency){
-		  super(title);
-		  PieDataset dataset = createDataset(fileBlocksManager,allFrequency);
-	      JFreeChart chart = createChart(dataset);
-	      ChartPanel chartPanel = new ChartPanel(chart);
-	      chartPanel.setFillZoomRectangle(true);
-	      chartPanel.setMouseWheelEnabled(false);
-	      setContentPane(chartPanel);
-	      try {
-	    	File file = new File(experimentOutputPath+File.separator+ratio_experiment_title+".jpg");
-			ChartUtilities.saveChartAsJPEG(file, chart, 800, 800);
-		  } catch (IOException e) {
-			e.printStackTrace();
-		  }
-	  }
-	  private PieDataset createDataset(Map<FileName, BlockFrequencyManager> fileBlocksManager,long allFrequency) {
-		  DefaultPieDataset dataset = new DefaultPieDataset( );
-		  Map<String,Double> data = createData(fileBlocksManager,allFrequency);
-		  for (Map.Entry<String, Double> entry : data.entrySet()){
-			  dataset.setValue(entry.getKey(), entry.getValue());
-		  }
-		  
-		  return dataset;
-	  }
-	  private JFreeChart createChart(PieDataset dataset) {
-	      JFreeChart chart = ChartFactory.createPieChart(ratio_experiment_title, dataset, true, false, false);
-	      PiePlot pieplot = (PiePlot) chart.getPlot();
-	      DecimalFormat df = new DecimalFormat("0.00%");//获得一个DecimalFormat对象，主要是设置小数问题,表示小数点后保留两位。  
-	      NumberFormat nf = NumberFormat.getNumberInstance();//获得一个NumberFormat对象  
-	      StandardPieSectionLabelGenerator sp = new StandardPieSectionLabelGenerator(  
-	              "{0}:{2}", nf, df);//获得StandardPieSectionLabelGenerator对象,生成的格式，{0}表示section名，{1}表示section的值，{2}表示百分比。可以自定义  
-	      pieplot.setLabelGenerator(sp);//设置饼图显示百分比
-	      pieplot.setLegendLabelGenerator(sp);
-	      return chart;
-	  }
-	  public void showGraph() {
-	      this.pack();
-	      RefineryUtilities.centerFrameOnScreen(this);
-	      this.setVisible(true);
-	  }
-	  public Map<String,Double> createData(Map<FileName, BlockFrequencyManager> fileBlocksManager,long allFrequency){
-		  double currentPercent = 0.0;
-		  Map<String,Double> data = new HashMap();
-		  Map<FileName,BlockFrequencyManager> sorted = SortMapTools.sortByValue(fileBlocksManager);
-		  int num = 0;
-		  for (Map.Entry<FileName, BlockFrequencyManager> entry : sorted.entrySet()){
-			  System.out.println(entry.getKey().getFileName()+" "+entry.getValue().getTotalFrequency() );
-			  long totalFrequency = entry.getValue().getTotalFrequency();
-			  double percent = (double)totalFrequency / allFrequency; 
-			  currentPercent  += percent; 
-			  data.put(entry.getKey().getFileName(), percent);
-			  num++;
-			  if ( currentPercent >= THRESHOLD || num > 8)
-				  break;
-			  
-		  }
-		  data.put("other all", 1 - currentPercent);
-		  
-		  return data;
-	  }
-  }
+//  private class FilePieChart extends ApplicationFrame{
+//	  private static final double THRESHOLD = 0.95;
+//	  public FilePieChart(String title,Map<FileName, BlockFrequencyManager> fileBlocksManager,long allFrequency){
+//		  super(title);
+//		  PieDataset dataset = createDataset(fileBlocksManager,allFrequency);
+//	      JFreeChart chart = createChart(dataset);
+//	      ChartPanel chartPanel = new ChartPanel(chart);
+//	      chartPanel.setFillZoomRectangle(true);
+//	      chartPanel.setMouseWheelEnabled(false);
+//	      setContentPane(chartPanel);
+//	      try {
+//	    	File file = new File(experimentOutputPath+File.separator+ratio_experiment_title+".jpg");
+//			ChartUtilities.saveChartAsJPEG(file, chart, 800, 800);
+//		  } catch (IOException e) {
+//			e.printStackTrace();
+//		  }
+//	  }
+//	  private PieDataset createDataset(Map<FileName, BlockFrequencyManager> fileBlocksManager,long allFrequency) {
+//		  DefaultPieDataset dataset = new DefaultPieDataset( );
+//		  Map<String,Double> data = createData(fileBlocksManager,allFrequency);
+//		  for (Map.Entry<String, Double> entry : data.entrySet()){
+//			  dataset.setValue(entry.getKey(), entry.getValue());
+//		  }
+//		  
+//		  return dataset;
+//	  }
+//	  private JFreeChart createChart(PieDataset dataset) {
+//	      JFreeChart chart = ChartFactory.createPieChart(ratio_experiment_title, dataset, true, false, false);
+//	      PiePlot pieplot = (PiePlot) chart.getPlot();
+//	      DecimalFormat df = new DecimalFormat("0.00%");//获得一个DecimalFormat对象，主要是设置小数问题,表示小数点后保留两位。  
+//	      NumberFormat nf = NumberFormat.getNumberInstance();//获得一个NumberFormat对象  
+//	      StandardPieSectionLabelGenerator sp = new StandardPieSectionLabelGenerator(  
+//	              "{0}:{2}", nf, df);//获得StandardPieSectionLabelGenerator对象,生成的格式，{0}表示section名，{1}表示section的值，{2}表示百分比。可以自定义  
+//	      pieplot.setLabelGenerator(sp);//设置饼图显示百分比
+//	      pieplot.setLegendLabelGenerator(sp);
+//	      return chart;
+//	  }
+//	  public void showGraph() {
+//	      this.pack();
+//	      RefineryUtilities.centerFrameOnScreen(this);
+//	      this.setVisible(true);
+//	  }
+//	  public Map<String,Double> createData(Map<FileName, BlockFrequencyManager> fileBlocksManager,long allFrequency){
+//		  double currentPercent = 0.0;
+//		  Map<String,Double> data = new HashMap();
+//		  Map<FileName,BlockFrequencyManager> sorted = SortMapTools.sortByValue(fileBlocksManager);
+//		  int num = 0;
+//		  for (Map.Entry<FileName, BlockFrequencyManager> entry : sorted.entrySet()){
+//			  System.out.println(entry.getKey().getFileName()+" "+entry.getValue().getTotalFrequency() );
+//			  long totalFrequency = entry.getValue().getTotalFrequency();
+//			  double percent = (double)totalFrequency / allFrequency; 
+//			  currentPercent  += percent; 
+//			  data.put(entry.getKey().getFileName(), percent);
+//			  num++;
+//			  if ( currentPercent >= THRESHOLD || num > 8)
+//				  break;
+//			  
+//		  }
+//		  data.put("other all", 1 - currentPercent);
+//		  
+//		  return data;
+//	  }
+//  }
   
   
   private class BlockFrequencyBarChat extends ApplicationFrame {
     private static final long serialVersionUID = 5751920011962952961L;
-    private static final String CATEGORY_LABEL = "Percentage of Blocks Read Frequency(%)";
+    private static final String CATEGORY_LABEL = "Percentage of Blocks Frequency(%)";
     private static final String VALUE_LABEL = "Block Number (ten thousand)";
 
     public BlockFrequencyBarChat(String title, BlockWithFrequency[] blocks, long allFrequency) {
@@ -286,6 +286,13 @@ public class BlockFrequencyExperiment extends GraphExperiment {
     }
 
     private double[] createBlockNumbers(BlockWithFrequency[] blocks, long allFrequency) {
+      int position = 0 ;
+      while (blocks[position].getFrequency() != 0 )
+    	  position++;
+//      System.out.println("position: "+position);
+//      System.out.println("position:[0] "+blocks[0].getFrequency());
+//      System.out.println("position:[last] "+blocks[blocks.length-1].getFrequency());
+//      System.out.println("position:[position+100] "+blocks[position+100].getFrequency());
       DecimalFormat df = new DecimalFormat("0.00");
       double[] nums = new double[20];
       long percentageFreq = 0;
@@ -293,11 +300,9 @@ public class BlockFrequencyExperiment extends GraphExperiment {
       int blockIndex = 0;
       for (int i = 0; i < 20; i++) {
         percentage += 5;
-//      if (percentage > 0.99f) percentage = 1.0f;
-//      System.out.println(percentage);
-//    	System.out.println(allFrequency * percentage);
         while (percentageFreq <= (int) (allFrequency * percentage / 100)) {
-          if (blockIndex < blocks.length) {
+          if (blockIndex < position) {
+//        	  if (blockIndex < blocks.length) {
             percentageFreq += blocks[blockIndex++].getFrequency();
           } else {
             break;

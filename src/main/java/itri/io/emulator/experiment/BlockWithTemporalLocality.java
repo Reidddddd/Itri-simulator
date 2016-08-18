@@ -2,7 +2,7 @@ package itri.io.emulator.experiment;
 
 public class BlockWithTemporalLocality extends Block implements Comparable<BlockWithTemporalLocality>{
 
-	private long avgIntervalTime;
+	private double avgIntervalTime;
 	private long lastAccessTime;
 	private long accessCount;
 	private long totalIntervalTime;
@@ -14,7 +14,7 @@ public class BlockWithTemporalLocality extends Block implements Comparable<Block
 		accessCount = 0;
 		totalIntervalTime = 0;
 	}
-	public long getAvgIntervalTime(){
+	public double getAvgIntervalTime(){
 		return avgIntervalTime;
 	}
 
@@ -25,12 +25,12 @@ public class BlockWithTemporalLocality extends Block implements Comparable<Block
 		
 		if (accessCount > 0) {
 			if (nowTime > lastAccessTime){
-				long interval = nowTime - lastAccessTime;
+				double interval = nowTime - lastAccessTime;
 				totalIntervalTime += interval;
 				avgIntervalTime = avgIntervalTime + (interval - avgIntervalTime) / accessCount;
 				lastAccessTime = nowTime;
 			} else{
-				long interval = lastAccessTime - nowTime;
+				double interval = lastAccessTime - nowTime;
 				totalIntervalTime += interval;
 				avgIntervalTime = avgIntervalTime + (interval - avgIntervalTime) / accessCount;
 			}
@@ -46,7 +46,7 @@ public class BlockWithTemporalLocality extends Block implements Comparable<Block
 	}
 	@Override
 	 public int compareTo(BlockWithTemporalLocality o) {
-	    return Long.compare(this.avgIntervalTime, o.avgIntervalTime);
+	    return Double.compare(this.avgIntervalTime, o.avgIntervalTime);
 	 }
 
 }

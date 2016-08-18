@@ -2,6 +2,8 @@ package itri.io.emulator.experiment;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -35,18 +37,20 @@ import itri.io.emulator.parameter.FileSize;
 import itri.io.emulator.parameter.Record;
 
 public class BlockTemporalLocalityExperiment extends GraphExperiment {
-	private final static String EXPERIMENT_TITLE = "Blocks Read Temporal Locality";
+	private final static String EXPERIMENT_TITLE = "Blocks Temporal Locality";
 	private final static int INITIAL_CAPACITY = 200;
 	private final static float LOAD_FACTOR = 0.75f;
 
 	private int allSize;
 	private Map<FileName, FileSize> fileMaxSize;
 	private Map<FileName, BlockTemporalLocalityManager> fileBlocksManager;
-
-	public BlockTemporalLocalityExperiment() {
+	private String experimentOutputPath;
+	
+	public BlockTemporalLocalityExperiment(String exptOutputPath) {
 		this.fileMaxSize = new HashMap<>(INITIAL_CAPACITY, LOAD_FACTOR);
 		this.fileBlocksManager = null;
 		this.allSize = 0;
+		this.experimentOutputPath = exptOutputPath;
 	}
 
 	@Override
@@ -125,6 +129,20 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 			super(title);
 			IntervalXYDataset dataset = createDataset(blocks);
 		    JFreeChart chart = createChart(dataset);
+		    ChartPanel chartPanel = new ChartPanel(chart);
+		    chartPanel.setFillZoomRectangle(true);
+		    chartPanel.setMouseWheelEnabled(false);
+		    setContentPane(chartPanel);
+		    try {
+		    	File file = new File(experimentOutputPath+File.separator+EXPERIMENT_TITLE+".jpg");
+				ChartUtilities.saveChartAsJPEG(file, chart, 800, 800);
+			  } catch (IOException e) {
+				e.printStackTrace();
+			 }
+		}
+		private JFreeChart createChart(IntervalXYDataset dataset) {
+		    JFreeChart chart =
+		          ChartFactory.createXYBarChart(EXPERIMENT_TITLE, CATEGORY_LABEL,false, VALUE_LABEL, dataset);
 		    chart.setTextAntiAlias(false);
 	  	    chart.setBorderVisible(false);
 	  	    chart.setBackgroundPaint(Color.white);
@@ -145,15 +163,6 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 		    ValueAxis x = plot.getDomainAxis();
 		    axis.setLowerMargin(0.1);
 		    axis.setUpperMargin(0.1);
-		    
-		    ChartPanel chartPanel = new ChartPanel(chart);
-		    chartPanel.setFillZoomRectangle(true);
-		    chartPanel.setMouseWheelEnabled(false);
-		    setContentPane(chartPanel);
-		}
-		private JFreeChart createChart(IntervalXYDataset dataset) {
-		    JFreeChart chart =
-		          ChartFactory.createXYBarChart(EXPERIMENT_TITLE, CATEGORY_LABEL,false, VALUE_LABEL, dataset);
 		    return chart;
 		}
 		
@@ -171,7 +180,7 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 		    return xyseriescollection;
 		}
 		private int[] createBlockNumbers(BlockWithTemporalLocality[] blocks) {
-			long maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
+			double maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
 			  
 //			int [] nums = new int[ (int) Math.ceil(maxAvgIntervalTime / 10000.0)];
 			int [] nums = new int[ 100];
@@ -199,7 +208,7 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 //		    	  nums[i] = currentNum;
 //		      }
 		    for(int i = 0 ; i < nums.length ; i++){
-		    	percentage += (2000 * 10000);
+		    	percentage += (1000 * 10000);
 		    	  
 		    	while ( blockIndex < blocks.length && blocks[blockIndex].getAvgIntervalTime()<= percentage){
 		   		  currentNum++;
@@ -211,12 +220,12 @@ public class BlockTemporalLocalityExperiment extends GraphExperiment {
 		}
 		
 		private int[] createCategories(BlockWithTemporalLocality[] blocks) {
-			  long maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
+			  double maxAvgIntervalTime = blocks[blocks.length-1].getAvgIntervalTime();
 			  int [] categories = new int[ 100];
 		      int percentage = 0;
 		      
 		      for (int i = 0; i < categories.length; i++) {
-		    	percentage += 2;
+		    	percentage += 1;
 		        categories[i] = percentage;
 		      }
 		      return categories;

@@ -8,8 +8,6 @@ import org.apache.commons.csv.CSVRecord;
  * Process Filter
  */
 public class ProcessFilter extends Filter {
-
-
 	private String[] processNames;
 
 	public ProcessFilter(Parameters params) {

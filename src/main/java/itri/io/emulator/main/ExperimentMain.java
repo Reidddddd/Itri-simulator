@@ -15,6 +15,7 @@ import itri.io.emulator.common.Parameters;
 import itri.io.emulator.experiment.BlockFrequencyExperiment;
 import itri.io.emulator.experiment.BlockTemporalLocalityExperiment;
 import itri.io.emulator.experiment.ExperimentSign;
+import itri.io.emulator.experiment.FileRatioExperiment;
 import itri.io.emulator.experiment.GraphExperiment;
 import itri.io.emulator.experiment.GraphExperimentsManager;
 
@@ -29,19 +30,28 @@ public class ExperimentMain {
     Parameters params = new Parameters(conf);
 
     BlockFrequencyExperiment blockReadFrequencyExperiment = new BlockFrequencyExperiment(ExperimentSign.READ,params.getExperimentOutputPath());
-    addBlockReadFrequencyFilters(blockReadFrequencyExperiment, params);
+    addReadFilters(blockReadFrequencyExperiment, params);
     
     BlockFrequencyExperiment blockWriteFrequencyExperiment = new BlockFrequencyExperiment(ExperimentSign.WRITE,params.getExperimentOutputPath());
-    addBlockWriteFrequencyFilters(blockWriteFrequencyExperiment, params);
+    addWriteFilters(blockWriteFrequencyExperiment, params);
+    
+    //file ratio experiment
+    FileRatioExperiment fileReadRatioExperiment = new FileRatioExperiment(ExperimentSign.READ,params.getExperimentOutputPath());
+    addReadFilters(fileReadRatioExperiment,params);
+    FileRatioExperiment fileWriteRatioExperiment = new FileRatioExperiment(ExperimentSign.WRITE,params.getExperimentOutputPath());
+    addWriteFilters(fileWriteRatioExperiment,params);
     
     //block temporal locality experiment
-    BlockTemporalLocalityExperiment blockTemporalLocalityExperiment = new BlockTemporalLocalityExperiment();
+    BlockTemporalLocalityExperiment blockTemporalLocalityExperiment = new BlockTemporalLocalityExperiment(params.getExperimentOutputPath());
     addBlockTemporalLocalityFilters(blockTemporalLocalityExperiment, params);
     
     GraphExperimentsManager manager =
         new GraphExperimentsManager(params, ColumnConstants.getColumnsHeader());
     manager.addExperiment(blockReadFrequencyExperiment);
-
+    manager.addExperiment(blockWriteFrequencyExperiment);
+    manager.addExperiment(fileReadRatioExperiment);
+    manager.addExperiment(fileWriteRatioExperiment);
+    
     manager.initialize();
     System.out.println("Pre process is done.");
     manager.run();
@@ -50,18 +60,11 @@ public class ExperimentMain {
     System.out.println("Post process is done.");
     
     manager.deleteExperiment(blockReadFrequencyExperiment);
-    manager.addExperiment(blockWriteFrequencyExperiment);
-    
-    manager.initialize();
-    System.out.println("Pre process is done.");
-    manager.run();
-    System.out.println("Process is done.");
-    manager.draw();
-    System.out.println("Post process is done.");
-    
     manager.deleteExperiment(blockWriteFrequencyExperiment);
-    manager.addExperiment(blockTemporalLocalityExperiment);
+    manager.deleteExperiment(fileReadRatioExperiment);
+    manager.deleteExperiment(fileWriteRatioExperiment);
     
+    manager.addExperiment(blockTemporalLocalityExperiment);
     manager.initialize();
     System.out.println("Pre process is done.");
     manager.run();
@@ -70,9 +73,9 @@ public class ExperimentMain {
     System.out.println("Post process is done.");
   }
 
-  private static void addBlockReadFrequencyFilters(GraphExperiment experiment, Parameters params) {
+  private static void addReadFilters(GraphExperiment experiment, Parameters params) {
     OperationTypeFilter oprFilter = new OperationTypeFilter(params);
-    OprOption[] oprOptions = { OprOption.IRP };
+    OprOption[] oprOptions = { OprOption.IRP,OprOption.FIO };
     oprFilter.setFilterOptions(oprOptions);
 
     KeywordFilter keywordFilter = new KeywordFilter(params);
@@ -102,9 +105,9 @@ public class ExperimentMain {
     experiment.addProcessFilter(irpFilter);
   }
   
-  private static void addBlockWriteFrequencyFilters(GraphExperiment experiment, Parameters params) {
+  private static void addWriteFilters(GraphExperiment experiment, Parameters params) {
 	OperationTypeFilter oprFilter = new OperationTypeFilter(params);
-	OprOption[] oprOptions = { OprOption.IRP };
+	OprOption[] oprOptions = { OprOption.IRP,OprOption.FIO };
 	oprFilter.setFilterOptions(oprOptions);
 
 	KeywordFilter keywordFilter = new KeywordFilter(params);
@@ -136,7 +139,7 @@ public class ExperimentMain {
 
   private static void addBlockTemporalLocalityFilters(GraphExperiment experiment, Parameters params) {
     OperationTypeFilter oprFilter = new OperationTypeFilter(params);
-    OprOption[] oprOptions = { OprOption.IRP };
+    OprOption[] oprOptions = { OprOption.IRP,OprOption.FIO };
     oprFilter.setFilterOptions(oprOptions);
 
     KeywordFilter keywordFilter = new KeywordFilter(params);

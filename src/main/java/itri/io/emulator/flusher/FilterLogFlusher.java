@@ -43,7 +43,6 @@ public class FilterLogFlusher extends Flusher {
 				e.printStackTrace();
 			}
 		}
-
 	}
 
 	private void close() {

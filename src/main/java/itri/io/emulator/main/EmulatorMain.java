@@ -58,9 +58,5 @@ public class EmulatorMain {
     fakeFilesFlusher.addFilter(majorOpFilter);
     fakeFilesFlusher.addFilter(new KeywordFilter(params));
     cleaner.addFlusher(fakeFilesFlusher);
-    
-    FilterLogFlusher filterLogFlusher = new FilterLogFlusher(params);
-    filterLogFlusher.addFilter(new ProcessFilter(params));
-    cleaner.addFlusher(filterLogFlusher);
   }
 }
